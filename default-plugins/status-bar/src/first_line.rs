@@ -1,4 +1,5 @@
 use ansi_term::{unstyled_len, ANSIStrings};
+use unicode_width::UnicodeWidthStr;
 use zellij_tile::prelude::actions::Action;
 use zellij_tile::prelude::*;
 
@@ -7,6 +8,10 @@ use crate::{
     action_key, action_key_group, get_common_modifiers, style_key_with_modifier, TO_NORMAL,
 };
 use crate::{ColoredElements, LinePart};
+
+fn display_width(text: &str) -> usize {
+    UnicodeWidthStr::width(text)
+}
 
 #[derive(Debug)]
 pub struct KeyShortcut {
@@ -44,15 +49,15 @@ impl KeyShortcut {
 
     pub fn full_text(&self) -> String {
         match self.action {
-            KeyAction::Lock => String::from("LOCK"),
-            KeyAction::Unlock => String::from("UNLOCK"),
-            KeyAction::Pane => String::from("PANE"),
-            KeyAction::Tab => String::from("TAB"),
-            KeyAction::Resize => String::from("RESIZE"),
-            KeyAction::Search => String::from("SEARCH"),
-            KeyAction::Quit => String::from("QUIT"),
-            KeyAction::Session => String::from("SESSION"),
-            KeyAction::Move => String::from("MOVE"),
+            KeyAction::Lock => String::from("锁定"),
+            KeyAction::Unlock => String::from("解锁"),
+            KeyAction::Pane => String::from("窗格"),
+            KeyAction::Tab => String::from("标签"),
+            KeyAction::Resize => String::from("调整"),
+            KeyAction::Search => String::from("搜索"),
+            KeyAction::Quit => String::from("退出"),
+            KeyAction::Session => String::from("会话"),
+            KeyAction::Move => String::from("移动"),
             KeyAction::Tmux => String::from("TMUX"),
         }
     }
@@ -102,15 +107,15 @@ impl KeyShortcut {
     }
     pub fn short_text(&self) -> String {
         match self.action {
-            KeyAction::Lock => String::from("Lo"),
-            KeyAction::Unlock => String::from("Un"),
-            KeyAction::Pane => String::from("Pa"),
-            KeyAction::Tab => String::from("Ta"),
-            KeyAction::Resize => String::from("Re"),
-            KeyAction::Search => String::from("Se"),
-            KeyAction::Quit => String::from("Qu"),
-            KeyAction::Session => String::from("Se"),
-            KeyAction::Move => String::from("Mo"),
+            KeyAction::Lock => String::from("锁"),
+            KeyAction::Unlock => String::from("解"),
+            KeyAction::Pane => String::from("格"),
+            KeyAction::Tab => String::from("签"),
+            KeyAction::Resize => String::from("调"),
+            KeyAction::Search => String::from("搜"),
+            KeyAction::Quit => String::from("退"),
+            KeyAction::Session => String::from("会"),
+            KeyAction::Move => String::from("移"),
             KeyAction::Tmux => String::from("Tm"),
         }
     }
@@ -177,13 +182,13 @@ fn long_mode_shortcut(
             suffix_separator,
         ])
         .to_string(),
-        len: start_separator.chars().count() // Separator
+        len: display_width(start_separator) // Separator
             + 2                              // " <"
-            + key_binding.chars().count()    // Key binding
+            + display_width(&key_binding)    // Key binding
             + 2                              // "> "
-            + key_hint.chars().count()       // Key hint (mode)
+            + display_width(&key_hint)       // Key hint (mode)
             + 1                              // " "
-            + separator.chars().count(), // Separator
+            + display_width(separator), // Separator
     }
 }
 
@@ -229,13 +234,13 @@ fn shortened_modifier_shortcut(
             suffix_separator,
         ])
         .to_string(),
-        len: start_separator.chars().count() // Separator
+        len: display_width(start_separator) // Separator
             + 2                              // " <"
-            + key_binding.chars().count()    // Key binding
+            + display_width(&key_binding)    // Key binding
             + 2                              // "> "
-            + key_hint.chars().count()       // Key hint (mode)
+            + display_width(&key_hint)       // Key hint (mode)
             + 1                              // " "
-            + separator.chars().count(), // Separator
+            + display_width(separator), // Separator
     }
 }
 
@@ -287,11 +292,11 @@ fn short_mode_shortcut(
     let suffix_separator = colors.suffix_separator.paint(separator);
     LinePart {
         part: ANSIStrings(&[prefix_separator, char_shortcut, suffix_separator]).to_string(),
-        len: separator.chars().count()      // Separator
+        len: display_width(start_separator) // Separator
             + 1                             // " "
-            + key_binding.chars().count()   // Key binding
+            + display_width(&key_binding)   // Key binding
             + 1                             // " "
-            + separator.chars().count(), // Separator
+            + display_width(separator), // Separator
     }
 }
 
@@ -374,7 +379,7 @@ fn swap_layout_status(
             let mut swap_layout_name = format!(" {} ", swap_layout_name);
             swap_layout_name.make_ascii_uppercase();
             let keycode = swap_layout_keycode(mode_info);
-            let swap_layout_name_len = swap_layout_name.len() + 3; // 2 for the arrow separators, one for the screen end buffer
+            let swap_layout_name_len = display_width(&swap_layout_name) + 3; // 2 for the arrow separators, one for the screen end buffer
                                                                    //
             macro_rules! style_swap_layout_indicator {
                 ($style_name:ident) => {{
@@ -542,7 +547,7 @@ pub fn superkey(
         common_modifiers,
         LinePart {
             part: ANSIStrings(&[prefix, suffix_separator]).to_string(),
-            len: prefix_text.chars().count() + separator.chars().count(),
+            len: display_width(&prefix_text) + display_width(separator),
         },
     )
 }
@@ -780,7 +785,7 @@ mod tests {
         let ret = long_mode_shortcut(&key, color, "+", &vec![], false);
         let ret = unstyle(ret);
 
-        assert_eq!(ret, "+ <0> SESSION +".to_string());
+        assert_eq!(ret, "+ <0> 会话 +".to_string());
     }
 
     #[test]
@@ -796,7 +801,7 @@ mod tests {
         let ret = long_mode_shortcut(&key, color, "+", &vec![], false);
         let ret = unstyle(ret);
 
-        assert_eq!(ret, "+ <0> SESSION +".to_string());
+        assert_eq!(ret, "+ <0> 会话 +".to_string());
     }
 
     #[test]
@@ -812,7 +817,7 @@ mod tests {
         let ret = long_mode_shortcut(&key, color, "+", &vec![], false);
         let ret = unstyle(ret);
 
-        assert_eq!(ret, "+ <0> SESSION +".to_string());
+        assert_eq!(ret, "+ <0> 会话 +".to_string());
     }
 
     #[test]
@@ -840,7 +845,7 @@ mod tests {
         let ret = long_mode_shortcut(&key, color, "+", &vec![], true);
         let ret = unstyle(ret);
 
-        assert_eq!(ret, " <0> SESSION +".to_string());
+        assert_eq!(ret, " <0> 会话 +".to_string());
     }
 
     #[test]
@@ -856,7 +861,7 @@ mod tests {
         let ret = long_mode_shortcut(&key, color, "+", &vec![KeyModifier::Ctrl], false);
         let ret = unstyle(ret);
 
-        assert_eq!(ret, "+ <0> SESSION +".to_string());
+        assert_eq!(ret, "+ <0> 会话 +".to_string());
     }
 
     #[test]
@@ -872,7 +877,7 @@ mod tests {
         let ret = long_mode_shortcut(&key, color, "+", &vec![], false);
         let ret = unstyle(ret);
 
-        assert_eq!(ret, "+ <Ctrl 0> SESSION +".to_string());
+        assert_eq!(ret, "+ <Ctrl 0> 会话 +".to_string());
     }
 
     #[test]
@@ -888,7 +893,7 @@ mod tests {
         let ret = long_mode_shortcut(&key, color, "+", &vec![], false);
         let ret = unstyle(ret);
 
-        assert_eq!(ret, "+ <0> SESSION +".to_string());
+        assert_eq!(ret, "+ <0> 会话 +".to_string());
     }
 
     #[test]
@@ -900,7 +905,7 @@ mod tests {
         let ret = long_mode_shortcut(&key, color, "+", &vec![], false);
         let ret = unstyle(ret);
 
-        assert_eq!(ret, "+ <> SESSION +".to_string());
+        assert_eq!(ret, "+ <> 会话 +".to_string());
     }
 
     #[test]
@@ -918,7 +923,7 @@ mod tests {
         let ret = long_mode_shortcut(&key, color, "+", &vec![KeyModifier::Ctrl], true);
         let ret = unstyle(ret);
 
-        assert_eq!(ret, "+ <0> SESSION +".to_string());
+        assert_eq!(ret, "+ <0> 会话 +".to_string());
     }
 
     #[test]
@@ -1091,7 +1096,7 @@ mod tests {
 
         assert_eq!(
             ret,
-            " Ctrl + >> <a> PANE >> <b> RESIZE >> <c> MOVE >".to_string()
+            " Ctrl + >> <a> 窗格 >> <b> 调整 >> <c> 移动 >".to_string()
         );
     }
 
@@ -1115,7 +1120,7 @@ mod tests {
 
         assert_eq!(
             ret,
-            " <Ctrl a> PANE >> <Ctrl b> RESIZE >> <c> MOVE >".to_string()
+            " <Ctrl a> 窗格 >> <Ctrl b> 调整 >> <c> 移动 >".to_string()
         );
     }
 
@@ -1141,7 +1146,7 @@ mod tests {
 
         assert_eq!(
             ret,
-            " <Ctrl a> LOCK >> <BACKSPACE> PANE >> <ENTER> TAB >> <TAB> RESIZE >> <←> MOVE >"
+            " <Ctrl a> 锁定 >> <BACKSPACE> 窗格 >> <ENTER> 标签 >> <TAB> 调整 >> <←> 移动 >"
                 .to_string()
         );
     }

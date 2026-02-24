@@ -482,7 +482,7 @@ impl Setup {
                 None => data_dir,
             };
 
-            println!("Dumping plugins to '{}'", dir.display());
+            println!("正在导出插件到 '{}'", dir.display());
             dump_builtin_plugins(&dir)?;
             std::process::exit(0);
         }
@@ -516,14 +516,14 @@ impl Setup {
         if let Some(config_dir) = config_dir {
             writeln!(&mut message, "[CONFIG DIR]: {:?}", config_dir).unwrap();
         } else {
-            message.push_str("[CONFIG DIR]: Not Found\n");
+            message.push_str("[CONFIG DIR]: 未找到\n");
             let mut default_config_dirs = default_config_dirs()
                 .iter()
                 .filter_map(|p| p.clone())
                 .collect::<Vec<PathBuf>>();
             default_config_dirs.dedup();
             message.push_str(
-                " On your system zellij looks in the following config directories by default:\n",
+                " 在你的系统上，zellij 默认会在以下配置目录中查找：\n",
             );
             for dir in default_config_dirs {
                 writeln!(&mut message, " {:?}", dir).unwrap();
@@ -537,19 +537,19 @@ impl Setup {
             )
             .unwrap();
             match Config::from_path(&config_file, None) {
-                Ok(_) => message.push_str("[CONFIG FILE]: Well defined.\n"),
+                Ok(_) => message.push_str("[CONFIG FILE]: 配置正确。\n"),
                 Err(e) => writeln!(
                     &mut message,
-                    "[CONFIG ERROR]: {}. \n By default, zellij loads default configuration",
+                    "[CONFIG ERROR]: {}。\n 默认情况下，zellij 会加载默认配置",
                     e
                 )
                 .unwrap(),
             }
         } else {
-            message.push_str("[CONFIG FILE]: Not Found\n");
+            message.push_str("[CONFIG FILE]: 未找到\n");
             writeln!(
                 &mut message,
-                " By default zellij looks for a file called [{}] in the configuration directory",
+                " 默认情况下 zellij 会在配置目录中查找名为 [{}] 的文件",
                 CONFIG_NAME
             )
             .unwrap();
@@ -560,25 +560,25 @@ impl Setup {
         if !cfg!(feature = "disable_automatic_asset_installation") {
             writeln!(
                 &mut message,
-                " Builtin, default plugins will not be loaded from disk."
+                " 内置默认插件不会从磁盘加载。"
             )
             .unwrap();
             writeln!(
                 &mut message,
-                " Create a custom layout if you require this behavior."
+                " 若需要该行为，请创建自定义布局。"
             )
             .unwrap();
         }
         if let Some(layout_dir) = layout_dir {
             writeln!(&mut message, "[LAYOUT DIR]: {:?}", layout_dir).unwrap();
         } else {
-            message.push_str("[LAYOUT DIR]: Not Found\n");
+            message.push_str("[LAYOUT DIR]: 未找到\n");
         }
         writeln!(&mut message, "[SYSTEM DATA DIR]: {:?}", system_data_dir).unwrap();
 
         writeln!(&mut message, "[ARROW SEPARATOR]: {}", ARROW_SEPARATOR).unwrap();
-        message.push_str(" Is the [ARROW_SEPARATOR] displayed correctly?\n");
-        message.push_str(" If not you may want to either start zellij with a compatible mode: 'zellij options --simplified-ui true'\n");
+        message.push_str(" [ARROW_SEPARATOR] 显示是否正常？\n");
+        message.push_str(" 若不正常，你可以使用兼容模式启动 zellij：'zellij options --simplified-ui true'\n");
         let mut hyperlink_compat = String::new();
         hyperlink_compat.push_str(hyperlink_start);
         hyperlink_compat.push_str("https://zellij.dev/documentation/compatibility.html#the-status-bar-fonts-dont-render-correctly");
@@ -587,17 +587,17 @@ impl Setup {
         hyperlink_compat.push_str(hyperlink_end);
         write!(
             &mut message,
-            " Or check the font that is in use:\n {}\n",
+            " 或检查当前使用字体：\n {}\n",
             hyperlink_compat
         )
         .unwrap();
         message.push_str("[MOUSE INTERACTION]: \n");
-        message.push_str(" Can be temporarily disabled through pressing the [SHIFT] key.\n");
-        message.push_str(" If that doesn't fix any issues consider to disable the mouse handling of zellij: 'zellij options --disable-mouse-mode'\n");
+        message.push_str(" 可通过按下 [SHIFT] 键临时禁用。\n");
+        message.push_str(" 若问题仍存在，可考虑禁用 zellij 鼠标处理：'zellij options --disable-mouse-mode'\n");
 
         let default_editor = std::env::var("EDITOR")
             .or_else(|_| std::env::var("VISUAL"))
-            .unwrap_or_else(|_| String::from("Not set, checked $EDITOR and $VISUAL"));
+            .unwrap_or_else(|_| String::from("未设置，已检查 $EDITOR 和 $VISUAL"));
         writeln!(&mut message, "[DEFAULT EDITOR]: {}", default_editor).unwrap();
         writeln!(&mut message, "[FEATURES]: {:?}", FEATURES).unwrap();
         let mut hyperlink = String::new();
@@ -617,7 +617,7 @@ impl Setup {
         let shell: Shell = match shell.to_lowercase().parse() {
             Ok(shell) => shell,
             _ => {
-                eprintln!("Unsupported shell: {}", shell);
+                eprintln!("不支持的 shell: {}", shell);
                 std::process::exit(1);
             },
         };
@@ -644,7 +644,7 @@ impl Setup {
         let shell: Shell = match shell.to_lowercase().parse() {
             Ok(shell) => shell,
             _ => {
-                eprintln!("Unsupported shell: {}", shell);
+                eprintln!("不支持的 shell: {}", shell);
                 std::process::exit(1);
             },
         };

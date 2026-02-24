@@ -1213,6 +1213,7 @@ impl Screen {
     /// Gets a tab by its display position (0-based).
     ///
     /// Use this when you have a position from user input or visual operations.
+    #[allow(dead_code)]
     fn get_tab_by_position(&self, position: usize) -> Option<&Tab> {
         self.tabs.values().find(|t| t.position == position)
     }

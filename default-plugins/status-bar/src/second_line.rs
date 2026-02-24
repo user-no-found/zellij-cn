@@ -3,6 +3,7 @@ use ansi_term::{
     Color::{Fixed, RGB},
     Style,
 };
+use unicode_width::UnicodeWidthStr;
 use zellij_tile::prelude::actions::Action;
 use zellij_tile::prelude::*;
 use zellij_tile_utils::palette_match;
@@ -12,6 +13,10 @@ use crate::{
     tip::{data::TIPS, TipFn},
     LinePart, MORE_MSG, TO_NORMAL,
 };
+
+fn display_width(text: &str) -> usize {
+    UnicodeWidthStr::width(text)
+}
 
 fn full_length_shortcut(
     is_first_shortcut: bool,
@@ -43,8 +48,8 @@ fn full_length_shortcut(
 }
 
 fn locked_interface_indication(palette: Styling) -> LinePart {
-    let locked_text = " -- INTERFACE LOCKED -- ";
-    let locked_text_len = locked_text.chars().count();
+    let locked_text = " -- 界面已锁定 -- ";
+    let locked_text_len = display_width(locked_text);
     let text_color = palette_match!(palette.text_unselected.base);
     let locked_styled_text = Style::new().fg(text_color).bold().paint(locked_text);
     LinePart {
@@ -143,18 +148,18 @@ fn get_keys_and_hints(mi: &ModeInfo) -> Vec<(String, String, Vec<KeyWithModifier
     }
 
     if mi.mode == IM::Pane { vec![
-        (s("New"), s("New"), action_key(&km, &[A::NewPane{direction: None, pane_name: None, start_suppressed: false}, TO_NORMAL])),
-        (s("Change Focus"), s("Move"),
+        (s("新建"), s("新"), action_key(&km, &[A::NewPane{direction: None, pane_name: None, start_suppressed: false}, TO_NORMAL])),
+        (s("切换焦点"), s("切换"),
             action_key_group(&km, &[&[A::MoveFocus{direction: Dir::Left}], &[A::MoveFocus{direction: Dir::Down}],
                 &[A::MoveFocus{direction: Dir::Up}], &[A::MoveFocus{direction: Dir::Right}]])),
-        (s("Close"), s("Close"), action_key(&km, &[A::CloseFocus, TO_NORMAL])),
-        (s("Rename"), s("Rename"),
+        (s("关闭"), s("关"), action_key(&km, &[A::CloseFocus, TO_NORMAL])),
+        (s("重命名"), s("改名"),
             action_key(&km, &[A::SwitchToMode{input_mode: IM::RenamePane}, A::PaneNameInput{input: vec![0]}])),
-        (s("Toggle Fullscreen"), s("Fullscreen"), action_key(&km, &[A::ToggleFocusFullscreen, TO_NORMAL])),
-        (s("Toggle Floating"), s("Floating"),
+        (s("切换全屏"), s("全屏"), action_key(&km, &[A::ToggleFocusFullscreen, TO_NORMAL])),
+        (s("切换浮动"), s("浮动"),
             action_key(&km, &[A::ToggleFloatingPanes, TO_NORMAL])),
-        (s("Toggle Embed"), s("Embed"), action_key(&km, &[A::TogglePaneEmbedOrFloating, TO_NORMAL])),
-        (s("Select pane"), s("Select"), to_normal_key),
+        (s("切换内嵌"), s("内嵌"), action_key(&km, &[A::TogglePaneEmbedOrFloating, TO_NORMAL])),
+        (s("选择窗格"), s("选择"), to_normal_key),
     ]} else if mi.mode == IM::Tab {
         // With the default bindings, "Move focus" for tabs is tricky: It binds all the arrow keys
         // to moving tabs focus (left/up go left, right/down go right). Since we sort the keys
@@ -173,7 +178,7 @@ fn get_keys_and_hints(mi: &ModeInfo) -> Vec<(String, String, Vec<KeyWithModifier
         };
 
         vec![
-        (s("New"), s("New"), action_key(&km, &[A::NewTab{
+        (s("新建"), s("新"), action_key(&km, &[A::NewTab{
             tiled_layout: None,
             floating_layouts: vec![],
             swap_tiled_layouts: None,
@@ -184,86 +189,86 @@ fn get_keys_and_hints(mi: &ModeInfo) -> Vec<(String, String, Vec<KeyWithModifier
             initial_panes: None,
             first_pane_unblock_condition: None,
         }, TO_NORMAL])),
-        (s("Change focus"), s("Move"), focus_keys),
-        (s("Close"), s("Close"), action_key(&km, &[A::CloseTab, TO_NORMAL])),
-        (s("Rename"), s("Rename"),
+        (s("切换焦点"), s("切换"), focus_keys),
+        (s("关闭"), s("关"), action_key(&km, &[A::CloseTab, TO_NORMAL])),
+        (s("重命名"), s("改名"),
             action_key(&km, &[A::SwitchToMode{input_mode: IM::RenameTab}, A::TabNameInput{input: vec![0]}])),
-        (s("Sync"), s("Sync"), action_key(&km, &[A::ToggleActiveSyncTab, TO_NORMAL])),
-        (s("Break pane to new tab"), s("Break out"), action_key(&km, &[A::BreakPane, TO_NORMAL])),
-        (s("Break pane left/right"), s("Break"), action_key_group(&km, &[
+        (s("同步"), s("同步"), action_key(&km, &[A::ToggleActiveSyncTab, TO_NORMAL])),
+        (s("窗格拆出新标签"), s("拆出"), action_key(&km, &[A::BreakPane, TO_NORMAL])),
+        (s("窗格向左/右拆分"), s("拆分"), action_key_group(&km, &[
             &[Action::BreakPaneLeft, TO_NORMAL],
             &[Action::BreakPaneRight, TO_NORMAL],
         ])),
-        (s("Toggle"), s("Toggle"), action_key(&km, &[A::ToggleTab])),
-        (s("Select pane"), s("Select"), to_normal_key),
+        (s("切换"), s("切换"), action_key(&km, &[A::ToggleTab])),
+        (s("选择窗格"), s("选择"), to_normal_key),
     ]} else if mi.mode == IM::Resize { vec![
-        (s("Increase/Decrease size"), s("Increase/Decrease"),
+        (s("增/减大小"), s("增减"),
             action_key_group(&km, &[
                 &[A::Resize{resize: Resize::Increase, direction: None}],
                 &[A::Resize{resize: Resize::Decrease, direction: None}]
             ])),
-        (s("Increase to"), s("Increase"), action_key_group(&km, &[
+        (s("向方向增大"), s("增大"), action_key_group(&km, &[
             &[A::Resize{resize: Resize::Increase, direction: Some(Dir::Left)}],
             &[A::Resize{resize: Resize::Increase, direction: Some(Dir::Down)}],
             &[A::Resize{resize: Resize::Increase, direction: Some(Dir::Up)}],
             &[A::Resize{resize: Resize::Increase, direction: Some(Dir::Right)}]
             ])),
-        (s("Decrease from"), s("Decrease"), action_key_group(&km, &[
+        (s("向方向减小"), s("减小"), action_key_group(&km, &[
             &[A::Resize{resize: Resize::Decrease, direction: Some(Dir::Left)}],
             &[A::Resize{resize: Resize::Decrease, direction: Some(Dir::Down)}],
             &[A::Resize{resize: Resize::Decrease, direction: Some(Dir::Up)}],
             &[A::Resize{resize: Resize::Decrease, direction: Some(Dir::Right)}]
             ])),
-        (s("Select pane"), s("Select"), to_normal_key),
+        (s("选择窗格"), s("选择"), to_normal_key),
     ]} else if mi.mode == IM::Move { vec![
-        (s("Switch Location"), s("Move"), action_key_group(&km, &[
+        (s("切换位置"), s("移动"), action_key_group(&km, &[
             &[Action::MovePane{direction: Some(Dir::Left)}], &[Action::MovePane{direction: Some(Dir::Down)}],
             &[Action::MovePane{direction: Some(Dir::Up)}], &[Action::MovePane{direction: Some(Dir::Right)}]])),
     ]} else if mi.mode == IM::Scroll { vec![
-        (s("Enter search term"), s("Search"),
+        (s("输入搜索词"), s("搜索"),
             action_key(&km, &[A::SwitchToMode{input_mode: IM::EnterSearch}, A::SearchInput{input: vec![0]}])),
-        (s("Scroll"), s("Scroll"),
+        (s("滚动"), s("滚动"),
             action_key_group(&km, &[&[Action::ScrollDown], &[Action::ScrollUp]])),
-        (s("Scroll page"), s("Scroll"),
+        (s("整页滚动"), s("整页"),
             action_key_group(&km, &[&[Action::PageScrollDown], &[Action::PageScrollUp]])),
-        (s("Scroll half page"), s("Scroll"),
+        (s("半页滚动"), s("半页"),
             action_key_group(&km, &[&[Action::HalfPageScrollDown], &[Action::HalfPageScrollUp]])),
-        (s("Edit scrollback in default editor"), s("Edit"),
+        (s("用默认编辑器编辑回滚"), s("编辑"),
             action_key(&km, &[Action::EditScrollback, TO_NORMAL])),
-        (s("Select pane"), s("Select"), to_normal_key),
+        (s("选择窗格"), s("选择"), to_normal_key),
     ]} else if mi.mode == IM::EnterSearch { vec![
-        (s("When done"), s("Done"), action_key(&km, &[A::SwitchToMode{input_mode: IM::Search}])),
-        (s("Cancel"), s("Cancel"),
+        (s("完成后"), s("完成"), action_key(&km, &[A::SwitchToMode{input_mode: IM::Search}])),
+        (s("取消"), s("取消"),
             action_key(&km, &[A::SearchInput{input: vec![27]}, A::SwitchToMode{input_mode: IM::Scroll}])),
     ]} else if mi.mode == IM::Search { vec![
-        (s("Enter Search term"), s("Search"),
+        (s("输入搜索词"), s("搜索"),
             action_key(&km, &[A::SwitchToMode{input_mode: IM::EnterSearch}, A::SearchInput{input: vec![0]}])),
-        (s("Scroll"), s("Scroll"),
+        (s("滚动"), s("滚动"),
             action_key_group(&km, &[&[Action::ScrollDown], &[Action::ScrollUp]])),
-        (s("Scroll page"), s("Scroll"),
+        (s("整页滚动"), s("整页"),
             action_key_group(&km, &[&[Action::PageScrollDown], &[Action::PageScrollUp]])),
-        (s("Scroll half page"), s("Scroll"),
+        (s("半页滚动"), s("半页"),
             action_key_group(&km, &[&[Action::HalfPageScrollDown], &[Action::HalfPageScrollUp]])),
-        (s("Search down"), s("Down"), action_key(&km, &[A::Search{direction: SDir::Down}])),
-        (s("Search up"), s("Up"), action_key(&km, &[A::Search{direction: SDir::Up}])),
-        (s("Case sensitive"), s("Case"),
+        (s("向下搜索"), s("下"), action_key(&km, &[A::Search{direction: SDir::Down}])),
+        (s("向上搜索"), s("上"), action_key(&km, &[A::Search{direction: SDir::Up}])),
+        (s("区分大小写"), s("大小写"),
             action_key(&km, &[A::SearchToggleOption{option: SOpt::CaseSensitivity}])),
-        (s("Wrap"), s("Wrap"),
+        (s("循环"), s("循环"),
             action_key(&km, &[A::SearchToggleOption{option: SOpt::Wrap}])),
-        (s("Whole words"), s("Whole"),
+        (s("全词匹配"), s("全词"),
             action_key(&km, &[A::SearchToggleOption{option: SOpt::WholeWord}])),
     ]} else if mi.mode == IM::Session { vec![
-        (s("Detach"), s("Detach"), action_key(&km, &[Action::Detach])),
-        (s("Session Manager"), s("Manager"), action_key(&km, &[A::LaunchOrFocusPlugin{plugin: Default::default(), should_float: true, move_to_focused_tab: true, should_open_in_place: false, close_replaced_pane: false, skip_cache: false}, TO_NORMAL])), // not entirely accurate
-        (s("Select pane"), s("Select"), to_normal_key),
+        (s("分离"), s("分离"), action_key(&km, &[Action::Detach])),
+        (s("会话管理器"), s("管理"), action_key(&km, &[A::LaunchOrFocusPlugin{plugin: Default::default(), should_float: true, move_to_focused_tab: true, should_open_in_place: false, close_replaced_pane: false, skip_cache: false}, TO_NORMAL])), // not entirely accurate
+        (s("选择窗格"), s("选择"), to_normal_key),
     ]} else if mi.mode == IM::Tmux { vec![
-        (s("Move focus"), s("Move"), action_key_group(&km, &[
+        (s("切换焦点"), s("切换"), action_key_group(&km, &[
             &[A::MoveFocus{direction: Dir::Left}], &[A::MoveFocus{direction: Dir::Down}],
             &[A::MoveFocus{direction: Dir::Up}], &[A::MoveFocus{direction: Dir::Right}]])),
-        (s("Split down"), s("Down"), action_key(&km, &[A::NewPane{direction: Some(Dir::Down), pane_name: None, start_suppressed: false}, TO_NORMAL])),
-        (s("Split right"), s("Right"), action_key(&km, &[A::NewPane{direction: Some(Dir::Right), pane_name: None, start_suppressed: false}, TO_NORMAL])),
-        (s("Fullscreen"), s("Fullscreen"), action_key(&km, &[A::ToggleFocusFullscreen, TO_NORMAL])),
-        (s("New tab"), s("New"), action_key(&km, &[A::NewTab{
+        (s("向下分屏"), s("向下"), action_key(&km, &[A::NewPane{direction: Some(Dir::Down), pane_name: None, start_suppressed: false}, TO_NORMAL])),
+        (s("向右分屏"), s("向右"), action_key(&km, &[A::NewPane{direction: Some(Dir::Right), pane_name: None, start_suppressed: false}, TO_NORMAL])),
+        (s("全屏"), s("全屏"), action_key(&km, &[A::ToggleFocusFullscreen, TO_NORMAL])),
+        (s("新建标签"), s("新建"), action_key(&km, &[A::NewTab{
             tiled_layout: None,
             floating_layouts: vec![],
             swap_tiled_layouts: None,
@@ -274,14 +279,14 @@ fn get_keys_and_hints(mi: &ModeInfo) -> Vec<(String, String, Vec<KeyWithModifier
             initial_panes: None,
             first_pane_unblock_condition: None,
         }, TO_NORMAL])),
-        (s("Rename tab"), s("Rename"),
+        (s("重命名标签"), s("改名"),
             action_key(&km, &[A::SwitchToMode{input_mode: IM::RenameTab}, A::TabNameInput{input: vec![0]}])),
-        (s("Previous Tab"), s("Previous"), action_key(&km, &[A::GoToPreviousTab, TO_NORMAL])),
-        (s("Next Tab"), s("Next"), action_key(&km, &[A::GoToNextTab, TO_NORMAL])),
-        (s("Select pane"), s("Select"), to_normal_key),
+        (s("上一标签"), s("上一"), action_key(&km, &[A::GoToPreviousTab, TO_NORMAL])),
+        (s("下一标签"), s("下一"), action_key(&km, &[A::GoToNextTab, TO_NORMAL])),
+        (s("选择窗格"), s("选择"), to_normal_key),
     ]} else if matches!(mi.mode, IM::RenamePane | IM::RenameTab) { vec![
-        (s("When done"), s("Done"), to_normal_key),
-        (s("Select pane"), s("Select"), action_key_group(&km, &[
+        (s("完成后"), s("完成"), to_normal_key),
+        (s("选择窗格"), s("选择"), action_key_group(&km, &[
             &[A::MoveFocus{direction: Dir::Left}], &[A::MoveFocus{direction: Dir::Down}],
             &[A::MoveFocus{direction: Dir::Up}], &[A::MoveFocus{direction: Dir::Right}]])),
     ]} else { vec![] }
@@ -319,9 +324,9 @@ fn best_effort_shortcut_list_nonstandard_mode(help: &ModeInfo, max_len: usize) -
 
     for (_, short, keys) in keys_and_hints.into_iter() {
         let new_line_part = add_shortcut(help, &line_part, &short, keys.to_vec());
-        if new_line_part.len + MORE_MSG.chars().count() > max_len {
+        if new_line_part.len + display_width(MORE_MSG) > max_len {
             line_part.part = format!("{}{}", line_part.part, MORE_MSG);
-            line_part.len += MORE_MSG.chars().count();
+            line_part.len += display_width(MORE_MSG);
             break;
         }
         line_part = new_line_part;
@@ -370,25 +375,25 @@ pub fn keybinds(help: &ModeInfo, tip_name: &str, max_width: usize) -> LinePart {
 
 pub fn text_copied_hint(copy_destination: CopyDestination) -> LinePart {
     let hint = match copy_destination {
-        CopyDestination::Command => "Text piped to external command",
+        CopyDestination::Command => "文本已通过管道发送到外部命令",
         #[cfg(not(target_os = "macos"))]
-        CopyDestination::Primary => "Text copied to system primary selection",
+        CopyDestination::Primary => "文本已复制到系统主选区",
         #[cfg(target_os = "macos")] // primary selection does not exist on macos
-        CopyDestination::Primary => "Text copied to system clipboard",
-        CopyDestination::System => "Text copied to system clipboard",
+        CopyDestination::Primary => "文本已复制到系统剪贴板",
+        CopyDestination::System => "文本已复制到系统剪贴板",
     };
     LinePart {
         part: serialize_text(&Text::new(&hint).color_range(2, ..).opaque()),
-        len: hint.len(),
+        len: display_width(hint),
     }
 }
 
 pub fn system_clipboard_error(palette: &Styling) -> LinePart {
-    let hint = " Error using the system clipboard.";
+    let hint = " 使用系统剪贴板时出错。";
     let red_color = palette_match!(palette.text_unselected.emphasis_3);
     LinePart {
         part: Style::new().fg(red_color).bold().paint(hint).to_string(),
-        len: hint.len(),
+        len: display_width(hint),
     }
 }
 
@@ -398,14 +403,14 @@ pub fn fullscreen_panes_to_hide(palette: &Styling, panes_to_hide: usize) -> Line
     let orange_color = palette_match!(palette.text_unselected.emphasis_0);
     let shortcut_left_separator = Style::new().fg(text_color).bold().paint(" (");
     let shortcut_right_separator = Style::new().fg(text_color).bold().paint("): ");
-    let fullscreen = "FULLSCREEN";
+    let fullscreen = "全屏";
     let puls = "+ ";
     let panes = panes_to_hide.to_string();
-    let hide = " hidden panes";
-    let len = fullscreen.chars().count()
-        + puls.chars().count()
-        + panes.chars().count()
-        + hide.chars().count()
+    let hide = " 个隐藏窗格";
+    let len = display_width(fullscreen)
+        + display_width(puls)
+        + display_width(&panes)
+        + display_width(hide)
         + 5; // 3 for ():'s around shortcut, 2 for the space
     LinePart {
         part: format!(
@@ -429,8 +434,8 @@ pub fn floating_panes_are_visible(mode_info: &ModeInfo) -> LinePart {
     let orange_color = palette_match!(palette.text_unselected.emphasis_0);
     let shortcut_left_separator = Style::new().fg(white_color).bold().paint(" (");
     let shortcut_right_separator = Style::new().fg(white_color).bold().paint("): ");
-    let floating_panes = "FLOATING PANES VISIBLE";
-    let press = "Press ";
+    let floating_panes = "浮动窗格可见";
+    let press = "按 ";
     let pane_mode = format!(
         "{}",
         action_key(
@@ -454,16 +459,16 @@ pub fn floating_panes_are_visible(mode_info: &ModeInfo) -> LinePart {
         .unwrap_or(&KeyWithModifier::new(BareKey::Char('?')))
     );
     let p_right_separator = "> ";
-    let to_hide = "to hide.";
+    let to_hide = "隐藏。";
 
-    let len = floating_panes.chars().count()
-        + press.chars().count()
-        + pane_mode.chars().count()
-        + plus.chars().count()
-        + p_left_separator.chars().count()
-        + p.chars().count()
-        + p_right_separator.chars().count()
-        + to_hide.chars().count()
+    let len = display_width(floating_panes)
+        + display_width(press)
+        + display_width(&pane_mode)
+        + display_width(plus)
+        + display_width(p_left_separator)
+        + display_width(&p)
+        + display_width(p_right_separator)
+        + display_width(to_hide)
         + 5; // 3 for ():'s around floating_panes, 2 for the space
     LinePart {
         part: format!(
@@ -487,18 +492,18 @@ pub fn locked_fullscreen_panes_to_hide(palette: &Styling, panes_to_hide: usize) 
     let text_color = palette_match!(palette.text_unselected.base);
     let green_color = palette_match!(palette.text_unselected.emphasis_2);
     let orange_color = palette_match!(palette.text_unselected.emphasis_0);
-    let locked_text = " -- INTERFACE LOCKED -- ";
+    let locked_text = " -- 界面已锁定 -- ";
     let shortcut_left_separator = Style::new().fg(text_color).bold().paint(" (");
     let shortcut_right_separator = Style::new().fg(text_color).bold().paint("): ");
-    let fullscreen = "FULLSCREEN";
+    let fullscreen = "全屏";
     let puls = "+ ";
     let panes = panes_to_hide.to_string();
-    let hide = " hidden panes";
-    let len = locked_text.chars().count()
-        + fullscreen.chars().count()
-        + puls.chars().count()
-        + panes.chars().count()
-        + hide.chars().count()
+    let hide = " 个隐藏窗格";
+    let len = display_width(locked_text)
+        + display_width(fullscreen)
+        + display_width(puls)
+        + display_width(&panes)
+        + display_width(hide)
         + 5; // 3 for ():'s around shortcut, 2 for the space
     LinePart {
         part: format!(
@@ -520,10 +525,13 @@ pub fn locked_floating_panes_are_visible(palette: &Styling) -> LinePart {
     let orange_color = palette_match!(palette.text_unselected.emphasis_0);
     let shortcut_left_separator = Style::new().fg(white_color).bold().paint(" (");
     let shortcut_right_separator = Style::new().fg(white_color).bold().paint(")");
-    let locked_text = " -- INTERFACE LOCKED -- ";
-    let floating_panes = "FLOATING PANES VISIBLE";
+    let locked_text = " -- 界面已锁定 -- ";
+    let floating_panes = "浮动窗格可见";
 
-    let len = locked_text.chars().count() + floating_panes.chars().count();
+    let len = display_width(locked_text)
+        + display_width(" (")
+        + display_width(floating_panes)
+        + display_width(")");
     LinePart {
         part: format!(
             "{}{}{}{}",
@@ -741,7 +749,7 @@ mod tests {
 
         assert_eq!(
             ret,
-            " <n> New / <←↓↑→> Change Focus / <x> Close / <f> Toggle Fullscreen",
+            " <n> 新建 / <←↓↑→> 切换焦点 / <x> 关闭 / <f> 切换全屏",
         );
     }
 
@@ -804,7 +812,7 @@ mod tests {
         let ret = keybinds(&mode_info, "quicknav", 35);
         let ret = unstyle(ret);
 
-        assert_eq!(ret, " <n> New / <←↓↑→> Move ... ");
+        assert_eq!(ret, " <n> 新 ... ");
     }
 
     #[test]
@@ -865,6 +873,6 @@ mod tests {
         let ret = keybinds(&mode_info, "quicknav", 500);
         let ret = unstyle(ret);
 
-        assert_eq!(ret, " <BACKSPACE> New / Ctrl + <a|ENTER|1|SPACE> Change Focus / <ESC> Close / <END> Toggle Fullscreen");
+        assert_eq!(ret, " <BACKSPACE> 新建 / Ctrl + <a|ENTER|1|SPACE> 切换焦点 / <ESC> 关闭 / <END> 切换全屏");
     }
 }

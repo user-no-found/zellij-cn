@@ -20,7 +20,6 @@ use std::{
 };
 use tokio::{
     sync::mpsc::Sender,
-    task::{self, JoinHandle},
 };
 use url::Url;
 use wasmi::{Engine, Module};

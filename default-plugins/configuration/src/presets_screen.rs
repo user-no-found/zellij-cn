@@ -80,7 +80,7 @@ impl PresetsScreen {
             if let Some(selected_index) = self.selected_index.take() {
                 let write_to_disk = false;
                 self.reconfigure(selected_index, write_to_disk);
-                self.notification = Some("Configuration applied to current session.".to_owned());
+                self.notification = Some("配置已应用到当前会话。".to_owned());
             } else {
                 self.reset_selected_index();
             }
@@ -89,7 +89,7 @@ impl PresetsScreen {
             if let Some(selected_index) = self.take_selected_index() {
                 let write_to_disk = true;
                 self.reconfigure(selected_index, write_to_disk);
-                self.notification = Some("Configuration applied and saved to disk.".to_owned());
+                self.notification = Some("配置已应用并保存到磁盘。".to_owned());
                 should_render = true;
             }
         } else if key.bare_key == BareKey::Char('l') && key.has_no_modifiers() {
@@ -320,7 +320,7 @@ impl PresetsScreen {
     }
     fn primary_modifier_text(&self) -> String {
         if self.primary_modifier.is_empty() {
-            "<UNBOUND>".to_owned()
+            "<未绑定>".to_owned()
         } else {
             self.primary_modifier
                 .iter()
@@ -331,7 +331,7 @@ impl PresetsScreen {
     }
     fn secondary_modifier_text(&self) -> String {
         if self.secondary_modifier.is_empty() {
-            "<UNBOUND>".to_owned()
+            "<未绑定>".to_owned()
         } else {
             self.secondary_modifier
                 .iter()
@@ -349,10 +349,10 @@ impl PresetsScreen {
     ) {
         let widths = self.main_screen_widths(primary_modifier_key_text);
         if cols >= widths.0 {
-            let title_text_1 = "Hi there! How would you like to interact with Zellij?";
-            let title_text_2 = "Not sure? Press <ENTER> to choose Default.";
-            let title_text_3 = "Everything can always be changed later.";
-            let title_text_4 = "Tips appear on screen - you don't need to remember anything.";
+            let title_text_1 = "你好！你希望如何使用 Zellij？";
+            let title_text_2 = "不确定？按 <ENTER> 选择默认方案。";
+            let title_text_3 = "之后随时都可以更改。";
+            let title_text_4 = "提示会显示在屏幕上，你不必死记硬背。";
             let left_padding = cols.saturating_sub(widths.0) / 2;
             let first_row_coords = (rows.saturating_sub(ui_size) / 2).saturating_sub(1);
             print_text_with_coordinates(
@@ -387,10 +387,10 @@ impl PresetsScreen {
                 None,
             );
         } else {
-            let title_text_1 = "Hi there! Which do you prefer?";
-            let title_text_2 = "Not sure? Press <ENTER>";
-            let title_text_3 = "Can be changed later. Tips appear";
-            let title_text_4 = "on screen - no need to remember";
+            let title_text_1 = "你好！你更偏好哪一种？";
+            let title_text_2 = "不确定？按 <ENTER>";
+            let title_text_3 = "之后可更改，提示会显示";
+            let title_text_4 = "在屏幕上，无需记忆";
             let left_padding = if cols >= widths.1 {
                 cols.saturating_sub(widths.1) / 2
             } else {
@@ -446,14 +446,14 @@ impl PresetsScreen {
     ) {
         let widths = self.main_screen_widths(primary_modifier_key_text);
         let primary_modifier_key_text_len = primary_modifier_key_text.chars().count();
-        let default_text = "1. Default";
+        let default_text = "1. 默认方案";
         let (mut list_items, max_width) = if cols >= widths.0 {
             let list_items = vec![
                 NestedListItem::new(default_text).color_range(1, ..),
-                NestedListItem::new("All modes available directly from the base mode, eg.:")
+                NestedListItem::new("在基础模式可直接进入所有模式，例如：")
                     .indent(1),
                 NestedListItem::new(format!(
-                    "{} p - to enter PANE mode",
+                    "{} p - 进入 PANE 模式",
                     primary_modifier_key_text
                 ))
                 .color_range(3, ..primary_modifier_key_text_len + 3)
@@ -463,7 +463,7 @@ impl PresetsScreen {
                 )
                 .indent(1),
                 NestedListItem::new(format!(
-                    "{} t - to enter TAB mode",
+                    "{} t - 进入 TAB 模式",
                     primary_modifier_key_text
                 ))
                 .color_range(3, ..primary_modifier_key_text_len + 3)
@@ -478,9 +478,9 @@ impl PresetsScreen {
         } else if cols >= widths.1 {
             let list_items = vec![
                 NestedListItem::new(default_text).color_range(1, ..),
-                NestedListItem::new("Modes available directly, eg.:").indent(1),
+                NestedListItem::new("可直接进入的模式，例如：").indent(1),
                 NestedListItem::new(format!(
-                    "{} p - to enter PANE mode",
+                    "{} p - 进入 PANE 模式",
                     primary_modifier_key_text
                 ))
                 .indent(1)
@@ -490,7 +490,7 @@ impl PresetsScreen {
                     primary_modifier_key_text_len + 14..primary_modifier_key_text_len + 18,
                 ),
                 NestedListItem::new(format!(
-                    "{} t - to enter TAB mode",
+                    "{} t - 进入 TAB 模式",
                     primary_modifier_key_text
                 ))
                 .indent(1)
@@ -505,15 +505,15 @@ impl PresetsScreen {
         } else {
             let list_items = vec![
                 NestedListItem::new(default_text).color_range(1, ..),
-                NestedListItem::new("Directly, eg.:").indent(1),
-                NestedListItem::new(format!("{} p - PANE mode", primary_modifier_key_text))
+                NestedListItem::new("直接进入，例如：").indent(1),
+                NestedListItem::new(format!("{} p - PANE 模式", primary_modifier_key_text))
                     .color_range(3, ..primary_modifier_key_text_len + 3)
                     .color_range(
                         2,
                         primary_modifier_key_text_len + 5..primary_modifier_key_text_len + 10,
                     )
                     .indent(1),
-                NestedListItem::new(format!("{} t - TAB mode", primary_modifier_key_text))
+                NestedListItem::new(format!("{} t - TAB 模式", primary_modifier_key_text))
                     .color_range(3, ..primary_modifier_key_text_len + 3)
                     .color_range(
                         2,
@@ -542,19 +542,19 @@ impl PresetsScreen {
         primary_modifier_key_text: &str,
         ui_size: usize,
     ) {
-        let unlock_first_text = "2. Unlock First (non-colliding)";
+        let unlock_first_text = "2. 先解锁（避免冲突）";
         let widths = self.main_screen_widths(primary_modifier_key_text);
         let primary_modifier_key_text_len = primary_modifier_key_text.chars().count();
         let (mut list_items, max_width) = if cols >= widths.0 {
             let list_items = vec![
                 NestedListItem::new(unlock_first_text).color_range(1, ..),
                 NestedListItem::new(format!(
-                    "Single key modes available after unlocking with {} g, eg.:",
+                    "先用 {} g 解锁后可用单键模式，例如：",
                     primary_modifier_key_text
                 ))
                 .indent(1),
                 NestedListItem::new(format!(
-                    "{} g + p to enter PANE mode",
+                    "{} g + p 进入 PANE 模式",
                     primary_modifier_key_text
                 ))
                 .indent(1)
@@ -568,7 +568,7 @@ impl PresetsScreen {
                     primary_modifier_key_text_len + 16..primary_modifier_key_text_len + 21,
                 ),
                 NestedListItem::new(format!(
-                    "{} g + t to enter TAB mode",
+                    "{} g + t 进入 TAB 模式",
                     primary_modifier_key_text
                 ))
                 .indent(1)
@@ -588,12 +588,12 @@ impl PresetsScreen {
             let list_items = vec![
                 NestedListItem::new(unlock_first_text).color_range(1, ..),
                 NestedListItem::new(format!(
-                    "Single key modes after {} g, eg.:",
+                    "{} g 之后可用单键模式，例如：",
                     primary_modifier_key_text
                 ))
                 .indent(1),
                 NestedListItem::new(format!(
-                    "{} g + p to enter PANE mode",
+                    "{} g + p 进入 PANE 模式",
                     primary_modifier_key_text
                 ))
                 .color_range(3, ..primary_modifier_key_text_len + 3)
@@ -607,7 +607,7 @@ impl PresetsScreen {
                 )
                 .indent(1),
                 NestedListItem::new(format!(
-                    "{} g + t to enter TAB mode",
+                    "{} g + t 进入 TAB 模式",
                     primary_modifier_key_text
                 ))
                 .color_range(3, ..primary_modifier_key_text_len + 3)
@@ -625,13 +625,13 @@ impl PresetsScreen {
             (list_items, max_width)
         } else {
             let list_items = vec![
-                NestedListItem::new("2. Unlock First").color_range(1, ..),
+                NestedListItem::new("2. 先解锁").color_range(1, ..),
                 NestedListItem::new(format!(
-                    "{} g + single key, eg.:",
+                    "{} g + 单键，例如：",
                     primary_modifier_key_text
                 ))
                 .indent(1),
-                NestedListItem::new(format!("{} g + p PANE mode", primary_modifier_key_text))
+                NestedListItem::new(format!("{} g + p PANE 模式", primary_modifier_key_text))
                     .color_range(3, ..primary_modifier_key_text_len + 3)
                     .color_range(
                         3,
@@ -642,7 +642,7 @@ impl PresetsScreen {
                         primary_modifier_key_text_len + 7..primary_modifier_key_text_len + 11,
                     )
                     .indent(1),
-                NestedListItem::new(format!("{} g + t TAB mode", primary_modifier_key_text))
+                NestedListItem::new(format!("{} g + t TAB 模式", primary_modifier_key_text))
                     .color_range(3, ..primary_modifier_key_text_len + 3)
                     .color_range(
                         3,
@@ -687,7 +687,7 @@ impl PresetsScreen {
 
         if cols >= widths.0 {
             let leader_key_text = format!(
-                "Leader keys: {} - modes, {} - quicknav and shortcuts",
+                "引导键：{} - 模式，{} - 快速导航和快捷操作",
                 primary_modifier_key_text, secondary_modifier_key_text
             );
             let left_padding = cols.saturating_sub(widths.0) / 2;
@@ -707,7 +707,7 @@ impl PresetsScreen {
             )
         } else {
             let leader_key_text = format!(
-                "Leaders: {}, {}",
+                "引导键：{}, {}",
                 primary_modifier_key_text, secondary_modifier_key_text
             );
             let left_padding = if cols >= widths.1 {
@@ -732,8 +732,8 @@ impl PresetsScreen {
         };
     }
     fn render_help_text_setup_wizard(&self, rows: usize, cols: usize) {
-        let full_help_text = "Help: <↓↑> - navigate, <ENTER> - apply & save, <ESC> - close";
-        let short_help_text = "Help: <↓↑> / <ENTER> / <ESC>";
+        let full_help_text = "帮助：<↓↑> - 导航，<ENTER> - 应用并保存，<ESC> - 关闭";
+        let short_help_text = "帮助：<↓↑> / <ENTER> / <ESC>";
         if cols >= full_help_text.chars().count() {
             print_text_with_coordinates(
                 Text::new(full_help_text)
@@ -767,7 +767,7 @@ impl PresetsScreen {
     ) {
         let widths = self.main_screen_widths(primary_modifier_key_text);
         if cols >= widths.0 {
-            let title_text = "Override keybindings with one of the following presets:";
+            let title_text = "用以下预设之一覆盖快捷键绑定：";
             let left_padding = cols.saturating_sub(widths.0) / 2;
             print_text_with_coordinates(
                 Text::new(title_text).color_range(2, ..),
@@ -777,7 +777,7 @@ impl PresetsScreen {
                 None,
             );
         } else {
-            let title_text = "Override keybindings:";
+            let title_text = "覆盖快捷键绑定：";
             let left_padding = if cols >= widths.1 {
                 cols.saturating_sub(widths.1) / 2
             } else {
@@ -794,8 +794,8 @@ impl PresetsScreen {
     }
     fn render_help_text_main(&self, rows: usize, cols: usize) {
         let full_help_text =
-            "Help: <↓↑> - navigate, <ENTER> - apply, <Ctrl a> - apply & save, <ESC> - close";
-        let short_help_text = "Help: <↓↑> / <ENTER> / <Ctrl a> / <ESC>";
+            "帮助：<↓↑> - 导航，<ENTER> - 应用，<Ctrl a> - 应用并保存，<ESC> - 关闭";
+        let short_help_text = "帮助：<↓↑> / <ENTER> / <Ctrl a> / <ESC>";
         if cols >= full_help_text.chars().count() {
             print_text_with_coordinates(
                 Text::new(full_help_text)
@@ -825,17 +825,17 @@ impl PresetsScreen {
     fn warning_text(&self, max_width: usize) -> Option<String> {
         if self.needs_kitty_support() {
             if max_width >= 38 {
-                Some(String::from("Warning: requires supporting terminal."))
+                Some(String::from("警告：需要终端支持。"))
             } else {
-                Some(String::from("Requires supporting terminal"))
+                Some(String::from("需要终端支持"))
             }
         } else if self.primary_modifier.is_empty() && self.secondary_modifier.is_empty() {
             if max_width >= 49 {
                 Some(String::from(
-                    "Warning: no leaders defined. UI will be disabled.",
+                    "警告：未定义引导键，界面将被禁用。",
                 ))
             } else {
-                Some(String::from("No leaders. UI will be unusable."))
+                Some(String::from("无引导键，界面将不可用。"))
             }
         } else {
             None

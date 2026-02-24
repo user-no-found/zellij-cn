@@ -1268,10 +1268,10 @@ fn add_keygroup_separator(help: &ModeInfo, max_len: usize) -> Option<LinePart> {
     let bg_color = palette_match!(palette.ribbon_selected.base);
     let mut bits: Vec<ANSIString> = vec![];
     let mode_help_text = match help.mode {
-        InputMode::RenamePane => Some("RENAMING PANE"),
-        InputMode::RenameTab => Some("RENAMING TAB"),
-        InputMode::EnterSearch => Some("ENTERING SEARCH TERM"),
-        InputMode::Search => Some("SEARCHING"),
+        InputMode::RenamePane => Some("正在重命名窗格"),
+        InputMode::RenameTab => Some("正在重命名标签页"),
+        InputMode::EnterSearch => Some("正在输入搜索词"),
+        InputMode::Search => Some("正在搜索"),
         _ => None,
     };
     if let Some(mode_help_text) = mode_help_text {

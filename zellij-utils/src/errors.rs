@@ -11,7 +11,6 @@
 
 use anyhow::Context;
 use colored::*;
-use log::error;
 use serde::{Deserialize, Serialize};
 use std::fmt::{Display, Error, Formatter};
 use std::path::PathBuf;
@@ -587,37 +586,39 @@ pub enum BackgroundJobContext {
 use thiserror::Error;
 #[derive(Debug, Error)]
 pub enum ZellijError {
-    #[error("could not find command '{command}' for terminal {terminal_id}")]
+    #[error("无法为终端 {terminal_id} 找到命令 '{command}'")]
     CommandNotFound { terminal_id: u32, command: String },
 
-    #[error("could not determine default editor")]
+    #[error("无法确定默认编辑器")]
     NoEditorFound,
 
-    #[error("failed to allocate another terminal id")]
+    #[error("无法分配新的终端 ID")]
     NoMoreTerminalIds,
 
-    #[error("failed to start PTY")]
+    #[error("启动 PTY 失败")]
     FailedToStartPty,
 
     #[error(
-        "This version of zellij was built to load the core plugins from
-the globally configured plugin directory. However, a plugin wasn't found:
+        "当前版本 zellij 被构建为从全局配置的插件目录加载核心插件，但未找到某个插件：
 
-    Plugin name: '{plugin_path}'
-    Plugin directory: '{plugin_dir}'
+    插件名称：'{plugin_path}'
+    插件目录：'{plugin_dir}'
 
-If you're a user:
-    Please report this error to the distributor of your current zellij version
+如果你是用户：
+    请将此错误反馈给当前 zellij 版本的分发方
 
-If you're a developer:
-    Either make sure to include the plugins with the application (See feature
-    'disable_automatic_asset_installation'), or make them available in the
-    plugin directory.
+如果你是开发者：
+    请确保插件随应用一起提供（参见功能项
+    'disable_automatic_asset_installation'），或确保它们位于
+    插件目录中。
 
-Possible fix for your problem:
-    Run `zellij setup --dump-plugins`, and optionally point it to your
-    'DATA DIR', visible in e.g. the output of `zellij setup --check`. Without
-    further arguments, it will use the default 'DATA DIR'.
+可能的修复方式：
+    运行 `zellij setup --dump-plugins`，并可选指定你的
+    'DATA DIR'（例如可在 `zellij setup --check` 输出中查看）。
+    若不提供额外参数，将使用默认 'DATA DIR'。
+
+原始错误：
+    {source}
 "
     )]
     BuiltinPluginMissing {
@@ -628,19 +629,21 @@ Possible fix for your problem:
     },
 
     #[error(
-        "It seems you tried to load the following builtin plugin:
+        "看起来你尝试加载了以下内置插件：
 
-    Plugin name: '{plugin_path}'
+    插件名称：'{plugin_path}'
 
-This is not a builtin plugin known to this version of zellij. If you were using
-a custom layout, please refer to the layout documentation at:
+该插件不在此版本 zellij 已知的内置插件列表中。如果你使用了
+自定义布局，请参考布局文档：
 
     https://zellij.dev/documentation/creating-a-layout.html#plugin
 
-If you think this is a bug and the plugin is indeed an internal plugin, please
-open an issue on GitHub:
+如果你认为这是一个 Bug，且该插件确实是内置插件，请在 GitHub 提交 issue：
 
     https://github.com/zellij-org/zellij/issues
+
+原始错误：
+    {source}
 "
     )]
     BuiltinPluginNonexistent {
@@ -651,22 +654,22 @@ open an issue on GitHub:
 
     // this is a temporary hack until we're able to merge custom errors from within the various
     // crates themselves without having to move their payload types here
-    #[error("Cannot resize fixed panes")]
+    #[error("无法调整固定窗格大小: {pane_ids:?}")]
     CantResizeFixedPanes { pane_ids: Vec<(u32, bool)> }, // bool: 0 => terminal_pane, 1 =>
     // plugin_pane
-    #[error("Pane size remains unchanged")]
+    #[error("窗格大小未发生变化")]
     PaneSizeUnchanged,
 
-    #[error("an error occured")]
+    #[error("发生错误: {source}")]
     GenericError { source: anyhow::Error },
 
-    #[error("Client {client_id} is too slow to handle incoming messages")]
+    #[error("客户端 {client_id} 处理传入消息过慢")]
     ClientTooSlow { client_id: u16 },
 
-    #[error("The plugin does not exist")]
+    #[error("插件不存在")]
     PluginDoesNotExist,
 
-    #[error("Ran out of room for spans")]
+    #[error("没有足够空间分配 spans")]
     RanOutOfRoomForSpans,
 }
 
@@ -677,6 +680,7 @@ pub use not_wasm::*;
 mod not_wasm {
     use super::*;
     use crate::channels::{SenderWithContext, ASYNCOPENCALLS, OPENCALLS};
+    use log::error;
     use miette::{Diagnostic, GraphicalReportHandler, GraphicalTheme, Report};
     use std::panic::PanicHookInfo;
     use thiserror::Error as ThisError;

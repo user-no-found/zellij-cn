@@ -4193,6 +4193,7 @@ impl Tab {
         MouseHandler::handle_scrollwheel_down(self, point, lines, client_id)
     }
 
+    #[allow(dead_code)]
     fn get_pane_at(
         &mut self,
         point: &Position,

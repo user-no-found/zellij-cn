@@ -242,7 +242,7 @@ pub(crate) fn background_jobs_main(
                                 );
 
                                 // Send SavedCurrentSession instruction to plugin thread
-                                let timestamp_millis = std::time::SystemTime::now()
+                                let _timestamp_millis = std::time::SystemTime::now()
                                     .duration_since(std::time::UNIX_EPOCH)
                                     .unwrap_or_default()
                                     .as_millis()
@@ -425,7 +425,7 @@ pub(crate) fn background_jobs_main(
                         .unwrap_or(WebServerStatus::Offline);
                     runtime.spawn({
                         let senders = bus.senders.clone();
-                        let web_server_base_url = web_server_base_url.clone();
+                        let _web_server_base_url = web_server_base_url.clone();
                         async move {
                             let _ = senders.send_to_plugin(PluginInstruction::Update(vec![(
                                 None,
