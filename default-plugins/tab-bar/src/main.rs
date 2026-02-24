@@ -36,6 +36,15 @@ struct State {
 
 static ARROW_SEPARATOR: &str = "";
 
+fn localized_tab_name(name: &str) -> String {
+    if let Some(idx) = name.strip_prefix("Tab #") {
+        if let Ok(number) = idx.parse::<usize>() {
+            return format!("标签 #{}", number);
+        }
+    }
+    name.to_owned()
+}
+
 register_plugin!(State);
 
 impl ZellijPlugin for State {
@@ -110,10 +119,10 @@ impl ZellijPlugin for State {
         let mut active_tab_index = 0;
         let mut is_alternate_tab = false;
         for t in &mut self.tabs {
-            let mut tabname = t.name.clone();
+            let mut tabname = localized_tab_name(&t.name);
             if t.active && self.mode_info.mode == InputMode::RenameTab {
                 if tabname.is_empty() {
-                    tabname = String::from("Enter name...");
+                    tabname = String::from("输入名称...");
                 }
                 active_tab_index = t.position;
             } else if t.active {

@@ -175,10 +175,10 @@ impl App {
             if self.is_release_notes {
                 rename_plugin_pane(
                     own_plugin_id,
-                    format!("Release Notes {}", self.zellij_version.borrow()),
+                    format!("发行说明 {}", self.zellij_version.borrow()),
                 );
             } else {
-                rename_plugin_pane(own_plugin_id, "About Zellij");
+                rename_plugin_pane(own_plugin_id, "关于 Zellij");
             }
         }
     }

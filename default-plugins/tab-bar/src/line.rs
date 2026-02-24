@@ -310,6 +310,10 @@ fn swap_layout_status(
     mode_info: &ModeInfo,
     supports_arrow_fonts: bool,
 ) -> Option<LinePart> {
+    let localized_swap_layout_name = |name: &str| match name {
+        "BASE" => "基础".to_owned(),
+        _ => name.to_owned(),
+    };
     match swap_layout_name {
         Some(swap_layout_name) => {
             let mode_keybinds = mode_info.get_mode_keybinds();
@@ -318,8 +322,9 @@ fn swap_layout_status(
                 &[&[Action::PreviousSwapLayout], &[Action::NextSwapLayout]],
             );
             let mut text = style_key_with_modifier(&prev_next_keys, Some(0));
+            let display_name = localized_swap_layout_name(swap_layout_name);
             text.append(&ribbon_as_line_part(
-                &swap_layout_name.to_uppercase(),
+                &display_name.to_uppercase(),
                 !is_swap_layout_dirty,
                 supports_arrow_fonts,
             ));

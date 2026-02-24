@@ -26,56 +26,56 @@ impl Page {
             .main_screen()
             .with_title(main_screen_title(zellij_version.clone(), is_release_notes))
             .with_bulletin_list(BulletinList::new(whats_new_title()).with_items(vec![
-                    ActiveComponent::new(TextOrCustomRender::Text(main_menu_item(
-                        "Web Client",
+                ActiveComponent::new(TextOrCustomRender::Text(main_menu_item(
+                        "Web 客户端",
                     )))
                     .with_hover(TextOrCustomRender::Text(
-                        main_menu_item("Web Client").selected(),
+                        main_menu_item("Web 客户端").selected(),
                     ))
                     .with_left_click_action(ClickAction::new_change_page({
                         let link_executable = link_executable.clone();
                         move || Page::new_web_client(link_executable.clone())
                     })),
-                    ActiveComponent::new(TextOrCustomRender::Text(main_menu_item(
-                        "Multiple Pane Select",
+                ActiveComponent::new(TextOrCustomRender::Text(main_menu_item(
+                        "多窗格选择",
                     )))
                     .with_hover(TextOrCustomRender::Text(
-                        main_menu_item("Multiple Pane Select").selected(),
+                        main_menu_item("多窗格选择").selected(),
                     ))
                     .with_left_click_action(ClickAction::new_change_page(move || {
                         Page::new_multiple_select()
                     })),
-                    ActiveComponent::new(TextOrCustomRender::Text(main_menu_item(
-                        "Key Tooltips for the compact-bar",
+                ActiveComponent::new(TextOrCustomRender::Text(main_menu_item(
+                        "compact-bar 按键提示",
                     )))
                     .with_hover(TextOrCustomRender::Text(
-                        main_menu_item("Key Tooltips for the compact-bar").selected(),
+                        main_menu_item("compact-bar 按键提示").selected(),
                     ))
                     .with_left_click_action(ClickAction::new_change_page({
                         let link_executable = link_executable.clone();
                         move || Page::new_key_tooltips_for_compact_bar(link_executable.clone())
                     })),
-                    ActiveComponent::new(TextOrCustomRender::Text(main_menu_item(
-                        "Stack Keybinding",
+                ActiveComponent::new(TextOrCustomRender::Text(main_menu_item(
+                        "堆叠快捷键",
                     )))
                     .with_hover(TextOrCustomRender::Text(
-                        main_menu_item("Stack Keybinding").selected(),
+                        main_menu_item("堆叠快捷键").selected(),
                     ))
                     .with_left_click_action(ClickAction::new_change_page(move || {
                         Page::new_stack_keybinding()
                     })),
-                    ActiveComponent::new(TextOrCustomRender::Text(main_menu_item(
-                        "Performance Improvements",
+                ActiveComponent::new(TextOrCustomRender::Text(main_menu_item(
+                        "性能改进",
                     )))
                     .with_hover(TextOrCustomRender::Text(
-                        main_menu_item("Performance Improvements").selected(),
+                        main_menu_item("性能改进").selected(),
                     ))
                     .with_left_click_action(ClickAction::new_change_page({
                         move || Page::new_performance_improvements()
                     })),
                 ]))
             .with_paragraph(vec![ComponentLine::new(vec![
-                ActiveComponent::new(TextOrCustomRender::Text(Text::new("Full Changelog: "))),
+                ActiveComponent::new(TextOrCustomRender::Text(Text::new("完整更新日志："))),
                 ActiveComponent::new(TextOrCustomRender::Text(changelog_link_unselected(
                     zellij_version.clone(),
                 )))
@@ -115,34 +115,33 @@ impl Page {
     }
     pub fn new_web_client(link_executable: Rc<RefCell<String>>) -> Page {
         Page::new()
-            .with_title(Text::new("Web Client").color_range(0, ..))
+            .with_title(Text::new("Web 客户端").color_range(0, ..))
             .with_paragraph(vec![
                 ComponentLine::new(vec![
-                    // ActiveComponent::new(TextOrCustomRender::Text(Text::new("This version includes a new resizing algorithm that helps better manage panes"))),
-                    ActiveComponent::new(TextOrCustomRender::Text(Text::new("This version includes a web client, allowing you to share sessions in the browser."))),
+                    ActiveComponent::new(TextOrCustomRender::Text(Text::new("此版本加入了 Web 客户端，支持在浏览器中共享会话。"))),
                 ]),
             ])
-            .with_bulletin_list(BulletinList::new(Text::new("The web client:").color_range(2, ..))
+            .with_bulletin_list(BulletinList::new(Text::new("Web 客户端支持：").color_range(2, ..))
                 .with_items(vec![
                     ActiveComponent::new(TextOrCustomRender::Text(
-                            Text::new("Allows you to bookmark sessions")
-                                .color_substring(3, "bookmark sessions")
+                            Text::new("可将会话加入书签")
+                                .color_substring(3, "加入书签")
                     )),
                     ActiveComponent::new(TextOrCustomRender::Text(
-                            Text::new("Includes built-in authentication")
+                            Text::new("内置身份认证")
                     )),
                     ActiveComponent::new(TextOrCustomRender::Text(
-                            Text::new("Can be used as a daily-driver, making your terminal emulator optional")
+                            Text::new("可作为日常工作入口，终端模拟器可选")
                     )),
                     ActiveComponent::new(TextOrCustomRender::Text(
-                            Text::new("Is completely opt-in")
+                            Text::new("完全按需启用")
                     )),
                 ])
             )
             .with_paragraph(vec![
                 ComponentLine::new(vec![
                     ActiveComponent::new(TextOrCustomRender::Text(
-                        Text::new("For more details, see: ")
+                        Text::new("更多详情见：")
                             .color_range(2, ..)
                     )),
                     ActiveComponent::new(TextOrCustomRender::Text(Text::new("https://zellij.dev/tutorials/web-client")))
@@ -154,35 +153,35 @@ impl Page {
     }
     fn new_multiple_select() -> Page {
         Page::new()
-            .with_title(Text::new("Multiple Pane Select").color_range(0, ..))
+            .with_title(Text::new("多窗格选择").color_range(0, ..))
             .with_paragraph(vec![
                 ComponentLine::new(vec![ActiveComponent::new(TextOrCustomRender::Text(
-                    Text::new("This version adds the ability to perform bulk operations on panes"),
+                    Text::new("此版本新增了对窗格执行批量操作的能力"),
                 ))]),
                 ComponentLine::new(vec![ActiveComponent::new(TextOrCustomRender::Text(
-                    Text::new("eg. close, make floating, break to a new tab, etc."),
+                    Text::new("如关闭、设为浮动、拆分到新标签页等。"),
                 ))]),
             ])
             .with_bulletin_list(
                 BulletinList::new(
-                    Text::new(format!("To select multiple panes: ")).color_range(2, ..),
+                    Text::new("要选择多个窗格：").color_range(2, ..),
                 )
                 .with_items(vec![
                     ActiveComponent::new(TextOrCustomRender::Text(
-                        Text::new(format!("Alt <left-click> them"))
-                            .color_substring(3, "Alt <left-click>"),
+                        Text::new("使用 Alt <左键点击> 选择它们")
+                            .color_substring(3, "Alt <左键点击>"),
                     )),
                     ActiveComponent::new(TextOrCustomRender::Text(
-                        Text::new(format!("Toggle with Alt p")).color_substring(3, "Alt p"),
+                        Text::new("使用 Alt p 切换选择").color_substring(3, "Alt p"),
                     )),
                 ]),
             )
             .with_paragraph(vec![
                 ComponentLine::new(vec![ActiveComponent::new(TextOrCustomRender::Text(
-                    Text::new("To disable this behavior (and the associated hover effects)"),
+                    Text::new("如需禁用此行为（以及相关悬停效果）"),
                 ))]),
                 ComponentLine::new(vec![ActiveComponent::new(TextOrCustomRender::Text(
-                    Text::new(format!("add advanced_mouse_actions false to the config."))
+                    Text::new("在配置中加入 advanced_mouse_actions false。")
                         .color_substring(3, "advanced_mouse_actions false"),
                 ))]),
             ])
@@ -192,21 +191,19 @@ impl Page {
     }
     fn new_key_tooltips_for_compact_bar(link_executable: Rc<RefCell<String>>) -> Page {
         Page::new()
-            .with_title(Text::new("Key Tooltips for the compact-bar").color_range(0, ..))
+            .with_title(Text::new("compact-bar 按键提示").color_range(0, ..))
             .with_paragraph(vec![
                 ComponentLine::new(vec![ActiveComponent::new(TextOrCustomRender::Text(
-                    Text::new(
-                        "Starting this version, it's possible to add toggle-able key tooltips",
-                    )
-                    .color_range(3, 37..=58),
+                    Text::new("从此版本起，可为 compact-bar 添加可切换的按键提示。")
+                        .color_substring(3, "可切换的按键提示"),
                 ))]),
                 ComponentLine::new(vec![ActiveComponent::new(TextOrCustomRender::Text(
-                    Text::new("when using the compact-bar.").color_substring(3, "compact-bar"),
+                    Text::new("该功能在使用 compact-bar 时生效。").color_substring(3, "compact-bar"),
                 ))]),
             ])
             .with_paragraph(vec![ComponentLine::new(vec![
                 ActiveComponent::new(TextOrCustomRender::Text(
-                    Text::new("For more information: ").color_range(2, ..),
+                    Text::new("更多信息：").color_range(2, ..),
                 )),
                 ActiveComponent::new(TextOrCustomRender::Text(Text::new(
                     "https://zellij.dev/documentation/faq.html",
@@ -226,27 +223,27 @@ impl Page {
     }
     fn new_stack_keybinding() -> Page {
         Page::new()
-            .with_title(Text::new("New Stack Keybinding").color_range(0, ..))
+            .with_title(Text::new("新的堆叠快捷键").color_range(0, ..))
             .with_paragraph(vec![
                 ComponentLine::new(vec![ActiveComponent::new(TextOrCustomRender::Text(
-                    Text::new("It's now possible to open a stacked pane directly on top of the current pane").color_substring(2, "stacked pane"),
+                    Text::new("现在可以在当前窗格上方直接打开堆叠窗格。").color_substring(2, "堆叠窗格"),
                 ))]),
             ])
             .with_paragraph(vec![
                 ComponentLine::new(vec![
                     ActiveComponent::new(TextOrCustomRender::Text(
-                        Text::new("By default: Ctrl p + s").color_substring(3, "Ctrl p").color_substring(3, " s"),
+                        Text::new("默认：Ctrl p + s").color_substring(3, "Ctrl p").color_substring(3, " s"),
                     )),
                 ]),
                 ComponentLine::new(vec![
                     ActiveComponent::new(TextOrCustomRender::Text(
-                        Text::new("In unlock first: Ctrl g + p + s").color_substring(3, "Ctrl g").color_substring(3, " p").color_substring(3, " s"),
+                        Text::new("在先解锁模式中：Ctrl g + p + s").color_substring(3, "Ctrl g").color_substring(3, " p").color_substring(3, " s"),
                     )),
                 ]),
             ])
             .with_paragraph(vec![
                 ComponentLine::new(vec![ActiveComponent::new(TextOrCustomRender::Text(
-                    Text::new("To add to an existing config, see the release notes.")
+                    Text::new("如需加入现有配置，请查看发行说明。")
                 ))]),
             ])
             .with_help(Box::new(|_hovering_over_link, _menu_item_is_selected| {
@@ -255,13 +252,13 @@ impl Page {
     }
     fn new_performance_improvements() -> Page {
         Page::new()
-            .with_title(Text::new("Performance Improvements").color_range(0, ..))
+            .with_title(Text::new("性能改进").color_range(0, ..))
             .with_paragraph(vec![
                 ComponentLine::new(vec![ActiveComponent::new(TextOrCustomRender::Text(
-                    Text::new("This version adds a debounced asynchronous render mechanism"),
+                    Text::new("此版本增加了防抖的异步渲染机制。"),
                 ))]),
                 ComponentLine::new(vec![ActiveComponent::new(TextOrCustomRender::Text(
-                    Text::new("making rendering much smoother across the whole application."),
+                    Text::new("让整个应用的渲染更流畅。"),
                 ))]),
             ])
             .with_help(Box::new(|_hovering_over_link, _menu_item_is_selected| {
@@ -548,7 +545,7 @@ impl Page {
 
 fn render_error(error: &str, y: usize) {
     print_text_with_coordinates(
-        Text::new(format!("ERROR: {}", error)).color_range(3, ..),
+        Text::new(format!("错误：{}", error)).color_range(3, ..),
         0,
         y,
         None,
@@ -624,13 +621,13 @@ fn compact_bar_link_selected_len() -> usize {
 
 // Text components
 fn whats_new_title() -> Text {
-    Text::new("What's new?")
+    Text::new("更新内容")
 }
 
 fn main_screen_title(version: String, is_release_notes: bool) -> Text {
     if is_release_notes {
-        let title_text = format!("Hi there, welcome to Zellij {}!", &version);
-        Text::new(title_text).color_range(2, 21..=27 + version.chars().count())
+        let title_text = format!("你好，欢迎使用 Zellij {}！", &version);
+        Text::new(title_text).color_substring(2, format!("Zellij {}", version))
     } else {
         let title_text = format!("Zellij {}", &version);
         Text::new(title_text).color_range(2, ..)
@@ -639,60 +636,60 @@ fn main_screen_title(version: String, is_release_notes: bool) -> Text {
 
 fn main_screen_help_text(hovering_over_link: bool, menu_item_is_selected: bool) -> Text {
     if hovering_over_link {
-        let help_text = format!("Help: Click or Shift-Click to open in browser");
+        let help_text = "帮助：点击或 Shift-点击 在浏览器中打开".to_owned();
         Text::new(help_text)
-            .color_range(3, 6..=10)
-            .color_range(3, 15..=25)
+            .color_substring(3, "点击")
+            .color_substring(3, "Shift-点击")
     } else if menu_item_is_selected {
-        let help_text = format!("Help: <↓↑> - Navigate, <ENTER> - Learn More, <ESC> - Dismiss");
+        let help_text = "帮助：<↓↑> - 导航，<ENTER> - 查看详情，<ESC> - 关闭".to_owned();
         Text::new(help_text)
-            .color_range(1, 6..=9)
-            .color_range(1, 23..=29)
-            .color_range(1, 45..=49)
+            .color_substring(1, "<↓↑>")
+            .color_substring(1, "<ENTER>")
+            .color_substring(1, "<ESC>")
     } else {
-        let help_text = format!("Help: <↓↑> - Navigate, <ESC> - Dismiss, <?> - Usage Tips");
+        let help_text = "帮助：<↓↑> - 导航，<ESC> - 关闭，<?> - 使用提示".to_owned();
         Text::new(help_text)
-            .color_range(1, 6..=9)
-            .color_range(1, 23..=27)
-            .color_range(1, 40..=42)
+            .color_substring(1, "<↓↑>")
+            .color_substring(1, "<ESC>")
+            .color_substring(1, "<?>")
     }
 }
 
 fn release_notes_main_help(hovering_over_link: bool, menu_item_is_selected: bool) -> Text {
     if hovering_over_link {
-        let help_text = format!("Help: Click or Shift-Click to open in browser");
+        let help_text = "帮助：点击或 Shift-点击 在浏览器中打开".to_owned();
         Text::new(help_text)
-            .color_range(3, 6..=10)
-            .color_range(3, 15..=25)
+            .color_substring(3, "点击")
+            .color_substring(3, "Shift-点击")
     } else if menu_item_is_selected {
-        let help_text = format!("Help: <↓↑> - Navigate, <ENTER> - Learn More, <ESC> - Dismiss");
+        let help_text = "帮助：<↓↑> - 导航，<ENTER> - 查看详情，<ESC> - 关闭".to_owned();
         Text::new(help_text)
-            .color_range(1, 6..=9)
-            .color_range(1, 23..=29)
-            .color_range(1, 45..=49)
+            .color_substring(1, "<↓↑>")
+            .color_substring(1, "<ENTER>")
+            .color_substring(1, "<ESC>")
     } else {
-        let help_text = format!("Help: <↓↑> - Navigate, <ESC> - Dismiss");
+        let help_text = "帮助：<↓↑> - 导航，<ESC> - 关闭".to_owned();
         Text::new(help_text)
-            .color_range(1, 6..=9)
-            .color_range(1, 23..=27)
+            .color_substring(1, "<↓↑>")
+            .color_substring(1, "<ESC>")
     }
 }
 
 fn esc_go_back_plus_link_hover(hovering_over_link: bool, _menu_item_is_selected: bool) -> Text {
     if hovering_over_link {
-        let help_text = format!("Help: Click or Shift-Click to open in browser");
+        let help_text = "帮助：点击或 Shift-点击 在浏览器中打开".to_owned();
         Text::new(help_text)
-            .color_range(3, 6..=10)
-            .color_range(3, 15..=25)
+            .color_substring(3, "点击")
+            .color_substring(3, "Shift-点击")
     } else {
-        let help_text = format!("Help: <ESC> - Go back");
-        Text::new(help_text).color_range(1, 6..=10)
+        let help_text = "帮助：<ESC> - 返回".to_owned();
+        Text::new(help_text).color_substring(1, "<ESC>")
     }
 }
 
 fn esc_to_go_back_help() -> Text {
-    let help_text = format!("Help: <ESC> - Go back");
-    Text::new(help_text).color_range(1, 6..=10)
+    let help_text = "帮助：<ESC> - 返回".to_owned();
+    Text::new(help_text).color_substring(1, "<ESC>")
 }
 
 fn main_menu_item(item_name: &str) -> Text {
@@ -700,7 +697,7 @@ fn main_menu_item(item_name: &str) -> Text {
 }
 
 fn support_the_developer_text() -> Text {
-    let support_text = format!("Please support the Zellij developer <3: ");
+    let support_text = "请支持 Zellij 开发者 <3：".to_owned();
     Text::new(support_text).color_range(3, ..)
 }
 

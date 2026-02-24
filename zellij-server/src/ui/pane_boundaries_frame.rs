@@ -1107,10 +1107,10 @@ impl PaneFrame {
     fn hover_shortcuts_part_full(&self) -> (Vec<TerminalCharacter>, usize) {
         // (title part, length)
         let mut hover_shortcuts = vec![];
-        let alt_click_text = " Alt <Click>";
-        let alt_click_tip = " - group,";
-        let alt_right_click_text = " Alt <Right-Click>";
-        let alt_right_click_tip = " - ungroup all ";
+        let alt_click_text = " Alt <点击>";
+        let alt_click_tip = " - 编组，";
+        let alt_right_click_text = " Alt <右键点击>";
+        let alt_right_click_tip = " - 全部取消编组 ";
 
         hover_shortcuts.append(&mut foreground_color(alt_click_text, self.color));
         hover_shortcuts.append(&mut foreground_color(alt_click_tip, self.color));
