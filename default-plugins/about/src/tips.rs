@@ -836,15 +836,15 @@ fn screencasts_link_selected_len() -> Box<dyn Fn() -> usize> {
 
 fn tips_help_text(hovering_over_link: bool) -> Text {
     if hovering_over_link {
-        let help_text = format!("帮助：点击或 Shift-点击以在浏览器中打开");
+        let help_text = "帮助：点击或 Shift-点击以在浏览器中打开".to_owned();
         Text::new(help_text)
-            .color_range(3, 6..=10)
-            .color_range(3, 15..=25)
+            .color_substring(3, "点击")
+            .color_substring(3, "Shift-点击")
     } else {
-        let help_text = format!("帮助：<ESC> - 关闭，<↓↑> - 浏览提示，<Ctrl c> - 启动时不再显示提示");
+        let help_text = "帮助：<ESC> - 关闭，<↓↑> - 浏览提示，<Ctrl c> - 启动时不再显示提示".to_owned();
         Text::new(help_text)
-            .color_range(1, 6..=10)
-            .color_range(1, 23..=26)
-            .color_range(1, 43..=50)
+            .color_substring(1, "<ESC>")
+            .color_substring(1, "<↓↑>")
+            .color_substring(1, "<Ctrl c>")
     }
 }
