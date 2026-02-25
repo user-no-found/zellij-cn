@@ -390,7 +390,7 @@ impl RightSideElementsBuilder {
     fn create_tooltip_indicator(&self, toggle_key: &str, is_active: bool) -> LinePart {
         let key_text = toggle_key;
         let key = Text::new(key_text).color_all(3).opaque();
-        let ribbon_text = "Tooltip";
+        let ribbon_text = "提示";
         let mut ribbon = Text::new(ribbon_text);
 
         if is_active {
@@ -399,7 +399,7 @@ impl RightSideElementsBuilder {
 
         LinePart {
             part: format!("{} {}", serialize_text(&key), serialize_ribbon(&ribbon)),
-            len: key_text.chars().count() + ribbon_text.chars().count() + 6,
+            len: key_text.width() + ribbon_text.width() + 6,
             tab_index: None,
         }
     }
@@ -411,9 +411,7 @@ impl RightSideElementsBuilder {
     ) -> Option<LinePart> {
         let swap_layout_name = config.active_swap_layout_name.as_ref()?;
 
-        let mut layout_name = format!(" {} ", swap_layout_name);
-        layout_name.make_ascii_uppercase();
-        let layout_name_len = layout_name.len() + 3;
+        let layout_name = format!(" {} ", localize_swap_layout_name(swap_layout_name));
 
         let colors = SwapLayoutColors {
             bg: self.palette.text_unselected.background,
@@ -430,19 +428,20 @@ impl RightSideElementsBuilder {
             separator,
         );
 
-        let indicator = format!("{}{}{}", styled_parts.0, styled_parts.1, styled_parts.2);
-        let (part, full_len) = (indicator.clone(), layout_name_len);
-        let short_len = layout_name_len + 1;
+        let full_indicator = format!("{}{}{}", styled_parts.0, styled_parts.1, styled_parts.2);
+        let short_indicator = format!("{}{}", styled_parts.1, styled_parts.2);
+        let full_len = layout_name.width() + (separator.width() * 2);
+        let short_len = layout_name.width() + separator.width();
 
         if full_len <= max_len {
             Some(LinePart {
-                part,
+                part: full_indicator,
                 len: full_len,
                 tab_index: None,
             })
         } else if short_len <= max_len && config.mode != InputMode::Locked {
             Some(LinePart {
-                part: indicator,
+                part: short_indicator,
                 len: short_len,
                 tab_index: None,
             })
@@ -493,6 +492,15 @@ struct SwapLayoutColors {
     bg: PaletteColor,
     fg: PaletteColor,
     green: PaletteColor,
+}
+
+fn localize_swap_layout_name(layout_name: &str) -> String {
+    match layout_name.to_ascii_lowercase().as_str() {
+        "base" => "基础".to_string(),
+        "vertical" => "垂直".to_string(),
+        "horizontal" => "水平".to_string(),
+        other => other.to_ascii_uppercase(),
+    }
 }
 
 pub struct TabLineBuilder {

@@ -98,9 +98,9 @@ pub fn tab_style(
     let separator = tab_separator(capabilities);
 
     if tab.is_fullscreen_active {
-        tabname.push_str(" (FULLSCREEN)");
+        tabname.push_str(" (全屏)");
     } else if tab.is_sync_panes_active {
-        tabname.push_str(" (SYNC)");
+        tabname.push_str(" (同步)");
     }
     // we only color alternate tabs differently if we can't use the arrow fonts to separate them
     if !capabilities.arrow_fonts {

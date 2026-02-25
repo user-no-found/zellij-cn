@@ -1,4 +1,5 @@
 use crate::keybind_utils::KeybindProcessor;
+use unicode_width::UnicodeWidthStr;
 use zellij_tile::prelude::*;
 
 pub struct TooltipRenderer<'a> {
@@ -20,8 +21,8 @@ impl<'a> TooltipRenderer<'a> {
             let base_y = rows.saturating_sub(tooltip_rows) / 2;
 
             for (text, ribbon, x, y) in text_components {
-                let text_width = text.content().chars().count();
-                let ribbon_content_width = ribbon.content().chars().count();
+                let text_width = text.content().width();
+                let ribbon_content_width = ribbon.content().width();
                 let ribbon_total_width = ribbon_content_width + 4;
                 let total_element_width = text_width + ribbon_total_width + 1;
 
@@ -90,9 +91,9 @@ impl<'a> TooltipRenderer<'a> {
             let ribbon = Text::new(&description);
 
             let line_length = if is_first {
-                key.chars().count() + description.chars().count()
+                key.width() + description.width()
             } else {
-                key.chars().count() + 1 + description.chars().count()
+                key.width() + 1 + description.width()
             };
 
             components.push((text, ribbon, running_x, y));
@@ -114,14 +115,14 @@ impl<'a> TooltipRenderer<'a> {
 
         if actions_vec.is_empty() {
             let tooltip_text = match self.mode_info.mode {
-                InputMode::EnterSearch => "Entering search term...".to_owned(),
-                InputMode::RenameTab => "Renaming tab...".to_owned(),
-                InputMode::RenamePane => "Renaming pane...".to_owned(),
+                InputMode::EnterSearch => "正在输入搜索词...".to_owned(),
+                InputMode::RenameTab => "正在重命名标签...".to_owned(),
+                InputMode::RenamePane => "正在重命名窗格...".to_owned(),
                 _ => {
                     format!("{:?}", self.mode_info.mode)
                 },
             };
-            let total_width = tooltip_text.chars().count();
+            let total_width = tooltip_text.width();
             table = table.add_styled_row(vec![Text::new(tooltip_text).color_all(0)]);
             row_count += 1;
             (table, row_count, total_width)
@@ -130,8 +131,8 @@ impl<'a> TooltipRenderer<'a> {
             let mut action_width = 0;
             for (key, description) in actions_vec.into_iter() {
                 let description_formatted = format!("- {}", description);
-                key_width = key_width.max(key.chars().count());
-                action_width = action_width.max(description_formatted.chars().count());
+                key_width = key_width.max(key.width());
+                action_width = action_width.max(description_formatted.width());
                 table = table.add_styled_row(vec![
                     Text::new(&key).color_all(3),
                     Text::new(description_formatted),

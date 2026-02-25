@@ -209,12 +209,12 @@ impl PaneFrame {
         &self,
         max_length: usize,
     ) -> Option<(Vec<TerminalCharacter>, usize)> {
-        let prefix = " SCROLL: ";
+        let prefix = " 滚动: ";
         let full_indication = format!(" {}/{} ", self.scroll_position.0, self.scroll_position.1);
         let short_indication = format!(" {} ", self.scroll_position.0);
-        let full_indication_len = full_indication.chars().count();
-        let short_indication_len = short_indication.chars().count();
-        let prefix_len = prefix.chars().count();
+        let full_indication_len = full_indication.width();
+        let short_indication_len = short_indication.width();
+        let prefix_len = prefix.width();
         if prefix_len + full_indication_len <= max_length {
             Some((
                 foreground_color(&format!("{}{}", prefix, full_indication), self.color),
@@ -239,8 +239,8 @@ impl PaneFrame {
         max_length: usize,
     ) -> Option<(Vec<TerminalCharacter>, usize)> {
         let is_checked = if self.is_pinned { '+' } else { ' ' };
-        let full_indication = format!(" PIN [{}] ", is_checked);
-        let full_indication_len = full_indication.chars().count();
+        let full_indication = format!(" 固定 [{}] ", is_checked);
+        let full_indication_len = full_indication.width();
         if full_indication_len <= max_length {
             Some((
                 foreground_color(&full_indication, self.color),
@@ -745,11 +745,11 @@ impl PaneFrame {
 
     fn help_text_version_full(&self, max_length: usize) -> Option<(Vec<TerminalCharacter>, usize)> {
         let text = if self.is_floating {
-            " Ctrl <MouseScroll> or Ctrl <drag borders> to resize "
+            " Ctrl <MouseScroll> 或 Ctrl <拖动边框> 调整大小 "
         } else {
-            " Ctrl <MouseScroll> or <drag borders> to resize "
+            " Ctrl <MouseScroll> 或 <拖动边框> 调整大小 "
         };
-        let len = text.chars().count();
+        let len = text.width();
         if len <= max_length {
             Some((foreground_color(text, self.color), len))
         } else {
@@ -762,11 +762,11 @@ impl PaneFrame {
         max_length: usize,
     ) -> Option<(Vec<TerminalCharacter>, usize)> {
         let text = if self.is_floating {
-            " <Ctrl MouseScroll/drag borders> resize "
+            " <Ctrl MouseScroll/拖动边框> 调整 "
         } else {
-            " <Ctrl MouseScroll>/<drag borders> resize "
+            " <Ctrl MouseScroll>/<拖动边框> 调整 "
         };
-        let len = text.chars().count();
+        let len = text.width();
         if len <= max_length {
             Some((foreground_color(text, self.color), len))
         } else {
@@ -779,11 +779,11 @@ impl PaneFrame {
         max_length: usize,
     ) -> Option<(Vec<TerminalCharacter>, usize)> {
         let text = if self.is_floating {
-            " <Ctrl MouseScroll/drag borders> "
+            " <Ctrl MouseScroll/拖动边框> "
         } else {
-            " <Ctrl MouseScroll>/<drag borders> "
+            " <Ctrl MouseScroll>/<拖动边框> "
         };
-        let len = text.chars().count();
+        let len = text.width();
         if len <= max_length {
             Some((foreground_color(text, self.color), len))
         } else {
@@ -1002,7 +1002,7 @@ impl PaneFrame {
             Some(ExitStatus::Code(exit_code)) => {
                 let mut first_part = vec![];
                 let left_bracket = " [ ";
-                let exited_text = "EXIT CODE: ";
+                let exited_text = "退出码: ";
                 let exit_code_text = format!("{}", exit_code);
                 let exit_code_color = if exit_code == 0 {
                     self.style.colors.exit_code_success.base
@@ -1019,16 +1019,16 @@ impl PaneFrame {
                 first_part.append(&mut foreground_color(right_bracket, self.color));
                 (
                     first_part,
-                    left_bracket.len()
-                        + exited_text.len()
-                        + exit_code_text.len()
-                        + right_bracket.len(),
+                    left_bracket.width()
+                        + exited_text.width()
+                        + exit_code_text.width()
+                        + right_bracket.width(),
                 )
             },
             Some(ExitStatus::Exited) => {
                 let mut first_part = vec![];
                 let left_bracket = " [ ";
-                let exited_text = "EXITED";
+                let exited_text = "已退出";
                 let right_bracket = " ] ";
                 first_part.append(&mut foreground_color(left_bracket, self.color));
                 first_part.append(&mut foreground_color(
@@ -1038,7 +1038,7 @@ impl PaneFrame {
                 first_part.append(&mut foreground_color(right_bracket, self.color));
                 (
                     first_part,
-                    left_bracket.len() + exited_text.len() + right_bracket.len(),
+                    left_bracket.width() + exited_text.width() + right_bracket.width(),
                 )
             },
             None => (foreground_color(boundary_type::HORIZONTAL, self.color), 1),
@@ -1050,21 +1050,17 @@ impl PaneFrame {
         let left_enter_bracket = if self.is_first_run { " <" } else { "<" };
         let enter_text = "ENTER";
         let right_enter_bracket = ">";
-        let enter_tip = if self.is_first_run {
-            " run, "
-        } else {
-            " re-run, "
-        };
+        let enter_tip = if self.is_first_run { " 运行, " } else { " 重运行, " };
 
         let left_esc_bracket = "<";
         let esc_text = "ESC";
         let right_esc_bracket = ">";
-        let esc_tip = " drop to shell, ";
+        let esc_tip = " 进入 shell, ";
 
         let left_break_bracket = "<";
         let break_text = "Ctrl-c";
         let right_break_bracket = ">";
-        let break_tip = " exit ";
+        let break_tip = " 退出 ";
         second_part.append(&mut foreground_color(left_enter_bracket, self.color));
         second_part.append(&mut foreground_color(
             enter_text,
@@ -1090,18 +1086,18 @@ impl PaneFrame {
         second_part.append(&mut foreground_color(break_tip, self.color));
         (
             second_part,
-            left_enter_bracket.len()
-                + enter_text.len()
-                + right_enter_bracket.len()
-                + enter_tip.len()
-                + left_esc_bracket.len()
-                + esc_text.len()
-                + right_esc_bracket.len()
-                + esc_tip.len()
-                + left_break_bracket.len()
-                + break_text.len()
-                + right_break_bracket.len()
-                + break_tip.len(),
+            left_enter_bracket.width()
+                + enter_text.width()
+                + right_enter_bracket.width()
+                + enter_tip.width()
+                + left_esc_bracket.width()
+                + esc_text.width()
+                + right_esc_bracket.width()
+                + esc_tip.width()
+                + left_break_bracket.width()
+                + break_text.width()
+                + right_break_bracket.width()
+                + break_tip.width(),
         )
     }
     fn hover_shortcuts_part_full(&self) -> (Vec<TerminalCharacter>, usize) {
@@ -1118,10 +1114,10 @@ impl PaneFrame {
         hover_shortcuts.append(&mut foreground_color(alt_right_click_tip, self.color));
         (
             hover_shortcuts,
-            alt_click_text.chars().count()
-                + alt_click_tip.chars().count()
-                + alt_right_click_text.chars().count()
-                + alt_right_click_tip.chars().count(),
+            alt_click_text.width()
+                + alt_click_tip.width()
+                + alt_right_click_text.width()
+                + alt_right_click_tip.width(),
         )
     }
     fn empty_undertitle(&self, max_undertitle_length: usize) -> Vec<TerminalCharacter> {
