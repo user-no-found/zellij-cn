@@ -2711,6 +2711,12 @@ impl Options {
         let mouse_hover_effects =
             kdl_property_first_arg_as_bool_or_error!(kdl_options, "mouse_hover_effects")
                 .map(|(v, _)| v);
+        let mouse_hover_focus =
+            kdl_property_first_arg_as_bool_or_error!(kdl_options, "mouse_hover_focus")
+                .map(|(v, _)| v);
+        let mouse_right_click_paste =
+            kdl_property_first_arg_as_bool_or_error!(kdl_options, "mouse_right_click_paste")
+                .map(|(v, _)| v);
         let web_server_ip =
             match kdl_property_first_arg_as_string_or_error!(kdl_options, "web_server_ip") {
                 Some((string, entry)) => Some(IpAddr::from_str(string).map_err(|_| {
@@ -2788,6 +2794,8 @@ impl Options {
             show_release_notes,
             advanced_mouse_actions,
             mouse_hover_effects,
+            mouse_hover_focus,
+            mouse_right_click_paste,
             web_server_ip,
             web_server_port,
             web_server_cert,
@@ -3919,6 +3927,60 @@ impl Options {
             None
         }
     }
+    fn mouse_hover_focus_to_kdl(&self, add_comments: bool) -> Option<KdlNode> {
+        let comment_text = format!(
+            "{}\n{}\n{}",
+            " ",
+            "// Whether to automatically focus pane when hovering over it",
+            "// default is false",
+        );
+
+        let create_node = |node_value: bool| -> KdlNode {
+            let mut node = KdlNode::new("mouse_hover_focus");
+            node.push(KdlValue::Bool(node_value));
+            node
+        };
+        if let Some(mouse_hover_focus) = self.mouse_hover_focus {
+            let mut node = create_node(mouse_hover_focus);
+            if add_comments {
+                node.set_leading(format!("{}\n", comment_text));
+            }
+            Some(node)
+        } else if add_comments {
+            let mut node = create_node(false);
+            node.set_leading(format!("{}\n// ", comment_text));
+            Some(node)
+        } else {
+            None
+        }
+    }
+    fn mouse_right_click_paste_to_kdl(&self, add_comments: bool) -> Option<KdlNode> {
+        let comment_text = format!(
+            "{}\n{}\n{}",
+            " ",
+            "// Whether right click should copy selected text and paste cached selection",
+            "// default is false",
+        );
+
+        let create_node = |node_value: bool| -> KdlNode {
+            let mut node = KdlNode::new("mouse_right_click_paste");
+            node.push(KdlValue::Bool(node_value));
+            node
+        };
+        if let Some(mouse_right_click_paste) = self.mouse_right_click_paste {
+            let mut node = create_node(mouse_right_click_paste);
+            if add_comments {
+                node.set_leading(format!("{}\n", comment_text));
+            }
+            Some(node)
+        } else if add_comments {
+            let mut node = create_node(false);
+            node.set_leading(format!("{}\n// ", comment_text));
+            Some(node)
+        } else {
+            None
+        }
+    }
     fn web_server_ip_to_kdl(&self, add_comments: bool) -> Option<KdlNode> {
         let comment_text = format!(
             "{}\n{}\n{}\n{}",
@@ -4152,6 +4214,12 @@ impl Options {
         }
         if let Some(mouse_hover_effects) = self.mouse_hover_effects_to_kdl(add_comments) {
             nodes.push(mouse_hover_effects);
+        }
+        if let Some(mouse_hover_focus) = self.mouse_hover_focus_to_kdl(add_comments) {
+            nodes.push(mouse_hover_focus);
+        }
+        if let Some(mouse_right_click_paste) = self.mouse_right_click_paste_to_kdl(add_comments) {
+            nodes.push(mouse_right_click_paste);
         }
         if let Some(web_server_ip) = self.web_server_ip_to_kdl(add_comments) {
             nodes.push(web_server_ip);

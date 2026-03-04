@@ -116,40 +116,44 @@ impl Page {
     pub fn new_web_client(link_executable: Rc<RefCell<String>>) -> Page {
         Page::new()
             .with_title(Text::new("Web 客户端").color_range(0, ..))
-            .with_paragraph(vec![
-                ComponentLine::new(vec![
-                    ActiveComponent::new(TextOrCustomRender::Text(Text::new("此版本加入了 Web 客户端，支持在浏览器中共享会话。"))),
-                ]),
-            ])
-            .with_bulletin_list(BulletinList::new(Text::new("Web 客户端支持：").color_range(2, ..))
-                .with_items(vec![
-                    ActiveComponent::new(TextOrCustomRender::Text(
-                            Text::new("可将会话加入书签")
-                                .color_substring(3, "加入书签")
-                    )),
-                    ActiveComponent::new(TextOrCustomRender::Text(
-                            Text::new("内置身份认证")
-                    )),
-                    ActiveComponent::new(TextOrCustomRender::Text(
-                            Text::new("可作为日常工作入口，终端模拟器可选")
-                    )),
-                    ActiveComponent::new(TextOrCustomRender::Text(
-                            Text::new("完全按需启用")
-                    )),
-                ])
+            .with_paragraph(vec![ComponentLine::new(vec![ActiveComponent::new(
+                TextOrCustomRender::Text(Text::new(
+                    "此版本加入了 Web 客户端，支持在浏览器中共享会话。",
+                )),
+            )])])
+            .with_bulletin_list(
+                BulletinList::new(Text::new("Web 客户端支持：").color_range(2, ..)).with_items(
+                    vec![
+                        ActiveComponent::new(TextOrCustomRender::Text(
+                            Text::new("可将会话加入书签").color_substring(3, "加入书签"),
+                        )),
+                        ActiveComponent::new(TextOrCustomRender::Text(Text::new("内置身份认证"))),
+                        ActiveComponent::new(TextOrCustomRender::Text(Text::new(
+                            "可作为日常工作入口，终端模拟器可选",
+                        ))),
+                        ActiveComponent::new(TextOrCustomRender::Text(Text::new("完全按需启用"))),
+                    ],
+                ),
             )
-            .with_paragraph(vec![
-                ComponentLine::new(vec![
-                    ActiveComponent::new(TextOrCustomRender::Text(
-                        Text::new("更多详情见：")
-                            .color_range(2, ..)
-                    )),
-                    ActiveComponent::new(TextOrCustomRender::Text(Text::new("https://zellij.dev/tutorials/web-client")))
-                        .with_hover(TextOrCustomRender::CustomRender(Box::new(web_client_screencast_link_selected), Box::new(web_client_screencast_link_selected_len)))
-                        .with_left_click_action(ClickAction::new_open_link("https://zellij.dev/tutorials/web-client".to_owned(), link_executable.clone()))
-                ])
-            ])
-            .with_help(Box::new(|hovering_over_link, menu_item_is_selected| esc_go_back_plus_link_hover(hovering_over_link, menu_item_is_selected)))
+            .with_paragraph(vec![ComponentLine::new(vec![
+                ActiveComponent::new(TextOrCustomRender::Text(
+                    Text::new("更多详情见：").color_range(2, ..),
+                )),
+                ActiveComponent::new(TextOrCustomRender::Text(Text::new(
+                    "https://zellij.dev/tutorials/web-client",
+                )))
+                .with_hover(TextOrCustomRender::CustomRender(
+                    Box::new(web_client_screencast_link_selected),
+                    Box::new(web_client_screencast_link_selected_len),
+                ))
+                .with_left_click_action(ClickAction::new_open_link(
+                    "https://zellij.dev/tutorials/web-client".to_owned(),
+                    link_executable.clone(),
+                )),
+            ])])
+            .with_help(Box::new(|hovering_over_link, menu_item_is_selected| {
+                esc_go_back_plus_link_hover(hovering_over_link, menu_item_is_selected)
+            }))
     }
     fn new_multiple_select() -> Page {
         Page::new()
@@ -163,18 +167,17 @@ impl Page {
                 ))]),
             ])
             .with_bulletin_list(
-                BulletinList::new(
-                    Text::new("要选择多个窗格：").color_range(2, ..),
-                )
-                .with_items(vec![
-                    ActiveComponent::new(TextOrCustomRender::Text(
-                        Text::new("使用 Alt <左键点击> 选择它们")
-                            .color_substring(3, "Alt <左键点击>"),
-                    )),
-                    ActiveComponent::new(TextOrCustomRender::Text(
-                        Text::new("使用 Alt p 切换选择").color_substring(3, "Alt p"),
-                    )),
-                ]),
+                BulletinList::new(Text::new("要选择多个窗格：").color_range(2, ..)).with_items(
+                    vec![
+                        ActiveComponent::new(TextOrCustomRender::Text(
+                            Text::new("使用 Alt <左键点击> 选择它们")
+                                .color_substring(3, "Alt <左键点击>"),
+                        )),
+                        ActiveComponent::new(TextOrCustomRender::Text(
+                            Text::new("使用 Alt p 切换选择").color_substring(3, "Alt p"),
+                        )),
+                    ],
+                ),
             )
             .with_paragraph(vec![
                 ComponentLine::new(vec![ActiveComponent::new(TextOrCustomRender::Text(
@@ -198,7 +201,8 @@ impl Page {
                         .color_substring(3, "可切换的按键提示"),
                 ))]),
                 ComponentLine::new(vec![ActiveComponent::new(TextOrCustomRender::Text(
-                    Text::new("该功能在使用 compact-bar 时生效。").color_substring(3, "compact-bar"),
+                    Text::new("该功能在使用 compact-bar 时生效。")
+                        .color_substring(3, "compact-bar"),
                 ))]),
             ])
             .with_paragraph(vec![ComponentLine::new(vec![
@@ -224,28 +228,28 @@ impl Page {
     fn new_stack_keybinding() -> Page {
         Page::new()
             .with_title(Text::new("新的堆叠快捷键").color_range(0, ..))
+            .with_paragraph(vec![ComponentLine::new(vec![ActiveComponent::new(
+                TextOrCustomRender::Text(
+                    Text::new("现在可以在当前窗格上方直接打开堆叠窗格。")
+                        .color_substring(2, "堆叠窗格"),
+                ),
+            )])])
             .with_paragraph(vec![
                 ComponentLine::new(vec![ActiveComponent::new(TextOrCustomRender::Text(
-                    Text::new("现在可以在当前窗格上方直接打开堆叠窗格。").color_substring(2, "堆叠窗格"),
+                    Text::new("默认：Ctrl p + s")
+                        .color_substring(3, "Ctrl p")
+                        .color_substring(3, " s"),
                 ))]),
-            ])
-            .with_paragraph(vec![
-                ComponentLine::new(vec![
-                    ActiveComponent::new(TextOrCustomRender::Text(
-                        Text::new("默认：Ctrl p + s").color_substring(3, "Ctrl p").color_substring(3, " s"),
-                    )),
-                ]),
-                ComponentLine::new(vec![
-                    ActiveComponent::new(TextOrCustomRender::Text(
-                        Text::new("在先解锁模式中：Ctrl g + p + s").color_substring(3, "Ctrl g").color_substring(3, " p").color_substring(3, " s"),
-                    )),
-                ]),
-            ])
-            .with_paragraph(vec![
                 ComponentLine::new(vec![ActiveComponent::new(TextOrCustomRender::Text(
-                    Text::new("如需加入现有配置，请查看发行说明。")
+                    Text::new("在先解锁模式中：Ctrl g + p + s")
+                        .color_substring(3, "Ctrl g")
+                        .color_substring(3, " p")
+                        .color_substring(3, " s"),
                 ))]),
             ])
+            .with_paragraph(vec![ComponentLine::new(vec![ActiveComponent::new(
+                TextOrCustomRender::Text(Text::new("如需加入现有配置，请查看发行说明。")),
+            )])])
             .with_help(Box::new(|_hovering_over_link, _menu_item_is_selected| {
                 esc_to_go_back_help()
             }))

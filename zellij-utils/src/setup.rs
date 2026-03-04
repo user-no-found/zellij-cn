@@ -522,9 +522,7 @@ impl Setup {
                 .filter_map(|p| p.clone())
                 .collect::<Vec<PathBuf>>();
             default_config_dirs.dedup();
-            message.push_str(
-                " 在你的系统上，zellij 默认会在以下配置目录中查找：\n",
-            );
+            message.push_str(" 在你的系统上，zellij 默认会在以下配置目录中查找：\n");
             for dir in default_config_dirs {
                 writeln!(&mut message, " {:?}", dir).unwrap();
             }
@@ -558,16 +556,8 @@ impl Setup {
         writeln!(&mut message, "[DATA DIR]: {:?}", data_dir).unwrap();
         message.push_str(&format!("[PLUGIN DIR]: {:?}\n", plugin_dir));
         if !cfg!(feature = "disable_automatic_asset_installation") {
-            writeln!(
-                &mut message,
-                " 内置默认插件不会从磁盘加载。"
-            )
-            .unwrap();
-            writeln!(
-                &mut message,
-                " 若需要该行为，请创建自定义布局。"
-            )
-            .unwrap();
+            writeln!(&mut message, " 内置默认插件不会从磁盘加载。").unwrap();
+            writeln!(&mut message, " 若需要该行为，请创建自定义布局。").unwrap();
         }
         if let Some(layout_dir) = layout_dir {
             writeln!(&mut message, "[LAYOUT DIR]: {:?}", layout_dir).unwrap();
@@ -578,7 +568,9 @@ impl Setup {
 
         writeln!(&mut message, "[ARROW SEPARATOR]: {}", ARROW_SEPARATOR).unwrap();
         message.push_str(" [ARROW_SEPARATOR] 显示是否正常？\n");
-        message.push_str(" 若不正常，你可以使用兼容模式启动 zellij：'zellij options --simplified-ui true'\n");
+        message.push_str(
+            " 若不正常，你可以使用兼容模式启动 zellij：'zellij options --simplified-ui true'\n",
+        );
         let mut hyperlink_compat = String::new();
         hyperlink_compat.push_str(hyperlink_start);
         hyperlink_compat.push_str("https://zellij.dev/documentation/compatibility.html#the-status-bar-fonts-dont-render-correctly");
@@ -593,7 +585,9 @@ impl Setup {
         .unwrap();
         message.push_str("[MOUSE INTERACTION]: \n");
         message.push_str(" 可通过按下 [SHIFT] 键临时禁用。\n");
-        message.push_str(" 若问题仍存在，可考虑禁用 zellij 鼠标处理：'zellij options --disable-mouse-mode'\n");
+        message.push_str(
+            " 若问题仍存在，可考虑禁用 zellij 鼠标处理：'zellij options --disable-mouse-mode'\n",
+        );
 
         let default_editor = std::env::var("EDITOR")
             .or_else(|_| std::env::var("VISUAL"))

@@ -1,341 +1,344 @@
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Size {
-    #[prost(uint32, tag="1")]
+    #[prost(uint32, tag = "1")]
     pub cols: u32,
-    #[prost(uint32, tag="2")]
+    #[prost(uint32, tag = "2")]
     pub rows: u32,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PixelDimensions {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub text_area_size: ::core::option::Option<SizeInPixels>,
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub character_cell_size: ::core::option::Option<SizeInPixels>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SizeInPixels {
-    #[prost(uint32, tag="1")]
+    #[prost(uint32, tag = "1")]
     pub width: u32,
-    #[prost(uint32, tag="2")]
+    #[prost(uint32, tag = "2")]
     pub height: u32,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PaneReference {
-    #[prost(uint32, tag="1")]
+    #[prost(uint32, tag = "1")]
     pub pane_id: u32,
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub is_plugin: bool,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ColorRegister {
-    #[prost(uint32, tag="1")]
+    #[prost(uint32, tag = "1")]
     pub index: u32,
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub color: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeyWithModifier {
-    #[prost(enumeration="BareKey", tag="1")]
+    #[prost(enumeration = "BareKey", tag = "1")]
     pub bare_key: i32,
-    #[prost(enumeration="KeyModifier", repeated, tag="2")]
+    #[prost(enumeration = "KeyModifier", repeated, tag = "2")]
     pub key_modifiers: ::prost::alloc::vec::Vec<i32>,
     /// Only set when bare_key is CHAR
-    #[prost(string, optional, tag="3")]
+    #[prost(string, optional, tag = "3")]
     pub character: ::core::option::Option<::prost::alloc::string::String>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CharKey {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub character: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FunctionKey {
-    #[prost(uint32, tag="1")]
+    #[prost(uint32, tag = "1")]
     pub function_number: u32,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Style {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub colors: ::core::option::Option<Styling>,
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub rounded_corners: bool,
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub hide_session_name: bool,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Styling {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub base: ::core::option::Option<PaletteColor>,
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub background: ::core::option::Option<PaletteColor>,
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub emphasis_0: ::core::option::Option<PaletteColor>,
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub emphasis_1: ::core::option::Option<PaletteColor>,
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub emphasis_2: ::core::option::Option<PaletteColor>,
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub emphasis_3: ::core::option::Option<PaletteColor>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PaletteColor {
-    #[prost(oneof="palette_color::ColorType", tags="1, 2, 3")]
+    #[prost(oneof = "palette_color::ColorType", tags = "1, 2, 3")]
     pub color_type: ::core::option::Option<palette_color::ColorType>,
 }
 /// Nested message and enum types in `PaletteColor`.
 pub mod palette_color {
     #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ColorType {
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         Rgb(super::RgbColor),
-        #[prost(uint32, tag="2")]
+        #[prost(uint32, tag = "2")]
         EightBit(u32),
-        #[prost(enumeration="super::AnsiCode", tag="3")]
+        #[prost(enumeration = "super::AnsiCode", tag = "3")]
         Ansi(i32),
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RgbColor {
-    #[prost(uint32, tag="1")]
+    #[prost(uint32, tag = "1")]
     pub r: u32,
-    #[prost(uint32, tag="2")]
+    #[prost(uint32, tag = "2")]
     pub g: u32,
-    #[prost(uint32, tag="3")]
+    #[prost(uint32, tag = "3")]
     pub b: u32,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Action {
-    #[prost(oneof="action::ActionType", tags="1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105")]
+    #[prost(
+        oneof = "action::ActionType",
+        tags = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105"
+    )]
     pub action_type: ::core::option::Option<action::ActionType>,
 }
 /// Nested message and enum types in `Action`.
 pub mod action {
     #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ActionType {
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         Quit(super::QuitAction),
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         Write(super::WriteAction),
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         WriteChars(super::WriteCharsAction),
-        #[prost(message, tag="4")]
+        #[prost(message, tag = "4")]
         SwitchToMode(super::SwitchToModeAction),
-        #[prost(message, tag="5")]
+        #[prost(message, tag = "5")]
         SwitchModeForAllClients(super::SwitchModeForAllClientsAction),
-        #[prost(message, tag="6")]
+        #[prost(message, tag = "6")]
         Resize(super::ResizeAction),
-        #[prost(message, tag="7")]
+        #[prost(message, tag = "7")]
         FocusNextPane(super::FocusNextPaneAction),
-        #[prost(message, tag="8")]
+        #[prost(message, tag = "8")]
         FocusPreviousPane(super::FocusPreviousPaneAction),
-        #[prost(message, tag="9")]
+        #[prost(message, tag = "9")]
         SwitchFocus(super::SwitchFocusAction),
-        #[prost(message, tag="10")]
+        #[prost(message, tag = "10")]
         MoveFocus(super::MoveFocusAction),
-        #[prost(message, tag="11")]
+        #[prost(message, tag = "11")]
         MoveFocusOrTab(super::MoveFocusOrTabAction),
-        #[prost(message, tag="12")]
+        #[prost(message, tag = "12")]
         MovePane(super::MovePaneAction),
-        #[prost(message, tag="13")]
+        #[prost(message, tag = "13")]
         MovePaneBackwards(super::MovePaneBackwardsAction),
-        #[prost(message, tag="14")]
+        #[prost(message, tag = "14")]
         ClearScreen(super::ClearScreenAction),
-        #[prost(message, tag="15")]
+        #[prost(message, tag = "15")]
         DumpScreen(super::DumpScreenAction),
-        #[prost(message, tag="16")]
+        #[prost(message, tag = "16")]
         DumpLayout(super::DumpLayoutAction),
-        #[prost(message, tag="17")]
+        #[prost(message, tag = "17")]
         EditScrollback(super::EditScrollbackAction),
-        #[prost(message, tag="18")]
+        #[prost(message, tag = "18")]
         ScrollUp(super::ScrollUpAction),
-        #[prost(message, tag="19")]
+        #[prost(message, tag = "19")]
         ScrollUpAt(super::ScrollUpAtAction),
-        #[prost(message, tag="20")]
+        #[prost(message, tag = "20")]
         ScrollDown(super::ScrollDownAction),
-        #[prost(message, tag="21")]
+        #[prost(message, tag = "21")]
         ScrollDownAt(super::ScrollDownAtAction),
-        #[prost(message, tag="22")]
+        #[prost(message, tag = "22")]
         ScrollToBottom(super::ScrollToBottomAction),
-        #[prost(message, tag="23")]
+        #[prost(message, tag = "23")]
         ScrollToTop(super::ScrollToTopAction),
-        #[prost(message, tag="24")]
+        #[prost(message, tag = "24")]
         PageScrollUp(super::PageScrollUpAction),
-        #[prost(message, tag="25")]
+        #[prost(message, tag = "25")]
         PageScrollDown(super::PageScrollDownAction),
-        #[prost(message, tag="26")]
+        #[prost(message, tag = "26")]
         HalfPageScrollUp(super::HalfPageScrollUpAction),
-        #[prost(message, tag="27")]
+        #[prost(message, tag = "27")]
         HalfPageScrollDown(super::HalfPageScrollDownAction),
-        #[prost(message, tag="28")]
+        #[prost(message, tag = "28")]
         ToggleFocusFullscreen(super::ToggleFocusFullscreenAction),
-        #[prost(message, tag="29")]
+        #[prost(message, tag = "29")]
         TogglePaneFrames(super::TogglePaneFramesAction),
-        #[prost(message, tag="30")]
+        #[prost(message, tag = "30")]
         ToggleActiveSyncTab(super::ToggleActiveSyncTabAction),
-        #[prost(message, tag="31")]
+        #[prost(message, tag = "31")]
         NewPane(super::NewPaneAction),
-        #[prost(message, tag="32")]
+        #[prost(message, tag = "32")]
         EditFile(super::EditFileAction),
-        #[prost(message, tag="33")]
+        #[prost(message, tag = "33")]
         NewFloatingPane(super::NewFloatingPaneAction),
-        #[prost(message, tag="34")]
+        #[prost(message, tag = "34")]
         NewTiledPane(super::NewTiledPaneAction),
-        #[prost(message, tag="35")]
+        #[prost(message, tag = "35")]
         NewInPlacePane(super::NewInPlacePaneAction),
-        #[prost(message, tag="36")]
+        #[prost(message, tag = "36")]
         NewStackedPane(super::NewStackedPaneAction),
-        #[prost(message, tag="37")]
+        #[prost(message, tag = "37")]
         TogglePaneEmbedOrFloating(super::TogglePaneEmbedOrFloatingAction),
-        #[prost(message, tag="38")]
+        #[prost(message, tag = "38")]
         ToggleFloatingPanes(super::ToggleFloatingPanesAction),
-        #[prost(message, tag="39")]
+        #[prost(message, tag = "39")]
         CloseFocus(super::CloseFocusAction),
-        #[prost(message, tag="40")]
+        #[prost(message, tag = "40")]
         PaneNameInput(super::PaneNameInputAction),
-        #[prost(message, tag="41")]
+        #[prost(message, tag = "41")]
         UndoRenamePane(super::UndoRenamePaneAction),
-        #[prost(message, tag="42")]
+        #[prost(message, tag = "42")]
         NewTab(super::NewTabAction),
-        #[prost(message, tag="43")]
+        #[prost(message, tag = "43")]
         NoOp(super::NoOpAction),
-        #[prost(message, tag="44")]
+        #[prost(message, tag = "44")]
         GoToNextTab(super::GoToNextTabAction),
-        #[prost(message, tag="45")]
+        #[prost(message, tag = "45")]
         GoToPreviousTab(super::GoToPreviousTabAction),
-        #[prost(message, tag="46")]
+        #[prost(message, tag = "46")]
         CloseTab(super::CloseTabAction),
-        #[prost(message, tag="47")]
+        #[prost(message, tag = "47")]
         GoToTab(super::GoToTabAction),
-        #[prost(message, tag="48")]
+        #[prost(message, tag = "48")]
         GoToTabName(super::GoToTabNameAction),
-        #[prost(message, tag="49")]
+        #[prost(message, tag = "49")]
         ToggleTab(super::ToggleTabAction),
-        #[prost(message, tag="50")]
+        #[prost(message, tag = "50")]
         TabNameInput(super::TabNameInputAction),
-        #[prost(message, tag="51")]
+        #[prost(message, tag = "51")]
         UndoRenameTab(super::UndoRenameTabAction),
-        #[prost(message, tag="52")]
+        #[prost(message, tag = "52")]
         MoveTab(super::MoveTabAction),
-        #[prost(message, tag="53")]
+        #[prost(message, tag = "53")]
         Run(super::RunAction),
-        #[prost(message, tag="54")]
+        #[prost(message, tag = "54")]
         Detach(super::DetachAction),
-        #[prost(message, tag="55")]
+        #[prost(message, tag = "55")]
         LaunchOrFocusPlugin(super::LaunchOrFocusPluginAction),
-        #[prost(message, tag="56")]
+        #[prost(message, tag = "56")]
         LaunchPlugin(super::LaunchPluginAction),
-        #[prost(message, tag="57")]
+        #[prost(message, tag = "57")]
         MouseEvent(super::MouseEventAction),
-        #[prost(message, tag="58")]
+        #[prost(message, tag = "58")]
         Copy(super::CopyAction),
-        #[prost(message, tag="59")]
+        #[prost(message, tag = "59")]
         Confirm(super::ConfirmAction),
-        #[prost(message, tag="60")]
+        #[prost(message, tag = "60")]
         Deny(super::DenyAction),
-        #[prost(message, tag="61")]
+        #[prost(message, tag = "61")]
         SkipConfirm(::prost::alloc::boxed::Box<super::SkipConfirmAction>),
-        #[prost(message, tag="62")]
+        #[prost(message, tag = "62")]
         SearchInput(super::SearchInputAction),
-        #[prost(message, tag="63")]
+        #[prost(message, tag = "63")]
         Search(super::SearchAction),
-        #[prost(message, tag="64")]
+        #[prost(message, tag = "64")]
         SearchToggleOption(super::SearchToggleOptionAction),
-        #[prost(message, tag="65")]
+        #[prost(message, tag = "65")]
         ToggleMouseMode(super::ToggleMouseModeAction),
-        #[prost(message, tag="66")]
+        #[prost(message, tag = "66")]
         PreviousSwapLayout(super::PreviousSwapLayoutAction),
-        #[prost(message, tag="67")]
+        #[prost(message, tag = "67")]
         NextSwapLayout(super::NextSwapLayoutAction),
-        #[prost(message, tag="68")]
+        #[prost(message, tag = "68")]
         QueryTabNames(super::QueryTabNamesAction),
-        #[prost(message, tag="69")]
+        #[prost(message, tag = "69")]
         NewTiledPluginPane(super::NewTiledPluginPaneAction),
-        #[prost(message, tag="70")]
+        #[prost(message, tag = "70")]
         NewFloatingPluginPane(super::NewFloatingPluginPaneAction),
-        #[prost(message, tag="71")]
+        #[prost(message, tag = "71")]
         NewInPlacePluginPane(super::NewInPlacePluginPaneAction),
-        #[prost(message, tag="72")]
+        #[prost(message, tag = "72")]
         StartOrReloadPlugin(super::StartOrReloadPluginAction),
-        #[prost(message, tag="73")]
+        #[prost(message, tag = "73")]
         CloseTerminalPane(super::CloseTerminalPaneAction),
-        #[prost(message, tag="74")]
+        #[prost(message, tag = "74")]
         ClosePluginPane(super::ClosePluginPaneAction),
-        #[prost(message, tag="75")]
+        #[prost(message, tag = "75")]
         FocusTerminalPaneWithId(super::FocusTerminalPaneWithIdAction),
-        #[prost(message, tag="76")]
+        #[prost(message, tag = "76")]
         FocusPluginPaneWithId(super::FocusPluginPaneWithIdAction),
-        #[prost(message, tag="77")]
+        #[prost(message, tag = "77")]
         RenameTerminalPane(super::RenameTerminalPaneAction),
-        #[prost(message, tag="78")]
+        #[prost(message, tag = "78")]
         RenamePluginPane(super::RenamePluginPaneAction),
-        #[prost(message, tag="79")]
+        #[prost(message, tag = "79")]
         RenameTab(super::RenameTabAction),
-        #[prost(message, tag="80")]
+        #[prost(message, tag = "80")]
         BreakPane(super::BreakPaneAction),
-        #[prost(message, tag="81")]
+        #[prost(message, tag = "81")]
         BreakPaneRight(super::BreakPaneRightAction),
-        #[prost(message, tag="82")]
+        #[prost(message, tag = "82")]
         BreakPaneLeft(super::BreakPaneLeftAction),
-        #[prost(message, tag="83")]
+        #[prost(message, tag = "83")]
         RenameSession(super::RenameSessionAction),
-        #[prost(message, tag="84")]
+        #[prost(message, tag = "84")]
         CliPipe(super::CliPipeAction),
-        #[prost(message, tag="85")]
+        #[prost(message, tag = "85")]
         KeybindPipe(super::KeybindPipeAction),
-        #[prost(message, tag="86")]
+        #[prost(message, tag = "86")]
         ListClients(super::ListClientsAction),
-        #[prost(message, tag="87")]
+        #[prost(message, tag = "87")]
         TogglePanePinned(super::TogglePanePinnedAction),
-        #[prost(message, tag="88")]
+        #[prost(message, tag = "88")]
         StackPanes(super::StackPanesAction),
-        #[prost(message, tag="89")]
+        #[prost(message, tag = "89")]
         ChangeFloatingPaneCoordinates(super::ChangeFloatingPaneCoordinatesAction),
-        #[prost(message, tag="90")]
+        #[prost(message, tag = "90")]
         TogglePaneInGroup(super::TogglePaneInGroupAction),
-        #[prost(message, tag="91")]
+        #[prost(message, tag = "91")]
         ToggleGroupMarking(super::ToggleGroupMarkingAction),
-        #[prost(message, tag="92")]
+        #[prost(message, tag = "92")]
         SwitchSession(super::SwitchSessionAction),
-        #[prost(message, tag="93")]
+        #[prost(message, tag = "93")]
         NewBlockingPane(super::NewBlockingPaneAction),
-        #[prost(message, tag="94")]
+        #[prost(message, tag = "94")]
         OverrideLayout(super::OverrideLayoutAction),
-        #[prost(message, tag="95")]
+        #[prost(message, tag = "95")]
         TogglePaneBorderless(super::TogglePaneBorderlessAction),
-        #[prost(message, tag="96")]
+        #[prost(message, tag = "96")]
         SetPaneBorderless(super::SetPaneBorderlessAction),
-        #[prost(message, tag="97")]
+        #[prost(message, tag = "97")]
         SaveSession(super::SaveSessionAction),
-        #[prost(message, tag="98")]
+        #[prost(message, tag = "98")]
         ListPanes(super::ListPanesAction),
-        #[prost(message, tag="99")]
+        #[prost(message, tag = "99")]
         WriteCharsToPaneId(super::WriteCharsToPaneIdAction),
-        #[prost(message, tag="100")]
+        #[prost(message, tag = "100")]
         WriteToPaneId(super::WriteToPaneIdAction),
-        #[prost(message, tag="101")]
+        #[prost(message, tag = "101")]
         GoToTabById(super::GoToTabByIdAction),
-        #[prost(message, tag="102")]
+        #[prost(message, tag = "102")]
         CloseTabById(super::CloseTabByIdAction),
-        #[prost(message, tag="103")]
+        #[prost(message, tag = "103")]
         RenameTabById(super::RenameTabByIdAction),
-        #[prost(message, tag="104")]
+        #[prost(message, tag = "104")]
         ListTabs(super::ListTabsAction),
-        #[prost(message, tag="105")]
+        #[prost(message, tag = "105")]
         CurrentTabInfo(super::CurrentTabInfoAction),
     }
 }
@@ -344,954 +347,916 @@ pub mod action {
 /// Simple action types (no data)
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct QuitAction {
-}
+pub struct QuitAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FocusNextPaneAction {
-}
+pub struct FocusNextPaneAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FocusPreviousPaneAction {
-}
+pub struct FocusPreviousPaneAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SwitchFocusAction {
-}
+pub struct SwitchFocusAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MovePaneBackwardsAction {
-}
+pub struct MovePaneBackwardsAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ClearScreenAction {
-}
+pub struct ClearScreenAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DumpLayoutAction {
-}
+pub struct DumpLayoutAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SaveSessionAction {
-}
+pub struct SaveSessionAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct EditScrollbackAction {
-}
+pub struct EditScrollbackAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ScrollUpAction {
-}
+pub struct ScrollUpAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ScrollDownAction {
-}
+pub struct ScrollDownAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ScrollToBottomAction {
-}
+pub struct ScrollToBottomAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ScrollToTopAction {
-}
+pub struct ScrollToTopAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PageScrollUpAction {
-}
+pub struct PageScrollUpAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PageScrollDownAction {
-}
+pub struct PageScrollDownAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct HalfPageScrollUpAction {
-}
+pub struct HalfPageScrollUpAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct HalfPageScrollDownAction {
-}
+pub struct HalfPageScrollDownAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ToggleFocusFullscreenAction {
-}
+pub struct ToggleFocusFullscreenAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TogglePaneFramesAction {
-}
+pub struct TogglePaneFramesAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ToggleActiveSyncTabAction {
-}
+pub struct ToggleActiveSyncTabAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TogglePaneEmbedOrFloatingAction {
-}
+pub struct TogglePaneEmbedOrFloatingAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ToggleFloatingPanesAction {
-}
+pub struct ToggleFloatingPanesAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CloseFocusAction {
-}
+pub struct CloseFocusAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UndoRenamePaneAction {
-}
+pub struct UndoRenamePaneAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct NoOpAction {
-}
+pub struct NoOpAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GoToNextTabAction {
-}
+pub struct GoToNextTabAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GoToPreviousTabAction {
-}
+pub struct GoToPreviousTabAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CloseTabAction {
-}
+pub struct CloseTabAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ToggleTabAction {
-}
+pub struct ToggleTabAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UndoRenameTabAction {
-}
+pub struct UndoRenameTabAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DetachAction {
-}
+pub struct DetachAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CopyAction {
-}
+pub struct CopyAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConfirmAction {
-}
+pub struct ConfirmAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DenyAction {
-}
+pub struct DenyAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ToggleMouseModeAction {
-}
+pub struct ToggleMouseModeAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PreviousSwapLayoutAction {
-}
+pub struct PreviousSwapLayoutAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct NextSwapLayoutAction {
-}
+pub struct NextSwapLayoutAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TabLayoutInfo {
-    #[prost(uint32, tag="1")]
+    #[prost(uint32, tag = "1")]
     pub tab_index: u32,
-    #[prost(string, optional, tag="2")]
+    #[prost(string, optional, tag = "2")]
     pub tab_name: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub tiled_layout: ::core::option::Option<TiledPaneLayout>,
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub floating_layouts: ::prost::alloc::vec::Vec<FloatingPaneLayout>,
-    #[prost(message, repeated, tag="5")]
+    #[prost(message, repeated, tag = "5")]
     pub swap_tiled_layouts: ::prost::alloc::vec::Vec<SwapTiledLayout>,
-    #[prost(message, repeated, tag="6")]
+    #[prost(message, repeated, tag = "6")]
     pub swap_floating_layouts: ::prost::alloc::vec::Vec<SwapFloatingLayout>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OverrideLayoutAction {
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub tabs: ::prost::alloc::vec::Vec<TabLayoutInfo>,
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub retain_existing_terminal_panes: bool,
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub retain_existing_plugin_panes: bool,
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub apply_only_to_active_tab: bool,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct QueryTabNamesAction {
-}
+pub struct QueryTabNamesAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BreakPaneAction {
-}
+pub struct BreakPaneAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BreakPaneRightAction {
-}
+pub struct BreakPaneRightAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BreakPaneLeftAction {
-}
+pub struct BreakPaneLeftAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListClientsAction {
-}
+pub struct ListClientsAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPanesAction {
-    #[prost(bool, tag="1")]
+    #[prost(bool, tag = "1")]
     pub show_tab: bool,
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub show_command: bool,
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub show_state: bool,
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub show_geometry: bool,
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub show_all: bool,
-    #[prost(bool, tag="6")]
+    #[prost(bool, tag = "6")]
     pub output_json: bool,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTabsAction {
-    #[prost(bool, tag="1")]
+    #[prost(bool, tag = "1")]
     pub show_state: bool,
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub show_dimensions: bool,
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub show_panes: bool,
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub show_layout: bool,
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub show_all: bool,
-    #[prost(bool, tag="6")]
+    #[prost(bool, tag = "6")]
     pub output_json: bool,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CurrentTabInfoAction {
-    #[prost(bool, tag="1")]
+    #[prost(bool, tag = "1")]
     pub output_json: bool,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TogglePanePinnedAction {
-}
+pub struct TogglePanePinnedAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TogglePaneInGroupAction {
-}
+pub struct TogglePaneInGroupAction {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ToggleGroupMarkingAction {
-}
+pub struct ToggleGroupMarkingAction {}
 /// Complex action types (with data)
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteAction {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub key_with_modifier: ::core::option::Option<KeyWithModifier>,
-    #[prost(uint32, repeated, tag="2")]
+    #[prost(uint32, repeated, tag = "2")]
     pub bytes: ::prost::alloc::vec::Vec<u32>,
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub is_kitty_keyboard_protocol: bool,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteCharsAction {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub chars: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteToPaneIdAction {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub pane_id: ::core::option::Option<PaneId>,
-    #[prost(uint32, repeated, tag="2")]
+    #[prost(uint32, repeated, tag = "2")]
     pub bytes: ::prost::alloc::vec::Vec<u32>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteCharsToPaneIdAction {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub pane_id: ::core::option::Option<PaneId>,
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub chars: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SwitchToModeAction {
-    #[prost(enumeration="InputMode", tag="1")]
+    #[prost(enumeration = "InputMode", tag = "1")]
     pub input_mode: i32,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SwitchModeForAllClientsAction {
-    #[prost(enumeration="InputMode", tag="1")]
+    #[prost(enumeration = "InputMode", tag = "1")]
     pub input_mode: i32,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResizeAction {
-    #[prost(enumeration="ResizeType", tag="1")]
+    #[prost(enumeration = "ResizeType", tag = "1")]
     pub resize: i32,
-    #[prost(enumeration="Direction", optional, tag="2")]
+    #[prost(enumeration = "Direction", optional, tag = "2")]
     pub direction: ::core::option::Option<i32>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoveFocusAction {
-    #[prost(enumeration="Direction", tag="1")]
+    #[prost(enumeration = "Direction", tag = "1")]
     pub direction: i32,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoveFocusOrTabAction {
-    #[prost(enumeration="Direction", tag="1")]
+    #[prost(enumeration = "Direction", tag = "1")]
     pub direction: i32,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MovePaneAction {
-    #[prost(enumeration="Direction", optional, tag="1")]
+    #[prost(enumeration = "Direction", optional, tag = "1")]
     pub direction: ::core::option::Option<i32>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DumpScreenAction {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub file_path: ::prost::alloc::string::String,
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub include_scrollback: bool,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ScrollUpAtAction {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub position: ::core::option::Option<Position>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ScrollDownAtAction {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub position: ::core::option::Option<Position>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NewPaneAction {
-    #[prost(enumeration="Direction", optional, tag="1")]
+    #[prost(enumeration = "Direction", optional, tag = "1")]
     pub direction: ::core::option::Option<i32>,
-    #[prost(string, optional, tag="2")]
+    #[prost(string, optional, tag = "2")]
     pub pane_name: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub start_suppressed: bool,
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub near_current_pane: bool,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EditFileAction {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub payload: ::core::option::Option<OpenFilePayload>,
-    #[prost(enumeration="Direction", optional, tag="2")]
+    #[prost(enumeration = "Direction", optional, tag = "2")]
     pub direction: ::core::option::Option<i32>,
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub floating: bool,
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub in_place: bool,
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub start_suppressed: bool,
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub coordinates: ::core::option::Option<FloatingPaneCoordinates>,
-    #[prost(bool, tag="7")]
+    #[prost(bool, tag = "7")]
     pub near_current_pane: bool,
-    #[prost(bool, tag="8")]
+    #[prost(bool, tag = "8")]
     pub close_replaced_pane: bool,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NewFloatingPaneAction {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub command: ::core::option::Option<RunCommandAction>,
-    #[prost(string, optional, tag="2")]
+    #[prost(string, optional, tag = "2")]
     pub pane_name: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub coordinates: ::core::option::Option<FloatingPaneCoordinates>,
-    #[prost(bool, tag="7")]
+    #[prost(bool, tag = "7")]
     pub near_current_pane: bool,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NewTiledPaneAction {
-    #[prost(enumeration="Direction", optional, tag="1")]
+    #[prost(enumeration = "Direction", optional, tag = "1")]
     pub direction: ::core::option::Option<i32>,
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub command: ::core::option::Option<RunCommandAction>,
-    #[prost(string, optional, tag="3")]
+    #[prost(string, optional, tag = "3")]
     pub pane_name: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(bool, tag="7")]
+    #[prost(bool, tag = "7")]
     pub near_current_pane: bool,
-    #[prost(bool, optional, tag="8")]
+    #[prost(bool, optional, tag = "8")]
     pub borderless: ::core::option::Option<bool>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NewInPlacePaneAction {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub command: ::core::option::Option<RunCommandAction>,
-    #[prost(string, optional, tag="2")]
+    #[prost(string, optional, tag = "2")]
     pub pane_name: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub near_current_pane: bool,
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub pane_id_to_replace: ::core::option::Option<PaneId>,
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub close_replaced_pane: bool,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NewStackedPaneAction {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub command: ::core::option::Option<RunCommandAction>,
-    #[prost(string, optional, tag="2")]
+    #[prost(string, optional, tag = "2")]
     pub pane_name: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub near_current_pane: bool,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NewBlockingPaneAction {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub placement: ::core::option::Option<NewPanePlacement>,
-    #[prost(string, optional, tag="2")]
+    #[prost(string, optional, tag = "2")]
     pub pane_name: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub command: ::core::option::Option<RunCommandAction>,
-    #[prost(enumeration="UnblockCondition", optional, tag="4")]
+    #[prost(enumeration = "UnblockCondition", optional, tag = "4")]
     pub unblock_condition: ::core::option::Option<i32>,
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub near_current_pane: bool,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PaneNameInputAction {
-    #[prost(uint32, repeated, tag="1")]
+    #[prost(uint32, repeated, tag = "1")]
     pub input: ::prost::alloc::vec::Vec<u32>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NewTabAction {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub tiled_layout: ::core::option::Option<TiledPaneLayout>,
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub floating_layouts: ::prost::alloc::vec::Vec<FloatingPaneLayout>,
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub swap_tiled_layouts: ::prost::alloc::vec::Vec<SwapTiledLayout>,
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub swap_floating_layouts: ::prost::alloc::vec::Vec<SwapFloatingLayout>,
-    #[prost(string, optional, tag="5")]
+    #[prost(string, optional, tag = "5")]
     pub tab_name: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(bool, tag="6")]
+    #[prost(bool, tag = "6")]
     pub should_change_focus_to_new_tab: bool,
-    #[prost(string, optional, tag="7")]
+    #[prost(string, optional, tag = "7")]
     pub cwd: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(message, repeated, tag="8")]
+    #[prost(message, repeated, tag = "8")]
     pub initial_panes: ::prost::alloc::vec::Vec<CommandOrPlugin>,
-    #[prost(enumeration="UnblockCondition", optional, tag="9")]
+    #[prost(enumeration = "UnblockCondition", optional, tag = "9")]
     pub first_pane_unblock_condition: ::core::option::Option<i32>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GoToTabAction {
-    #[prost(uint32, tag="1")]
+    #[prost(uint32, tag = "1")]
     pub index: u32,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GoToTabNameAction {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub create: bool,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TabNameInputAction {
-    #[prost(uint32, repeated, tag="1")]
+    #[prost(uint32, repeated, tag = "1")]
     pub input: ::prost::alloc::vec::Vec<u32>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoveTabAction {
-    #[prost(enumeration="Direction", tag="1")]
+    #[prost(enumeration = "Direction", tag = "1")]
     pub direction: i32,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunAction {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub command: ::core::option::Option<RunCommandAction>,
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub near_current_pane: bool,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LaunchOrFocusPluginAction {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub plugin: ::core::option::Option<RunPluginOrAlias>,
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub should_float: bool,
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub move_to_focused_tab: bool,
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub should_open_in_place: bool,
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub skip_cache: bool,
-    #[prost(bool, tag="6")]
+    #[prost(bool, tag = "6")]
     pub close_replaced_pane: bool,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LaunchPluginAction {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub plugin: ::core::option::Option<RunPluginOrAlias>,
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub should_float: bool,
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub should_open_in_place: bool,
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub skip_cache: bool,
-    #[prost(string, optional, tag="5")]
+    #[prost(string, optional, tag = "5")]
     pub cwd: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(bool, tag="6")]
+    #[prost(bool, tag = "6")]
     pub close_replaced_pane: bool,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MouseEventAction {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub event: ::core::option::Option<MouseEvent>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SkipConfirmAction {
-    #[prost(message, optional, boxed, tag="1")]
+    #[prost(message, optional, boxed, tag = "1")]
     pub action: ::core::option::Option<::prost::alloc::boxed::Box<Action>>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchInputAction {
-    #[prost(uint32, repeated, tag="1")]
+    #[prost(uint32, repeated, tag = "1")]
     pub input: ::prost::alloc::vec::Vec<u32>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAction {
-    #[prost(enumeration="SearchDirection", tag="1")]
+    #[prost(enumeration = "SearchDirection", tag = "1")]
     pub direction: i32,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchToggleOptionAction {
-    #[prost(enumeration="SearchOption", tag="1")]
+    #[prost(enumeration = "SearchOption", tag = "1")]
     pub option: i32,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NewTiledPluginPaneAction {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub plugin: ::core::option::Option<RunPluginOrAlias>,
-    #[prost(string, optional, tag="2")]
+    #[prost(string, optional, tag = "2")]
     pub pane_name: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub skip_cache: bool,
-    #[prost(string, optional, tag="4")]
+    #[prost(string, optional, tag = "4")]
     pub cwd: ::core::option::Option<::prost::alloc::string::String>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NewFloatingPluginPaneAction {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub plugin: ::core::option::Option<RunPluginOrAlias>,
-    #[prost(string, optional, tag="2")]
+    #[prost(string, optional, tag = "2")]
     pub pane_name: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub skip_cache: bool,
-    #[prost(string, optional, tag="4")]
+    #[prost(string, optional, tag = "4")]
     pub cwd: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub coordinates: ::core::option::Option<FloatingPaneCoordinates>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NewInPlacePluginPaneAction {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub plugin: ::core::option::Option<RunPluginOrAlias>,
-    #[prost(string, optional, tag="2")]
+    #[prost(string, optional, tag = "2")]
     pub pane_name: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub skip_cache: bool,
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub close_replaced_pane: bool,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartOrReloadPluginAction {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub plugin: ::core::option::Option<RunPluginOrAlias>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloseTerminalPaneAction {
-    #[prost(uint32, tag="1")]
+    #[prost(uint32, tag = "1")]
     pub pane_id: u32,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClosePluginPaneAction {
-    #[prost(uint32, tag="1")]
+    #[prost(uint32, tag = "1")]
     pub pane_id: u32,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FocusTerminalPaneWithIdAction {
-    #[prost(uint32, tag="1")]
+    #[prost(uint32, tag = "1")]
     pub pane_id: u32,
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub should_float_if_hidden: bool,
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub should_be_in_place_if_hidden: bool,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FocusPluginPaneWithIdAction {
-    #[prost(uint32, tag="1")]
+    #[prost(uint32, tag = "1")]
     pub pane_id: u32,
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub should_float_if_hidden: bool,
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub should_be_in_place_if_hidden: bool,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RenameTerminalPaneAction {
-    #[prost(uint32, tag="1")]
+    #[prost(uint32, tag = "1")]
     pub pane_id: u32,
-    #[prost(uint32, repeated, tag="2")]
+    #[prost(uint32, repeated, tag = "2")]
     pub name: ::prost::alloc::vec::Vec<u32>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RenamePluginPaneAction {
-    #[prost(uint32, tag="1")]
+    #[prost(uint32, tag = "1")]
     pub pane_id: u32,
-    #[prost(uint32, repeated, tag="2")]
+    #[prost(uint32, repeated, tag = "2")]
     pub name: ::prost::alloc::vec::Vec<u32>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RenameTabAction {
-    #[prost(uint32, tag="1")]
+    #[prost(uint32, tag = "1")]
     pub tab_index: u32,
-    #[prost(uint32, repeated, tag="2")]
+    #[prost(uint32, repeated, tag = "2")]
     pub name: ::prost::alloc::vec::Vec<u32>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GoToTabByIdAction {
-    #[prost(uint64, tag="1")]
+    #[prost(uint64, tag = "1")]
     pub id: u64,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloseTabByIdAction {
-    #[prost(uint64, tag="1")]
+    #[prost(uint64, tag = "1")]
     pub id: u64,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RenameTabByIdAction {
-    #[prost(uint64, tag="1")]
+    #[prost(uint64, tag = "1")]
     pub id: u64,
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub name: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RenameSessionAction {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CliPipeAction {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub pipe_id: ::prost::alloc::string::String,
-    #[prost(string, optional, tag="2")]
+    #[prost(string, optional, tag = "2")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(string, optional, tag="3")]
+    #[prost(string, optional, tag = "3")]
     pub payload: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(map="string, string", tag="4")]
-    pub args: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    #[prost(string, optional, tag="5")]
+    #[prost(map = "string, string", tag = "4")]
+    pub args:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "5")]
     pub plugin: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(map="string, string", tag="6")]
-    pub configuration: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    #[prost(bool, tag="7")]
+    #[prost(map = "string, string", tag = "6")]
+    pub configuration:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(bool, tag = "7")]
     pub launch_new: bool,
-    #[prost(bool, tag="8")]
+    #[prost(bool, tag = "8")]
     pub skip_cache: bool,
-    #[prost(bool, optional, tag="9")]
+    #[prost(bool, optional, tag = "9")]
     pub floating: ::core::option::Option<bool>,
-    #[prost(bool, optional, tag="10")]
+    #[prost(bool, optional, tag = "10")]
     pub in_place: ::core::option::Option<bool>,
-    #[prost(string, optional, tag="11")]
+    #[prost(string, optional, tag = "11")]
     pub cwd: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(string, optional, tag="12")]
+    #[prost(string, optional, tag = "12")]
     pub pane_title: ::core::option::Option<::prost::alloc::string::String>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeybindPipeAction {
-    #[prost(string, optional, tag="1")]
+    #[prost(string, optional, tag = "1")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(string, optional, tag="2")]
+    #[prost(string, optional, tag = "2")]
     pub payload: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(map="string, string", tag="3")]
-    pub args: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    #[prost(string, optional, tag="4")]
+    #[prost(map = "string, string", tag = "3")]
+    pub args:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "4")]
     pub plugin: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(uint32, optional, tag="5")]
+    #[prost(uint32, optional, tag = "5")]
     pub plugin_id: ::core::option::Option<u32>,
-    #[prost(map="string, string", tag="6")]
-    pub configuration: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    #[prost(bool, tag="7")]
+    #[prost(map = "string, string", tag = "6")]
+    pub configuration:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(bool, tag = "7")]
     pub launch_new: bool,
-    #[prost(bool, tag="8")]
+    #[prost(bool, tag = "8")]
     pub skip_cache: bool,
-    #[prost(bool, optional, tag="9")]
+    #[prost(bool, optional, tag = "9")]
     pub floating: ::core::option::Option<bool>,
-    #[prost(bool, optional, tag="10")]
+    #[prost(bool, optional, tag = "10")]
     pub in_place: ::core::option::Option<bool>,
-    #[prost(string, optional, tag="11")]
+    #[prost(string, optional, tag = "11")]
     pub cwd: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(string, optional, tag="12")]
+    #[prost(string, optional, tag = "12")]
     pub pane_title: ::core::option::Option<::prost::alloc::string::String>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StackPanesAction {
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub pane_ids: ::prost::alloc::vec::Vec<PaneId>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChangeFloatingPaneCoordinatesAction {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub pane_id: ::core::option::Option<PaneId>,
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub coordinates: ::core::option::Option<FloatingPaneCoordinates>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TogglePaneBorderlessAction {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub pane_id: ::core::option::Option<PaneId>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetPaneBorderlessAction {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub pane_id: ::core::option::Option<PaneId>,
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub borderless: bool,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Position {
     /// Changed from uint32 to int32 to support negative line numbers
-    #[prost(int32, tag="1")]
+    #[prost(int32, tag = "1")]
     pub line: i32,
     /// Changed from uint32 to uint64 to support large column numbers
-    #[prost(uint64, tag="2")]
+    #[prost(uint64, tag = "2")]
     pub column: u64,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CliAssets {
-    #[prost(string, optional, tag="1")]
+    #[prost(string, optional, tag = "1")]
     pub config_file_path: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(string, optional, tag="2")]
+    #[prost(string, optional, tag = "2")]
     pub config_dir: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub should_ignore_config: bool,
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub configuration_options: ::core::option::Option<Options>,
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub layout: ::core::option::Option<LayoutInfo>,
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub terminal_window_size: ::core::option::Option<Size>,
-    #[prost(string, optional, tag="7")]
+    #[prost(string, optional, tag = "7")]
     pub data_dir: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(bool, tag="8")]
+    #[prost(bool, tag = "8")]
     pub is_debug: bool,
-    #[prost(uint32, optional, tag="9")]
+    #[prost(uint32, optional, tag = "9")]
     pub max_panes: ::core::option::Option<u32>,
-    #[prost(bool, tag="10")]
+    #[prost(bool, tag = "10")]
     pub force_run_layout_commands: bool,
-    #[prost(string, optional, tag="11")]
+    #[prost(string, optional, tag = "11")]
     pub cwd: ::core::option::Option<::prost::alloc::string::String>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LayoutInfo {
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub layout_metadata: ::core::option::Option<LayoutMetadata>,
-    #[prost(oneof="layout_info::LayoutType", tags="1, 2, 3, 4")]
+    #[prost(oneof = "layout_info::LayoutType", tags = "1, 2, 3, 4")]
     pub layout_type: ::core::option::Option<layout_info::LayoutType>,
 }
 /// Nested message and enum types in `LayoutInfo`.
 pub mod layout_info {
     #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum LayoutType {
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         FilePath(::prost::alloc::string::String),
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         BuiltinName(::prost::alloc::string::String),
-        #[prost(string, tag="3")]
+        #[prost(string, tag = "3")]
         Url(::prost::alloc::string::String),
-        #[prost(string, tag="4")]
+        #[prost(string, tag = "4")]
         Stringified(::prost::alloc::string::String),
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LayoutMetadata {
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub tabs: ::prost::alloc::vec::Vec<TabMetadata>,
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub creation_time: ::prost::alloc::string::String,
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub update_time: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TabMetadata {
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub pane_metadata: ::prost::alloc::vec::Vec<PaneMetadata>,
-    #[prost(string, optional, tag="2")]
+    #[prost(string, optional, tag = "2")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PaneMetadata {
-    #[prost(string, optional, tag="1")]
+    #[prost(string, optional, tag = "1")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub is_plugin: bool,
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub is_builtin_plugin: bool,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConnectToSession {
-    #[prost(string, optional, tag="1")]
+    #[prost(string, optional, tag = "1")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(uint32, optional, tag="2")]
+    #[prost(uint32, optional, tag = "2")]
     pub tab_position: ::core::option::Option<u32>,
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub pane_id: ::core::option::Option<PaneIdWithPlugin>,
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub layout: ::core::option::Option<LayoutInfo>,
-    #[prost(string, optional, tag="5")]
+    #[prost(string, optional, tag = "5")]
     pub cwd: ::core::option::Option<::prost::alloc::string::String>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SwitchSessionAction {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    #[prost(uint32, optional, tag="2")]
+    #[prost(uint32, optional, tag = "2")]
     pub tab_position: ::core::option::Option<u32>,
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub pane_id: ::core::option::Option<PaneIdWithPlugin>,
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub layout: ::core::option::Option<LayoutInfo>,
-    #[prost(string, optional, tag="5")]
+    #[prost(string, optional, tag = "5")]
     pub cwd: ::core::option::Option<::prost::alloc::string::String>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NewPanePlacement {
-    #[prost(oneof="new_pane_placement::PlacementType", tags="1, 2, 3, 4, 5, 6, 7, 8")]
+    #[prost(
+        oneof = "new_pane_placement::PlacementType",
+        tags = "1, 2, 3, 4, 5, 6, 7, 8"
+    )]
     pub placement_type: ::core::option::Option<new_pane_placement::PlacementType>,
 }
 /// Nested message and enum types in `NewPanePlacement`.
 pub mod new_pane_placement {
     #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PlacementType {
-        #[prost(bool, tag="1")]
+        #[prost(bool, tag = "1")]
         NoPreference(bool),
-        #[prost(enumeration="super::Direction", tag="2")]
+        #[prost(enumeration = "super::Direction", tag = "2")]
         Tiled(i32),
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         Floating(super::FloatingPaneCoordinates),
-        #[prost(message, tag="4")]
+        #[prost(message, tag = "4")]
         InPlace(super::NewPanePlacementInPlace),
-        #[prost(message, tag="5")]
+        #[prost(message, tag = "5")]
         Stacked(super::PaneId),
         /// these new variants are so that we can send data along with the previous variants without compromising backwards compatibility by changing the above types
-        #[prost(message, tag="6")]
+        #[prost(message, tag = "6")]
         NoPreferenceWithOptions(super::NoPreferencePlacement),
-        #[prost(message, tag="7")]
+        #[prost(message, tag = "7")]
         TiledWithOptions(super::TiledPlacement),
-        #[prost(message, tag="8")]
+        #[prost(message, tag = "8")]
         StackedWithOptions(super::StackedPlacement),
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NoPreferencePlacement {
-    #[prost(bool, optional, tag="1")]
+    #[prost(bool, optional, tag = "1")]
     pub borderless: ::core::option::Option<bool>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TiledPlacement {
-    #[prost(enumeration="Direction", optional, tag="1")]
+    #[prost(enumeration = "Direction", optional, tag = "1")]
     pub direction: ::core::option::Option<i32>,
-    #[prost(bool, optional, tag="2")]
+    #[prost(bool, optional, tag = "2")]
     pub borderless: ::core::option::Option<bool>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StackedPlacement {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub pane_id_to_stack_under: ::core::option::Option<PaneId>,
-    #[prost(bool, optional, tag="2")]
+    #[prost(bool, optional, tag = "2")]
     pub borderless: ::core::option::Option<bool>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NewPanePlacementInPlace {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub pane_id_to_replace: ::core::option::Option<PaneId>,
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub close_replaced_pane: bool,
-    #[prost(bool, optional, tag="3")]
+    #[prost(bool, optional, tag = "3")]
     pub borderless: ::core::option::Option<bool>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PaneIdWithPlugin {
-    #[prost(uint32, tag="1")]
+    #[prost(uint32, tag = "1")]
     pub pane_id: u32,
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub is_plugin: bool,
 }
 // Additional supporting types for Action messages
@@ -1299,399 +1264,401 @@ pub struct PaneIdWithPlugin {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OpenFilePayload {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub file_to_open: ::prost::alloc::string::String,
-    #[prost(uint32, optional, tag="2")]
+    #[prost(uint32, optional, tag = "2")]
     pub line_number: ::core::option::Option<u32>,
-    #[prost(string, optional, tag="3")]
+    #[prost(string, optional, tag = "3")]
     pub cwd: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub originating_plugin: ::core::option::Option<OriginatingPlugin>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FloatingPaneCoordinates {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub x: ::core::option::Option<FloatingCoordinate>,
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub y: ::core::option::Option<FloatingCoordinate>,
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub width: ::core::option::Option<FloatingCoordinate>,
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub height: ::core::option::Option<FloatingCoordinate>,
-    #[prost(bool, optional, tag="5")]
+    #[prost(bool, optional, tag = "5")]
     pub pinned: ::core::option::Option<bool>,
-    #[prost(bool, optional, tag="6")]
+    #[prost(bool, optional, tag = "6")]
     pub borderless: ::core::option::Option<bool>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FloatingCoordinate {
-    #[prost(oneof="floating_coordinate::CoordinateType", tags="1, 2")]
+    #[prost(oneof = "floating_coordinate::CoordinateType", tags = "1, 2")]
     pub coordinate_type: ::core::option::Option<floating_coordinate::CoordinateType>,
 }
 /// Nested message and enum types in `FloatingCoordinate`.
 pub mod floating_coordinate {
     #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum CoordinateType {
-        #[prost(uint32, tag="1")]
+        #[prost(uint32, tag = "1")]
         Fixed(u32),
-        #[prost(float, tag="2")]
+        #[prost(float, tag = "2")]
         Percent(f32),
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunCommandAction {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub command: ::prost::alloc::string::String,
-    #[prost(string, repeated, tag="2")]
+    #[prost(string, repeated, tag = "2")]
     pub args: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    #[prost(string, optional, tag="3")]
+    #[prost(string, optional, tag = "3")]
     pub cwd: ::core::option::Option<::prost::alloc::string::String>,
     /// Added missing direction field
-    #[prost(enumeration="Direction", optional, tag="4")]
+    #[prost(enumeration = "Direction", optional, tag = "4")]
     pub direction: ::core::option::Option<i32>,
     /// Renumbered
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub hold_on_close: bool,
     /// Renumbered
-    #[prost(bool, tag="6")]
+    #[prost(bool, tag = "6")]
     pub hold_on_start: bool,
     /// Added missing originating_plugin field
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub originating_plugin: ::core::option::Option<OriginatingPlugin>,
     /// Added missing use_terminal_title field
-    #[prost(bool, tag="8")]
+    #[prost(bool, tag = "8")]
     pub use_terminal_title: bool,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TiledPaneLayout {
-    #[prost(enumeration="SplitDirection", tag="1")]
+    #[prost(enumeration = "SplitDirection", tag = "1")]
     pub children_split_direction: i32,
-    #[prost(string, optional, tag="2")]
+    #[prost(string, optional, tag = "2")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub children: ::prost::alloc::vec::Vec<TiledPaneLayout>,
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub split_size: ::core::option::Option<SplitSize>,
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub run: ::core::option::Option<Run>,
-    #[prost(bool, optional, tag="6")]
+    #[prost(bool, optional, tag = "6")]
     pub borderless: ::core::option::Option<bool>,
-    #[prost(string, optional, tag="7")]
+    #[prost(string, optional, tag = "7")]
     pub focus: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(bool, optional, tag="8")]
+    #[prost(bool, optional, tag = "8")]
     pub exclude_from_sync: ::core::option::Option<bool>,
-    #[prost(bool, tag="9")]
+    #[prost(bool, tag = "9")]
     pub children_are_stacked: bool,
-    #[prost(uint32, optional, tag="10")]
+    #[prost(uint32, optional, tag = "10")]
     pub external_children_index: ::core::option::Option<u32>,
-    #[prost(bool, tag="11")]
+    #[prost(bool, tag = "11")]
     pub is_expanded_in_stack: bool,
-    #[prost(bool, tag="12")]
+    #[prost(bool, tag = "12")]
     pub hide_floating_panes: bool,
     /// NOTE: run_instructions_to_ignore is not represented here because it's a field used only inside the server itself and not part of the server/client contract
-    #[prost(string, optional, tag="13")]
+    #[prost(string, optional, tag = "13")]
     pub pane_initial_contents: ::core::option::Option<::prost::alloc::string::String>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FloatingPaneLayout {
-    #[prost(string, optional, tag="1")]
+    #[prost(string, optional, tag = "1")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub height: ::core::option::Option<PercentOrFixed>,
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub width: ::core::option::Option<PercentOrFixed>,
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub x: ::core::option::Option<PercentOrFixed>,
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub y: ::core::option::Option<PercentOrFixed>,
-    #[prost(bool, optional, tag="6")]
+    #[prost(bool, optional, tag = "6")]
     pub pinned: ::core::option::Option<bool>,
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub run: ::core::option::Option<Run>,
-    #[prost(bool, optional, tag="8")]
+    #[prost(bool, optional, tag = "8")]
     pub focus: ::core::option::Option<bool>,
-    #[prost(bool, tag="9")]
+    #[prost(bool, tag = "9")]
     pub already_running: bool,
-    #[prost(string, optional, tag="10")]
+    #[prost(string, optional, tag = "10")]
     pub pane_initial_contents: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(uint32, optional, tag="11")]
+    #[prost(uint32, optional, tag = "11")]
     pub logical_position: ::core::option::Option<u32>,
-    #[prost(bool, optional, tag="12")]
+    #[prost(bool, optional, tag = "12")]
     pub borderless: ::core::option::Option<bool>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SwapTiledLayout {
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub constraint_map: ::prost::alloc::vec::Vec<LayoutConstraintTiledPair>,
-    #[prost(string, optional, tag="2")]
+    #[prost(string, optional, tag = "2")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SwapFloatingLayout {
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub constraint_map: ::prost::alloc::vec::Vec<LayoutConstraintFloatingPair>,
-    #[prost(string, optional, tag="2")]
+    #[prost(string, optional, tag = "2")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LayoutConstraintTiledPair {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub constraint: ::core::option::Option<LayoutConstraintWithValue>,
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub layout: ::core::option::Option<TiledPaneLayout>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LayoutConstraintFloatingPair {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub constraint: ::core::option::Option<LayoutConstraintWithValue>,
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub layouts: ::prost::alloc::vec::Vec<FloatingPaneLayout>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunPluginOrAlias {
-    #[prost(oneof="run_plugin_or_alias::PluginType", tags="1, 2")]
+    #[prost(oneof = "run_plugin_or_alias::PluginType", tags = "1, 2")]
     pub plugin_type: ::core::option::Option<run_plugin_or_alias::PluginType>,
 }
 /// Nested message and enum types in `RunPluginOrAlias`.
 pub mod run_plugin_or_alias {
     #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PluginType {
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         Plugin(super::RunPlugin),
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         Alias(super::PluginAlias),
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunPlugin {
-    #[prost(bool, tag="1")]
+    #[prost(bool, tag = "1")]
     pub allow_exec_host_cmd: bool,
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub location: ::core::option::Option<RunPluginLocationData>,
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub configuration: ::core::option::Option<PluginUserConfiguration>,
-    #[prost(string, optional, tag="4")]
+    #[prost(string, optional, tag = "4")]
     pub initial_cwd: ::core::option::Option<::prost::alloc::string::String>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PluginAlias {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub configuration: ::core::option::Option<PluginUserConfiguration>,
-    #[prost(string, optional, tag="3")]
+    #[prost(string, optional, tag = "3")]
     pub initial_cwd: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub run_plugin: ::core::option::Option<RunPlugin>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommandOrPluginFile {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub path: ::prost::alloc::string::String,
-    #[prost(int32, optional, tag="2")]
+    #[prost(int32, optional, tag = "2")]
     pub line_number: ::core::option::Option<i32>,
-    #[prost(string, optional, tag="3")]
+    #[prost(string, optional, tag = "3")]
     pub cwd: ::core::option::Option<::prost::alloc::string::String>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommandOrPlugin {
-    #[prost(oneof="command_or_plugin::CommandOrPluginType", tags="1, 2, 3")]
+    #[prost(oneof = "command_or_plugin::CommandOrPluginType", tags = "1, 2, 3")]
     pub command_or_plugin_type: ::core::option::Option<command_or_plugin::CommandOrPluginType>,
 }
 /// Nested message and enum types in `CommandOrPlugin`.
 pub mod command_or_plugin {
     #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum CommandOrPluginType {
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         Command(super::RunCommandAction),
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         Plugin(super::RunPluginOrAlias),
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         File(super::CommandOrPluginFile),
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MouseEvent {
-    #[prost(enumeration="MouseEventType", tag="1")]
+    #[prost(enumeration = "MouseEventType", tag = "1")]
     pub event_type: i32,
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub left: bool,
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub right: bool,
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub middle: bool,
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub wheel_up: bool,
-    #[prost(bool, tag="6")]
+    #[prost(bool, tag = "6")]
     pub wheel_down: bool,
-    #[prost(bool, tag="7")]
+    #[prost(bool, tag = "7")]
     pub shift: bool,
-    #[prost(bool, tag="8")]
+    #[prost(bool, tag = "8")]
     pub alt: bool,
-    #[prost(bool, tag="9")]
+    #[prost(bool, tag = "9")]
     pub ctrl: bool,
-    #[prost(message, optional, tag="10")]
+    #[prost(message, optional, tag = "10")]
     pub position: ::core::option::Option<Position>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PaneId {
-    #[prost(oneof="pane_id::PaneType", tags="1, 2")]
+    #[prost(oneof = "pane_id::PaneType", tags = "1, 2")]
     pub pane_type: ::core::option::Option<pane_id::PaneType>,
 }
 /// Nested message and enum types in `PaneId`.
 pub mod pane_id {
     #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PaneType {
-        #[prost(uint32, tag="1")]
+        #[prost(uint32, tag = "1")]
         Terminal(u32),
-        #[prost(uint32, tag="2")]
+        #[prost(uint32, tag = "2")]
         Plugin(u32),
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SplitSize {
-    #[prost(oneof="split_size::SizeType", tags="1, 2")]
+    #[prost(oneof = "split_size::SizeType", tags = "1, 2")]
     pub size_type: ::core::option::Option<split_size::SizeType>,
 }
 /// Nested message and enum types in `SplitSize`.
 pub mod split_size {
     #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SizeType {
         /// 1 to 100
-        #[prost(uint32, tag="1")]
+        #[prost(uint32, tag = "1")]
         Percent(u32),
         /// absolute number
-        #[prost(uint32, tag="2")]
+        #[prost(uint32, tag = "2")]
         Fixed(u32),
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PercentOrFixed {
-    #[prost(oneof="percent_or_fixed::SizeType", tags="1, 2")]
+    #[prost(oneof = "percent_or_fixed::SizeType", tags = "1, 2")]
     pub size_type: ::core::option::Option<percent_or_fixed::SizeType>,
 }
 /// Nested message and enum types in `PercentOrFixed`.
 pub mod percent_or_fixed {
     #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SizeType {
         /// 1 to 100
-        #[prost(uint32, tag="1")]
+        #[prost(uint32, tag = "1")]
         Percent(u32),
         /// absolute number
-        #[prost(uint32, tag="2")]
+        #[prost(uint32, tag = "2")]
         Fixed(u32),
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LayoutConstraintWithValue {
-    #[prost(enumeration="LayoutConstraint", tag="1")]
+    #[prost(enumeration = "LayoutConstraint", tag = "1")]
     pub constraint_type: i32,
     /// Only used for MAX_PANES, MIN_PANES, EXACT_PANES
-    #[prost(uint32, optional, tag="2")]
+    #[prost(uint32, optional, tag = "2")]
     pub value: ::core::option::Option<u32>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PluginUserConfiguration {
-    #[prost(map="string, string", tag="1")]
-    pub configuration: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "1")]
+    pub configuration:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunPluginLocationData {
-    #[prost(enumeration="RunPluginLocation", tag="1")]
+    #[prost(enumeration = "RunPluginLocation", tag = "1")]
     pub location_type: i32,
-    #[prost(oneof="run_plugin_location_data::LocationData", tags="2, 3, 4")]
+    #[prost(oneof = "run_plugin_location_data::LocationData", tags = "2, 3, 4")]
     pub location_data: ::core::option::Option<run_plugin_location_data::LocationData>,
 }
 /// Nested message and enum types in `RunPluginLocationData`.
 pub mod run_plugin_location_data {
     #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum LocationData {
         /// For FILE
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         FilePath(::prost::alloc::string::String),
         /// For ZELLIJ
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         ZellijTag(super::PluginTag),
         /// For REMOTE
-        #[prost(string, tag="4")]
+        #[prost(string, tag = "4")]
         RemoteUrl(::prost::alloc::string::String),
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PluginTag {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub tag: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OriginatingPlugin {
-    #[prost(uint32, tag="1")]
+    #[prost(uint32, tag = "1")]
     pub plugin_id: u32,
     /// ClientId is u16, but using uint32 for protobuf compatibility
-    #[prost(uint32, tag="2")]
+    #[prost(uint32, tag = "2")]
     pub client_id: u32,
     /// Context is BTreeMap<String, String>
-    #[prost(map="string, string", tag="3")]
-    pub context: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "3")]
+    pub context:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Run {
-    #[prost(oneof="run::RunType", tags="1, 2, 3, 4")]
+    #[prost(oneof = "run::RunType", tags = "1, 2, 3, 4")]
     pub run_type: ::core::option::Option<run::RunType>,
 }
 /// Nested message and enum types in `Run`.
 pub mod run {
     #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum RunType {
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         Command(super::RunCommandAction),
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         Plugin(super::RunPluginOrAlias),
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         EditFile(super::RunEditFileAction),
-        #[prost(string, tag="4")]
+        #[prost(string, tag = "4")]
         Cwd(::prost::alloc::string::String),
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunEditFileAction {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub file_path: ::prost::alloc::string::String,
-    #[prost(uint32, optional, tag="2")]
+    #[prost(uint32, optional, tag = "2")]
     pub line_number: ::core::option::Option<u32>,
-    #[prost(string, optional, tag="3")]
+    #[prost(string, optional, tag = "3")]
     pub cwd: ::core::option::Option<::prost::alloc::string::String>,
 }
 // Config Options message - comprehensive configuration structure
@@ -1699,90 +1666,94 @@ pub struct RunEditFileAction {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Options {
-    #[prost(bool, optional, tag="1")]
+    #[prost(bool, optional, tag = "1")]
     pub simplified_ui: ::core::option::Option<bool>,
-    #[prost(string, optional, tag="2")]
+    #[prost(string, optional, tag = "2")]
     pub theme: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(enumeration="InputMode", optional, tag="3")]
+    #[prost(enumeration = "InputMode", optional, tag = "3")]
     pub default_mode: ::core::option::Option<i32>,
-    #[prost(string, optional, tag="4")]
+    #[prost(string, optional, tag = "4")]
     pub default_shell: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(string, optional, tag="5")]
+    #[prost(string, optional, tag = "5")]
     pub default_cwd: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(string, optional, tag="6")]
+    #[prost(string, optional, tag = "6")]
     pub default_layout: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(string, optional, tag="7")]
+    #[prost(string, optional, tag = "7")]
     pub layout_dir: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(string, optional, tag="8")]
+    #[prost(string, optional, tag = "8")]
     pub theme_dir: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(bool, optional, tag="9")]
+    #[prost(bool, optional, tag = "9")]
     pub mouse_mode: ::core::option::Option<bool>,
-    #[prost(bool, optional, tag="10")]
+    #[prost(bool, optional, tag = "10")]
     pub pane_frames: ::core::option::Option<bool>,
-    #[prost(bool, optional, tag="11")]
+    #[prost(bool, optional, tag = "11")]
     pub mirror_session: ::core::option::Option<bool>,
-    #[prost(enumeration="OnForceClose", optional, tag="12")]
+    #[prost(enumeration = "OnForceClose", optional, tag = "12")]
     pub on_force_close: ::core::option::Option<i32>,
-    #[prost(uint32, optional, tag="13")]
+    #[prost(uint32, optional, tag = "13")]
     pub scroll_buffer_size: ::core::option::Option<u32>,
-    #[prost(string, optional, tag="14")]
+    #[prost(string, optional, tag = "14")]
     pub copy_command: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(enumeration="Clipboard", optional, tag="15")]
+    #[prost(enumeration = "Clipboard", optional, tag = "15")]
     pub copy_clipboard: ::core::option::Option<i32>,
-    #[prost(bool, optional, tag="16")]
+    #[prost(bool, optional, tag = "16")]
     pub copy_on_select: ::core::option::Option<bool>,
-    #[prost(string, optional, tag="17")]
+    #[prost(string, optional, tag = "17")]
     pub scrollback_editor: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(string, optional, tag="18")]
+    #[prost(string, optional, tag = "18")]
     pub session_name: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(bool, optional, tag="19")]
+    #[prost(bool, optional, tag = "19")]
     pub attach_to_session: ::core::option::Option<bool>,
-    #[prost(bool, optional, tag="20")]
+    #[prost(bool, optional, tag = "20")]
     pub auto_layout: ::core::option::Option<bool>,
-    #[prost(bool, optional, tag="21")]
+    #[prost(bool, optional, tag = "21")]
     pub session_serialization: ::core::option::Option<bool>,
-    #[prost(bool, optional, tag="22")]
+    #[prost(bool, optional, tag = "22")]
     pub serialize_pane_viewport: ::core::option::Option<bool>,
-    #[prost(uint32, optional, tag="23")]
+    #[prost(uint32, optional, tag = "23")]
     pub scrollback_lines_to_serialize: ::core::option::Option<u32>,
-    #[prost(bool, optional, tag="24")]
+    #[prost(bool, optional, tag = "24")]
     pub styled_underlines: ::core::option::Option<bool>,
-    #[prost(uint64, optional, tag="25")]
+    #[prost(uint64, optional, tag = "25")]
     pub serialization_interval: ::core::option::Option<u64>,
-    #[prost(bool, optional, tag="26")]
+    #[prost(bool, optional, tag = "26")]
     pub disable_session_metadata: ::core::option::Option<bool>,
-    #[prost(bool, optional, tag="27")]
+    #[prost(bool, optional, tag = "27")]
     pub support_kitty_keyboard_protocol: ::core::option::Option<bool>,
-    #[prost(bool, optional, tag="28")]
+    #[prost(bool, optional, tag = "28")]
     pub web_server: ::core::option::Option<bool>,
-    #[prost(enumeration="WebSharing", optional, tag="29")]
+    #[prost(enumeration = "WebSharing", optional, tag = "29")]
     pub web_sharing: ::core::option::Option<i32>,
-    #[prost(bool, optional, tag="30")]
+    #[prost(bool, optional, tag = "30")]
     pub stacked_resize: ::core::option::Option<bool>,
-    #[prost(bool, optional, tag="31")]
+    #[prost(bool, optional, tag = "31")]
     pub show_startup_tips: ::core::option::Option<bool>,
-    #[prost(bool, optional, tag="32")]
+    #[prost(bool, optional, tag = "32")]
     pub show_release_notes: ::core::option::Option<bool>,
-    #[prost(bool, optional, tag="33")]
+    #[prost(bool, optional, tag = "33")]
     pub advanced_mouse_actions: ::core::option::Option<bool>,
-    #[prost(string, optional, tag="34")]
+    #[prost(string, optional, tag = "34")]
     pub web_server_ip: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(uint32, optional, tag="35")]
+    #[prost(uint32, optional, tag = "35")]
     pub web_server_port: ::core::option::Option<u32>,
-    #[prost(string, optional, tag="36")]
+    #[prost(string, optional, tag = "36")]
     pub web_server_cert: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(string, optional, tag="37")]
+    #[prost(string, optional, tag = "37")]
     pub web_server_key: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(bool, optional, tag="38")]
+    #[prost(bool, optional, tag = "38")]
     pub enforce_https_for_localhost: ::core::option::Option<bool>,
-    #[prost(string, optional, tag="39")]
+    #[prost(string, optional, tag = "39")]
     pub post_command_discovery_hook: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(bool, optional, tag="40")]
+    #[prost(bool, optional, tag = "40")]
     pub osc8_hyperlinks: ::core::option::Option<bool>,
-    #[prost(bool, optional, tag="41")]
+    #[prost(bool, optional, tag = "41")]
     pub mouse_hover_effects: ::core::option::Option<bool>,
-    #[prost(uint64, optional, tag="42")]
+    #[prost(uint64, optional, tag = "42")]
     pub client_async_worker_tasks: ::core::option::Option<u64>,
+    #[prost(bool, optional, tag = "43")]
+    pub mouse_hover_focus: ::core::option::Option<bool>,
+    #[prost(bool, optional, tag = "44")]
+    pub mouse_right_click_paste: ::core::option::Option<bool>,
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -2545,274 +2516,272 @@ impl WebSharing {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServerToClientMsg {
-    #[prost(oneof="server_to_client_msg::Message", tags="1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13")]
+    #[prost(
+        oneof = "server_to_client_msg::Message",
+        tags = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13"
+    )]
     pub message: ::core::option::Option<server_to_client_msg::Message>,
 }
 /// Nested message and enum types in `ServerToClientMsg`.
 pub mod server_to_client_msg {
     #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Message {
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         Render(super::RenderMsg),
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         UnblockInputThread(super::UnblockInputThreadMsg),
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         Exit(super::ExitMsg),
-        #[prost(message, tag="4")]
+        #[prost(message, tag = "4")]
         Connected(super::ConnectedMsg),
-        #[prost(message, tag="5")]
+        #[prost(message, tag = "5")]
         Log(super::LogMsg),
-        #[prost(message, tag="6")]
+        #[prost(message, tag = "6")]
         LogError(super::LogErrorMsg),
-        #[prost(message, tag="7")]
+        #[prost(message, tag = "7")]
         SwitchSession(super::SwitchSessionMsg),
-        #[prost(message, tag="8")]
+        #[prost(message, tag = "8")]
         UnblockCliPipeInput(super::UnblockCliPipeInputMsg),
-        #[prost(message, tag="9")]
+        #[prost(message, tag = "9")]
         CliPipeOutput(super::CliPipeOutputMsg),
-        #[prost(message, tag="10")]
+        #[prost(message, tag = "10")]
         QueryTerminalSize(super::QueryTerminalSizeMsg),
-        #[prost(message, tag="11")]
+        #[prost(message, tag = "11")]
         StartWebServer(super::StartWebServerMsg),
-        #[prost(message, tag="12")]
+        #[prost(message, tag = "12")]
         RenamedSession(super::RenamedSessionMsg),
-        #[prost(message, tag="13")]
+        #[prost(message, tag = "13")]
         ConfigFileUpdated(super::ConfigFileUpdatedMsg),
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RenderMsg {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub content: ::prost::alloc::string::String,
 }
 /// Empty message
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UnblockInputThreadMsg {
-}
+pub struct UnblockInputThreadMsg {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExitMsg {
-    #[prost(enumeration="ExitReason", tag="1")]
+    #[prost(enumeration = "ExitReason", tag = "1")]
     pub exit_reason: i32,
-    #[prost(string, optional, tag="2")]
+    #[prost(string, optional, tag = "2")]
     pub payload: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Empty message
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConnectedMsg {
-}
+pub struct ConnectedMsg {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogMsg {
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub lines: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogErrorMsg {
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub lines: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SwitchSessionMsg {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub connect_to_session: ::core::option::Option<ConnectToSession>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UnblockCliPipeInputMsg {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub pipe_name: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CliPipeOutputMsg {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub pipe_name: ::prost::alloc::string::String,
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub output: ::prost::alloc::string::String,
 }
 /// Empty message
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct QueryTerminalSizeMsg {
-}
+pub struct QueryTerminalSizeMsg {}
 /// Empty message
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StartWebServerMsg {
-}
+pub struct StartWebServerMsg {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RenamedSessionMsg {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Empty message
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConfigFileUpdatedMsg {
-}
+pub struct ConfigFileUpdatedMsg {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClientToServerMsg {
-    #[prost(oneof="client_to_server_msg::Message", tags="1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16")]
+    #[prost(
+        oneof = "client_to_server_msg::Message",
+        tags = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16"
+    )]
     pub message: ::core::option::Option<client_to_server_msg::Message>,
 }
 /// Nested message and enum types in `ClientToServerMsg`.
 pub mod client_to_server_msg {
     #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Message {
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         DetachSession(super::DetachSessionMsg),
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         TerminalPixelDimensions(super::TerminalPixelDimensionsMsg),
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         BackgroundColor(super::BackgroundColorMsg),
-        #[prost(message, tag="4")]
+        #[prost(message, tag = "4")]
         ForegroundColor(super::ForegroundColorMsg),
-        #[prost(message, tag="5")]
+        #[prost(message, tag = "5")]
         ColorRegisters(super::ColorRegistersMsg),
-        #[prost(message, tag="6")]
+        #[prost(message, tag = "6")]
         TerminalResize(super::TerminalResizeMsg),
-        #[prost(message, tag="7")]
+        #[prost(message, tag = "7")]
         FirstClientConnected(super::FirstClientConnectedMsg),
-        #[prost(message, tag="8")]
+        #[prost(message, tag = "8")]
         AttachClient(super::AttachClientMsg),
-        #[prost(message, tag="9")]
+        #[prost(message, tag = "9")]
         Action(super::ActionMsg),
-        #[prost(message, tag="10")]
+        #[prost(message, tag = "10")]
         Key(super::KeyMsg),
-        #[prost(message, tag="11")]
+        #[prost(message, tag = "11")]
         ClientExited(super::ClientExitedMsg),
-        #[prost(message, tag="12")]
+        #[prost(message, tag = "12")]
         KillSession(super::KillSessionMsg),
-        #[prost(message, tag="13")]
+        #[prost(message, tag = "13")]
         ConnStatus(super::ConnStatusMsg),
-        #[prost(message, tag="14")]
+        #[prost(message, tag = "14")]
         WebServerStarted(super::WebServerStartedMsg),
-        #[prost(message, tag="15")]
+        #[prost(message, tag = "15")]
         FailedToStartWebServer(super::FailedToStartWebServerMsg),
-        #[prost(message, tag="16")]
+        #[prost(message, tag = "16")]
         AttachWatcherClient(super::AttachWatcherClientMsg),
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DetachSessionMsg {
-    #[prost(uint32, repeated, tag="1")]
+    #[prost(uint32, repeated, tag = "1")]
     pub client_ids: ::prost::alloc::vec::Vec<u32>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TerminalPixelDimensionsMsg {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub pixel_dimensions: ::core::option::Option<PixelDimensions>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackgroundColorMsg {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub color: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ForegroundColorMsg {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub color: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ColorRegistersMsg {
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub color_registers: ::prost::alloc::vec::Vec<ColorRegister>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TerminalResizeMsg {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub new_size: ::core::option::Option<Size>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FirstClientConnectedMsg {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub cli_assets: ::core::option::Option<CliAssets>,
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub is_web_client: bool,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttachClientMsg {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub cli_assets: ::core::option::Option<CliAssets>,
-    #[prost(uint32, optional, tag="2")]
+    #[prost(uint32, optional, tag = "2")]
     pub tab_position_to_focus: ::core::option::Option<u32>,
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub pane_to_focus: ::core::option::Option<PaneReference>,
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub is_web_client: bool,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttachWatcherClientMsg {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub terminal_size: ::core::option::Option<Size>,
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub is_web_client: bool,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ActionMsg {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub action: ::core::option::Option<Action>,
-    #[prost(uint32, optional, tag="2")]
+    #[prost(uint32, optional, tag = "2")]
     pub terminal_id: ::core::option::Option<u32>,
-    #[prost(uint32, optional, tag="3")]
+    #[prost(uint32, optional, tag = "3")]
     pub client_id: ::core::option::Option<u32>,
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub is_cli_client: bool,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeyMsg {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub key: ::core::option::Option<KeyWithModifier>,
-    #[prost(uint32, repeated, tag="2")]
+    #[prost(uint32, repeated, tag = "2")]
     pub raw_bytes: ::prost::alloc::vec::Vec<u32>,
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub is_kitty_keyboard_protocol: bool,
 }
 /// Empty message
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ClientExitedMsg {
-}
+pub struct ClientExitedMsg {}
 /// Empty message
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct KillSessionMsg {
-}
+pub struct KillSessionMsg {}
 /// Empty message (just indicates connection status request)
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConnStatusMsg {
-}
+pub struct ConnStatusMsg {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebServerStartedMsg {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub base_url: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FailedToStartWebServerMsg {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub error: ::prost::alloc::string::String,
 }

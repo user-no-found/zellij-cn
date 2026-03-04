@@ -502,10 +502,7 @@ impl RebindLeadersScreen {
         let (secondary_modifier_text, secondary_modifier_start_position) =
             if cols >= WIDTH_BREAKPOINTS.0 {
                 if self.currently_in_unlock_first() {
-                    (
-                        format!("副引导键：{}", secondary_modifier_key_text),
-                        5,
-                    )
+                    (format!("副引导键：{}", secondary_modifier_key_text), 5)
                 } else {
                     (format!("副键：{}", secondary_modifier_key_text), 3)
                 }
@@ -572,8 +569,7 @@ impl RebindLeadersScreen {
         }
         let help_text_long = "帮助：<←↓↑→> - 导航，<SPACE> - 选择，<ENTER> - 应用，<Ctrl a> - 保存，<Ctrl c> - 重置，<ESC> - 关闭";
         let help_text_medium = "帮助：<←↓↑→/SPACE> - 导航/选择，<ENTER/Ctrl a> - 应用/保存，<Ctrl c> - 重置，<ESC> - 关闭";
-        let help_text_short =
-            "帮助：<←↓↑→>/<SPACE>/<ENTER> 选择/<Ctrl a> 保存/<Ctrl c> 重置/<ESC>";
+        let help_text_short = "帮助：<←↓↑→>/<SPACE>/<ENTER> 选择/<Ctrl a> 保存/<Ctrl c> 重置/<ESC>";
         let help_text_minimum = "<←↓↑→>/<SPACE>/<ENTER>/<Ctrl a>/<Ctrl c>/<ESC>";
         if cols >= help_text_long.chars().count() {
             print_text_with_coordinates(
@@ -1324,9 +1320,7 @@ impl RebindLeadersScreen {
             }
         } else if self.primary_modifier.is_empty() && self.secondary_modifier.is_empty() {
             if max_width >= 49 {
-                Some(String::from(
-                    "警告：未定义引导键，界面将被禁用。",
-                ))
+                Some(String::from("警告：未定义引导键，界面将被禁用。"))
             } else {
                 Some(String::from("无引导键，界面将不可用。"))
             }

@@ -450,28 +450,21 @@ impl PresetsScreen {
         let (mut list_items, max_width) = if cols >= widths.0 {
             let list_items = vec![
                 NestedListItem::new(default_text).color_range(1, ..),
-                NestedListItem::new("在基础模式可直接进入所有模式，例如：")
+                NestedListItem::new("在基础模式可直接进入所有模式，例如：").indent(1),
+                NestedListItem::new(format!("{} p - 进入 PANE 模式", primary_modifier_key_text))
+                    .color_range(3, ..primary_modifier_key_text_len + 3)
+                    .color_range(
+                        2,
+                        primary_modifier_key_text_len + 14..primary_modifier_key_text_len + 18,
+                    )
                     .indent(1),
-                NestedListItem::new(format!(
-                    "{} p - 进入 PANE 模式",
-                    primary_modifier_key_text
-                ))
-                .color_range(3, ..primary_modifier_key_text_len + 3)
-                .color_range(
-                    2,
-                    primary_modifier_key_text_len + 14..primary_modifier_key_text_len + 18,
-                )
-                .indent(1),
-                NestedListItem::new(format!(
-                    "{} t - 进入 TAB 模式",
-                    primary_modifier_key_text
-                ))
-                .color_range(3, ..primary_modifier_key_text_len + 3)
-                .color_range(
-                    2,
-                    primary_modifier_key_text_len + 14..primary_modifier_key_text_len + 17,
-                )
-                .indent(1),
+                NestedListItem::new(format!("{} t - 进入 TAB 模式", primary_modifier_key_text))
+                    .color_range(3, ..primary_modifier_key_text_len + 3)
+                    .color_range(
+                        2,
+                        primary_modifier_key_text_len + 14..primary_modifier_key_text_len + 17,
+                    )
+                    .indent(1),
             ];
             let max_width = widths.0;
             (list_items, max_width)
@@ -479,26 +472,20 @@ impl PresetsScreen {
             let list_items = vec![
                 NestedListItem::new(default_text).color_range(1, ..),
                 NestedListItem::new("可直接进入的模式，例如：").indent(1),
-                NestedListItem::new(format!(
-                    "{} p - 进入 PANE 模式",
-                    primary_modifier_key_text
-                ))
-                .indent(1)
-                .color_range(3, ..primary_modifier_key_text_len + 3)
-                .color_range(
-                    2,
-                    primary_modifier_key_text_len + 14..primary_modifier_key_text_len + 18,
-                ),
-                NestedListItem::new(format!(
-                    "{} t - 进入 TAB 模式",
-                    primary_modifier_key_text
-                ))
-                .indent(1)
-                .color_range(3, ..primary_modifier_key_text_len + 3)
-                .color_range(
-                    2,
-                    primary_modifier_key_text_len + 14..primary_modifier_key_text_len + 17,
-                ),
+                NestedListItem::new(format!("{} p - 进入 PANE 模式", primary_modifier_key_text))
+                    .indent(1)
+                    .color_range(3, ..primary_modifier_key_text_len + 3)
+                    .color_range(
+                        2,
+                        primary_modifier_key_text_len + 14..primary_modifier_key_text_len + 18,
+                    ),
+                NestedListItem::new(format!("{} t - 进入 TAB 模式", primary_modifier_key_text))
+                    .indent(1)
+                    .color_range(3, ..primary_modifier_key_text_len + 3)
+                    .color_range(
+                        2,
+                        primary_modifier_key_text_len + 14..primary_modifier_key_text_len + 17,
+                    ),
             ];
             let max_width = widths.1;
             (list_items, max_width)
@@ -567,20 +554,17 @@ impl PresetsScreen {
                     2,
                     primary_modifier_key_text_len + 16..primary_modifier_key_text_len + 21,
                 ),
-                NestedListItem::new(format!(
-                    "{} g + t 进入 TAB 模式",
-                    primary_modifier_key_text
-                ))
-                .indent(1)
-                .color_range(3, ..primary_modifier_key_text_len + 3)
-                .color_range(
-                    3,
-                    primary_modifier_key_text_len + 5..primary_modifier_key_text_len + 7,
-                )
-                .color_range(
-                    2,
-                    primary_modifier_key_text_len + 16..primary_modifier_key_text_len + 20,
-                ),
+                NestedListItem::new(format!("{} g + t 进入 TAB 模式", primary_modifier_key_text))
+                    .indent(1)
+                    .color_range(3, ..primary_modifier_key_text_len + 3)
+                    .color_range(
+                        3,
+                        primary_modifier_key_text_len + 5..primary_modifier_key_text_len + 7,
+                    )
+                    .color_range(
+                        2,
+                        primary_modifier_key_text_len + 16..primary_modifier_key_text_len + 20,
+                    ),
             ];
             let max_width = widths.0;
             (list_items, max_width)
@@ -606,31 +590,25 @@ impl PresetsScreen {
                     primary_modifier_key_text_len + 16..primary_modifier_key_text_len + 21,
                 )
                 .indent(1),
-                NestedListItem::new(format!(
-                    "{} g + t 进入 TAB 模式",
-                    primary_modifier_key_text
-                ))
-                .color_range(3, ..primary_modifier_key_text_len + 3)
-                .color_range(
-                    3,
-                    primary_modifier_key_text_len + 5..primary_modifier_key_text_len + 7,
-                )
-                .color_range(
-                    2,
-                    primary_modifier_key_text_len + 16..primary_modifier_key_text_len + 20,
-                )
-                .indent(1),
+                NestedListItem::new(format!("{} g + t 进入 TAB 模式", primary_modifier_key_text))
+                    .color_range(3, ..primary_modifier_key_text_len + 3)
+                    .color_range(
+                        3,
+                        primary_modifier_key_text_len + 5..primary_modifier_key_text_len + 7,
+                    )
+                    .color_range(
+                        2,
+                        primary_modifier_key_text_len + 16..primary_modifier_key_text_len + 20,
+                    )
+                    .indent(1),
             ];
             let max_width = widths.1;
             (list_items, max_width)
         } else {
             let list_items = vec![
                 NestedListItem::new("2. 先解锁").color_range(1, ..),
-                NestedListItem::new(format!(
-                    "{} g + 单键，例如：",
-                    primary_modifier_key_text
-                ))
-                .indent(1),
+                NestedListItem::new(format!("{} g + 单键，例如：", primary_modifier_key_text))
+                    .indent(1),
                 NestedListItem::new(format!("{} g + p PANE 模式", primary_modifier_key_text))
                     .color_range(3, ..primary_modifier_key_text_len + 3)
                     .color_range(
@@ -831,9 +809,7 @@ impl PresetsScreen {
             }
         } else if self.primary_modifier.is_empty() && self.secondary_modifier.is_empty() {
             if max_width >= 49 {
-                Some(String::from(
-                    "警告：未定义引导键，界面将被禁用。",
-                ))
+                Some(String::from("警告：未定义引导键，界面将被禁用。"))
             } else {
                 Some(String::from("无引导键，界面将不可用。"))
             }

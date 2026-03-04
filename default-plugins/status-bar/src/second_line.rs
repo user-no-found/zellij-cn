@@ -747,10 +747,7 @@ mod tests {
         let ret = keybinds(&mode_info, "quicknav", 500);
         let ret = unstyle(ret);
 
-        assert_eq!(
-            ret,
-            " <n> 新建 / <←↓↑→> 切换焦点 / <x> 关闭 / <f> 切换全屏",
-        );
+        assert_eq!(ret, " <n> 新建 / <←↓↑→> 切换焦点 / <x> 关闭 / <f> 切换全屏",);
     }
 
     #[test]
@@ -873,6 +870,9 @@ mod tests {
         let ret = keybinds(&mode_info, "quicknav", 500);
         let ret = unstyle(ret);
 
-        assert_eq!(ret, " <BACKSPACE> 新建 / Ctrl + <a|ENTER|1|SPACE> 切换焦点 / <ESC> 关闭 / <END> 切换全屏");
+        assert_eq!(
+            ret,
+            " <BACKSPACE> 新建 / Ctrl + <a|ENTER|1|SPACE> 切换焦点 / <ESC> 关闭 / <END> 切换全屏"
+        );
     }
 }

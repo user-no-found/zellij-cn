@@ -405,6 +405,11 @@ impl SessionMetaData {
                         .advanced_mouse_actions
                         .unwrap_or(true),
                     mouse_hover_effects: new_config.options.mouse_hover_effects.unwrap_or(true),
+                    mouse_hover_focus: new_config.options.mouse_hover_focus.unwrap_or(false),
+                    mouse_right_click_paste: new_config
+                        .options
+                        .mouse_right_click_paste
+                        .unwrap_or(false),
                 })
                 .unwrap();
             self.senders

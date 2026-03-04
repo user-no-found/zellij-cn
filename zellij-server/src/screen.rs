@@ -583,6 +583,8 @@ pub enum ScreenInstruction {
         default_editor: Option<PathBuf>,
         advanced_mouse_actions: bool,
         mouse_hover_effects: bool,
+        mouse_hover_focus: bool,
+        mouse_right_click_paste: bool,
     },
     RerunCommandPane(u32, Option<NotificationEnd>), // u32 - terminal pane id
     ResizePaneWithId(ResizeStrategy, PaneId),
@@ -1085,6 +1087,8 @@ pub(crate) struct Screen {
     current_pane_group: Rc<RefCell<PaneGroups>>,
     advanced_mouse_actions: bool,
     mouse_hover_effects: bool,
+    mouse_hover_focus: bool,
+    mouse_right_click_paste: bool,
     currently_marking_pane_group: Rc<RefCell<HashMap<ClientId, bool>>>,
     // the below are the configured values - the ones that will be set if and when the web server
     // is brought online
@@ -1126,6 +1130,8 @@ impl Screen {
         web_sharing: WebSharing,
         advanced_mouse_actions: bool,
         mouse_hover_effects: bool,
+        mouse_hover_focus: bool,
+        mouse_right_click_paste: bool,
         web_server_ip: IpAddr,
         web_server_port: u16,
     ) -> Self {
@@ -1180,6 +1186,8 @@ impl Screen {
             currently_marking_pane_group: Rc::new(RefCell::new(HashMap::new())),
             advanced_mouse_actions,
             mouse_hover_effects,
+            mouse_hover_focus,
+            mouse_right_click_paste,
             web_server_ip,
             web_server_port,
             render_blocker: RenderBlocker::new(100),
@@ -1960,12 +1968,14 @@ impl Screen {
             self.currently_marking_pane_group.clone(),
             self.advanced_mouse_actions,
             self.mouse_hover_effects,
+            self.mouse_hover_focus,
             self.web_server_ip,
             self.web_server_port,
         );
         for (client_id, mode_info) in &self.mode_info {
             tab.change_mode_info(mode_info.clone(), *client_id);
         }
+        tab.update_mouse_right_click_paste(self.mouse_right_click_paste);
         self.tabs.insert(tab_id, tab);
         Ok(())
     }
@@ -3393,6 +3403,8 @@ impl Screen {
         default_editor: Option<PathBuf>,
         advanced_mouse_actions: bool,
         mouse_hover_effects: bool,
+        mouse_hover_focus: bool,
+        mouse_right_click_paste: bool,
         client_id: ClientId,
     ) -> Result<()> {
         let should_support_arrow_fonts = !simplified_ui;
@@ -3409,6 +3421,8 @@ impl Screen {
         self.draw_pane_frames = pane_frames;
         self.advanced_mouse_actions = advanced_mouse_actions;
         self.mouse_hover_effects = mouse_hover_effects;
+        self.mouse_hover_focus = mouse_hover_focus;
+        self.mouse_right_click_paste = mouse_right_click_paste;
         self.default_mode_info
             .update_arrow_fonts(should_support_arrow_fonts);
         self.default_mode_info
@@ -3430,6 +3444,8 @@ impl Screen {
             tab.update_arrow_fonts(should_support_arrow_fonts);
             tab.update_advanced_mouse_actions(advanced_mouse_actions);
             tab.update_mouse_hover_effects(mouse_hover_effects);
+            tab.update_mouse_hover_focus(mouse_hover_focus);
+            tab.update_mouse_right_click_paste(mouse_right_click_paste);
         }
 
         // Clear hover state when disabled
@@ -4121,6 +4137,8 @@ pub(crate) fn screen_thread_main(
     let web_sharing = config_options.web_sharing.unwrap_or_else(Default::default);
     let advanced_mouse_actions = config_options.advanced_mouse_actions.unwrap_or(true);
     let mouse_hover_effects = config_options.mouse_hover_effects.unwrap_or(true);
+    let mouse_hover_focus = config_options.mouse_hover_focus.unwrap_or(false);
+    let mouse_right_click_paste = config_options.mouse_right_click_paste.unwrap_or(false);
 
     let thread_senders = bus.senders.clone();
     let mut screen = Screen::new(
@@ -4159,6 +4177,8 @@ pub(crate) fn screen_thread_main(
         web_sharing,
         advanced_mouse_actions,
         mouse_hover_effects,
+        mouse_hover_focus,
+        mouse_right_click_paste,
         web_server_ip,
         web_server_port,
     );
@@ -6830,6 +6850,8 @@ pub(crate) fn screen_thread_main(
                 default_editor,
                 advanced_mouse_actions,
                 mouse_hover_effects,
+                mouse_hover_focus,
+                mouse_right_click_paste,
             } => {
                 screen
                     .reconfigure(
@@ -6849,6 +6871,8 @@ pub(crate) fn screen_thread_main(
                         default_editor,
                         advanced_mouse_actions,
                         mouse_hover_effects,
+                        mouse_hover_focus,
+                        mouse_right_click_paste,
                         client_id,
                     )
                     .non_fatal();

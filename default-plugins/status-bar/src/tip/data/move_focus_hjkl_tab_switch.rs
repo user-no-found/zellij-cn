@@ -18,10 +18,7 @@ macro_rules! strings {
 
 pub fn move_focus_hjkl_tab_switch_full(help: &ModeInfo) -> LinePart {
     // Tip: When changing focus with Alt + <←↓↑→> moving off screen left/right focuses the next tab.
-    let mut bits = vec![
-        Style::new().paint(" 提示: "),
-        Style::new().paint("使用 "),
-    ];
+    let mut bits = vec![Style::new().paint(" 提示: "), Style::new().paint("使用 ")];
     bits.extend(add_keybinds(help));
     bits.push(Style::new().paint(" 切换焦点时，越过屏幕左右边缘会聚焦到下一个标签页。"));
     strings!(&bits)
@@ -29,10 +26,7 @@ pub fn move_focus_hjkl_tab_switch_full(help: &ModeInfo) -> LinePart {
 
 pub fn move_focus_hjkl_tab_switch_medium(help: &ModeInfo) -> LinePart {
     // Tip: Changing focus with Alt + <←↓↑→> off screen focuses the next tab.
-    let mut bits = vec![
-        Style::new().paint(" 提示: "),
-        Style::new().paint("使用 "),
-    ];
+    let mut bits = vec![Style::new().paint(" 提示: "), Style::new().paint("使用 ")];
     bits.extend(add_keybinds(help));
     bits.push(Style::new().paint(" 切换焦点时，越界会聚焦到下一个标签页。"));
     strings!(&bits)

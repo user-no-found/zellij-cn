@@ -525,6 +525,16 @@ load_plugins {
 //
 // mouse_hover_effects false
 
+// Whether to automatically focus pane when hovering over it
+// Default: false
+//
+// mouse_hover_focus true
+
+// Whether right click should copy selected text / paste cached copied text
+// Default: false
+//
+// mouse_right_click_paste true
+
 // Whether to output OSC8 hyperlink sequences
 // Default: true
 //

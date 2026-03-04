@@ -153,10 +153,7 @@ impl ZellijPlugin for State {
             Event::FailedToWriteConfigToDisk(config_file_path) => {
                 match config_file_path {
                     Some(failed_path) => {
-                        self.notification = Some(format!(
-                            "写入配置文件失败：{}",
-                            failed_path
-                        ));
+                        self.notification = Some(format!("写入配置文件失败：{}", failed_path));
                     },
                     None => {
                         self.notification = Some("写入配置文件失败。".to_owned());

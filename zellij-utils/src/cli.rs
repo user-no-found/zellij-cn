@@ -24,10 +24,7 @@ fn validate_session(name: &str) -> Result<String, String> {
                 .saturating_sub(socket_path.as_os_str().len())
                 .saturating_sub(1);
 
-            return Err(format!(
-                "会话名称长度必须小于 {} 个字符",
-                available_length
-            ));
+            return Err(format!("会话名称长度必须小于 {} 个字符", available_length));
         };
     };
 

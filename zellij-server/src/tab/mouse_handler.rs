@@ -128,6 +128,10 @@ enum MouseAction {
         pane_id: PaneId,
         lines: usize,
     },
+    RightClickCopyOrPaste {
+        pane_id: PaneId,
+        event: MouseEvent,
+    },
     ResizeScrollUp {
         pane_id: PaneId,
     },
@@ -183,6 +187,8 @@ struct MouseEventContext {
     pane_id_at_position: Option<PaneId>,
     active_pane_id: Option<PaneId>,
     floating_visible: bool,
+    mouse_hover_focus: bool,
+    mouse_right_click_paste: bool,
     pane_being_resized: bool,
     selecting_with_mouse: bool,
     pane_being_moved: bool,
@@ -364,6 +370,8 @@ impl MouseHandler {
             pane_id_at_position,
             active_pane_id,
             floating_visible,
+            mouse_hover_focus: tab.mouse_hover_focus,
+            mouse_right_click_paste: tab.mouse_right_click_paste,
             pane_being_resized: tab.pane_being_resized_with_mouse.is_some(),
             selecting_with_mouse: tab.selecting_with_mouse_in_pane.is_some(),
             pane_being_moved: tab.floating_panes.pane_is_being_moved_with_mouse(),
@@ -712,6 +720,10 @@ impl MouseHandler {
                 Self::handle_scrollwheel_down(tab, &event.position, lines, client_id)
                     .with_context(err_context)
             },
+            MouseAction::RightClickCopyOrPaste { pane_id, event } => {
+                Self::execute_right_click_copy_or_paste(tab, pane_id, event, client_id)
+                    .with_context(err_context)
+            },
             MouseAction::ResizeScrollUp { pane_id } => {
                 Self::handle_resize_scroll_up(tab, pane_id, client_id).with_context(err_context)
             },
@@ -928,6 +940,26 @@ impl MouseHandler {
         };
         mouse_effect.leave_clipboard_message = true;
         Ok(mouse_effect)
+    }
+
+    fn execute_right_click_copy_or_paste(
+        tab: &mut Tab,
+        pane_id: PaneId,
+        event: MouseEvent,
+        client_id: ClientId,
+    ) -> Result<MouseEffect> {
+        let has_selected_text = tab
+            .get_active_pane(client_id)
+            .and_then(|pane| pane.get_selected_text(client_id))
+            .is_some();
+        if has_selected_text {
+            tab.copy_selection(client_id)?;
+            return Ok(MouseEffect::leave_clipboard_message());
+        }
+        if tab.paste_cached_text_to_active_terminal(client_id)? {
+            return Ok(MouseEffect::default());
+        }
+        Self::execute_send_to_terminal(tab, pane_id, event, client_id)
     }
 
     fn execute_send_to_terminal(
@@ -1158,6 +1190,12 @@ impl MouseHandler {
             };
             let is_active_pane = Some(pane_id) == ctx.active_pane_id;
             if is_active_pane {
+                if ctx.mouse_right_click_paste && event.event_type == MouseEventType::Press {
+                    return Ok(MouseAction::RightClickCopyOrPaste {
+                        pane_id,
+                        event: *event,
+                    });
+                }
                 return Ok(MouseAction::SendToTerminal {
                     pane_id,
                     event: *event,
@@ -1210,6 +1248,12 @@ impl MouseHandler {
                 return Ok(MouseAction::SendToTerminal {
                     pane_id,
                     event: *event,
+                });
+            }
+            if ctx.mouse_hover_focus {
+                return Ok(MouseAction::FocusPane {
+                    pane_id,
+                    position: event.position,
                 });
             }
             return Ok(MouseAction::UpdateHover {

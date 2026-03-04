@@ -185,6 +185,7 @@ pub(crate) struct Tab {
     // it seems that optimization is possible using `active_panes`
     focus_pane_id: Option<PaneId>,
     copy_on_select: bool,
+    last_copied_text: Option<String>,
     terminal_emulator_colors: Rc<RefCell<Palette>>,
     terminal_emulator_color_codes: Rc<RefCell<HashMap<usize, String>>>,
     pids_waiting_resize: HashSet<u32>, // u32 is the terminal_id
@@ -210,6 +211,8 @@ pub(crate) struct Tab {
     current_pane_group: Rc<RefCell<PaneGroups>>,
     advanced_mouse_actions: bool,
     mouse_hover_effects: bool,
+    mouse_hover_focus: bool,
+    mouse_right_click_paste: bool,
     currently_marking_pane_group: Rc<RefCell<HashMap<ClientId, bool>>>,
     connected_clients_in_app: Rc<RefCell<HashMap<ClientId, bool>>>, // bool -> is_web_client
     // the below are the configured values - the ones that will be set if and when the web server
@@ -662,6 +665,7 @@ impl Tab {
         currently_marking_pane_group: Rc<RefCell<HashMap<ClientId, bool>>>,
         advanced_mouse_actions: bool,
         mouse_hover_effects: bool,
+        mouse_hover_focus: bool,
         web_server_ip: IpAddr,
         web_server_port: u16,
     ) -> Self {
@@ -746,6 +750,7 @@ impl Tab {
             clipboard_provider,
             focus_pane_id: None,
             copy_on_select: copy_options.copy_on_select,
+            last_copied_text: None,
             terminal_emulator_colors,
             terminal_emulator_color_codes,
             pids_waiting_resize: HashSet::new(),
@@ -769,6 +774,8 @@ impl Tab {
             currently_marking_pane_group,
             advanced_mouse_actions,
             mouse_hover_effects,
+            mouse_hover_focus,
+            mouse_right_click_paste: false,
             connected_clients_in_app,
             web_server_ip,
             web_server_port,
@@ -4306,7 +4313,7 @@ impl Tab {
         MouseHandler::handle_mouse_event(self, event, client_id)
     }
 
-    pub fn copy_selection(&self, client_id: ClientId) -> Result<()> {
+    pub fn copy_selection(&mut self, client_id: ClientId) -> Result<()> {
         let selected_text = self
             .get_active_pane(client_id)
             .and_then(|p| p.get_selected_text(client_id));
@@ -4328,7 +4335,7 @@ impl Tab {
         }
         Ok(())
     }
-    pub fn copy_text_to_clipboard(&self, text: &str) -> Result<()> {
+    pub fn copy_text_to_clipboard(&mut self, text: &str) -> Result<()> {
         self.write_selection_to_clipboard(text)
             .with_context(|| format!("failed to write text to clipboard"))?;
         self.senders
@@ -4342,8 +4349,22 @@ impl Tab {
         Ok(())
     }
 
-    fn write_selection_to_clipboard(&self, selection: &str) -> Result<()> {
+    pub fn paste_cached_text_to_active_terminal(&mut self, client_id: ClientId) -> Result<bool> {
+        let Some(text_to_paste) = self.last_copied_text.clone() else {
+            return Ok(false);
+        };
+
+        let mut bracketed_paste = vec![27, 91, 50, 48, 48, 126]; // \u{1b}[200~
+        bracketed_paste.extend_from_slice(text_to_paste.as_bytes());
+        bracketed_paste.extend_from_slice(&[27, 91, 50, 48, 49, 126]); // \u{1b}[201~
+        self.write_to_active_terminal(&None, bracketed_paste, false, client_id)
+            .with_context(|| format!("failed to paste cached text for client {client_id}"))?;
+        Ok(true)
+    }
+
+    fn write_selection_to_clipboard(&mut self, selection: &str) -> Result<()> {
         let err_context = || format!("failed to write selection to clipboard: '{}'", selection);
+        self.last_copied_text = Some(selection.to_owned());
 
         let mut output = Output::default();
         let connected_clients: HashSet<ClientId> =
@@ -5175,6 +5196,12 @@ impl Tab {
     }
     pub fn update_mouse_hover_effects(&mut self, mouse_hover_effects: bool) {
         self.mouse_hover_effects = mouse_hover_effects;
+    }
+    pub fn update_mouse_hover_focus(&mut self, mouse_hover_focus: bool) {
+        self.mouse_hover_focus = mouse_hover_focus;
+    }
+    pub fn update_mouse_right_click_paste(&mut self, mouse_right_click_paste: bool) {
+        self.mouse_right_click_paste = mouse_right_click_paste;
     }
     pub fn clear_mouse_hover_state(&mut self) {
         self.mouse_hover_pane_id.clear();

@@ -1050,7 +1050,11 @@ impl PaneFrame {
         let left_enter_bracket = if self.is_first_run { " <" } else { "<" };
         let enter_text = "ENTER";
         let right_enter_bracket = ">";
-        let enter_tip = if self.is_first_run { " 运行, " } else { " 重运行, " };
+        let enter_tip = if self.is_first_run {
+            " 运行, "
+        } else {
+            " 重运行, "
+        };
 
         let left_esc_bracket = "<";
         let esc_text = "ESC";

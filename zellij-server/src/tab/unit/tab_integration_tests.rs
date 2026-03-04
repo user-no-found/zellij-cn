@@ -265,7 +265,8 @@ fn create_new_tab(size: Size, default_mode: ModeInfo) -> Tab {
         current_group,
         currently_marking_pane_group,
         advanced_mouse_actions,
-        true, // mouse_hover_effects
+        true,  // mouse_hover_effects
+        false, // mouse_hover_focus
         web_server_ip,
         web_server_port,
     );
@@ -350,7 +351,8 @@ fn create_new_tab_without_pane_frames(size: Size, default_mode: ModeInfo) -> Tab
         current_group,
         currently_marking_pane_group,
         advanced_mouse_actions,
-        true, // mouse_hover_effects
+        true,  // mouse_hover_effects
+        false, // mouse_hover_focus
         web_server_ip,
         web_server_port,
     );
@@ -450,7 +452,8 @@ fn create_new_tab_with_swap_layouts(
         current_group,
         currently_marking_pane_group,
         advanced_mouse_actions,
-        true, // mouse_hover_effects
+        true,  // mouse_hover_effects
+        false, // mouse_hover_focus
         web_server_ip,
         web_server_port,
     );
@@ -551,7 +554,8 @@ fn create_new_tab_with_os_api(
         current_group,
         currently_marking_pane_group,
         advanced_mouse_actions,
-        true, // mouse_hover_effects
+        true,  // mouse_hover_effects
+        false, // mouse_hover_focus
         web_server_ip,
         web_server_port,
     );
@@ -638,7 +642,8 @@ fn create_new_tab_with_layout(size: Size, default_mode: ModeInfo, layout: &str) 
         current_group,
         currently_marking_pane_group,
         advanced_mouse_actions,
-        true, // mouse_hover_effects
+        true,  // mouse_hover_effects
+        false, // mouse_hover_focus
         web_server_ip,
         web_server_port,
     );
@@ -739,7 +744,8 @@ fn create_new_tab_with_mock_pty_writer(
         current_group,
         currently_marking_pane_group,
         advanced_mouse_actions,
-        true, // mouse_hover_effects
+        true,  // mouse_hover_effects
+        false, // mouse_hover_focus
         web_server_ip,
         web_server_port,
     );
@@ -831,7 +837,8 @@ fn create_new_tab_with_sixel_support(
         current_group,
         currently_marking_pane_group,
         advanced_mouse_actions,
-        true, // mouse_hover_effects
+        true,  // mouse_hover_effects
+        false, // mouse_hover_focus
         web_server_ip,
         web_server_port,
     );
@@ -11504,29 +11511,146 @@ fn test_scroll_on_inactive_pane_scrolls_that_pane() {
 }
 
 #[test]
-fn test_right_click_forwards_to_active_pane() {
+fn test_right_click_forwards_to_active_pane_when_copy_paste_disabled() {
     let size = Size {
         cols: 121,
         rows: 20,
     };
     let client_id = 1;
-    let mut tab = create_new_tab(size, ModeInfo::default());
-    let mut output = Output::default();
+    let mut pty_instruction_bus = MockPtyInstructionBus::new();
+    let mut tab = create_new_tab_with_mock_pty_writer(
+        size,
+        ModeInfo::default(),
+        pty_instruction_bus.pty_write_sender(),
+    );
+    pty_instruction_bus.start();
 
-    tab.handle_pty_bytes(1, Vec::from("Active pane".as_bytes()))
+    tab.copy_text_to_clipboard("cached-text").unwrap();
+    tab.handle_pty_bytes(1, Vec::from("\u{1b}[?1000;1006h".as_bytes()))
         .unwrap();
+    tab.handle_mouse_event(
+        &MouseEvent::new_right_press_event(Position::new(5, 71)),
+        client_id,
+    )
+    .unwrap();
 
-    // Right click on the active pane
+    pty_instruction_bus.exit();
+    assert_eq!(
+        pty_instruction_bus.clone_output(),
+        vec!["\u{1b}[<2;71;5M".to_string()]
+    );
+}
+
+#[test]
+fn test_right_click_with_selected_text_copies_when_enabled() {
+    let size = Size {
+        cols: 121,
+        rows: 20,
+    };
+    let client_id = 1;
+    let mut pty_instruction_bus = MockPtyInstructionBus::new();
+    let mut tab = create_new_tab_with_mock_pty_writer(
+        size,
+        ModeInfo::default(),
+        pty_instruction_bus.pty_write_sender(),
+    );
+    pty_instruction_bus.start();
+    tab.update_mouse_right_click_paste(true);
+
+    tab.handle_pty_bytes(1, Vec::from("Selectable text content here".as_bytes()))
+        .unwrap();
+    tab.handle_mouse_event(
+        &MouseEvent::new_left_press_event(Position::new(1, 5)),
+        client_id,
+    )
+    .unwrap();
+    tab.handle_mouse_event(
+        &MouseEvent::new_left_motion_event(Position::new(1, 15)),
+        client_id,
+    )
+    .unwrap();
+    tab.handle_mouse_event(
+        &MouseEvent::new_left_release_event(Position::new(1, 15)),
+        client_id,
+    )
+    .unwrap();
+
+    assert!(tab
+        .get_active_pane(client_id)
+        .and_then(|pane| pane.get_selected_text(client_id))
+        .is_some());
+
     let effect = tab
         .handle_mouse_event(
-            &MouseEvent::new_right_press_event(Position::new(10, 60)),
+            &MouseEvent::new_right_press_event(Position::new(1, 15)),
             client_id,
         )
         .unwrap();
 
-    // Event should be forwarded (verified via MouseEffect or no error)
-    // The effect may not indicate state change, but should succeed
-    assert!(effect.group_toggle.is_none());
+    pty_instruction_bus.exit();
+    assert!(effect.leave_clipboard_message);
+    assert!(pty_instruction_bus.clone_output().is_empty());
+}
+
+#[test]
+fn test_right_click_pastes_cached_text_when_enabled() {
+    let size = Size {
+        cols: 121,
+        rows: 20,
+    };
+    let client_id = 1;
+    let mut pty_instruction_bus = MockPtyInstructionBus::new();
+    let mut tab = create_new_tab_with_mock_pty_writer(
+        size,
+        ModeInfo::default(),
+        pty_instruction_bus.pty_write_sender(),
+    );
+    pty_instruction_bus.start();
+    tab.update_mouse_right_click_paste(true);
+
+    tab.copy_text_to_clipboard("cached-text").unwrap();
+    tab.handle_mouse_event(
+        &MouseEvent::new_right_press_event(Position::new(5, 71)),
+        client_id,
+    )
+    .unwrap();
+
+    pty_instruction_bus.exit();
+    assert_eq!(
+        pty_instruction_bus.clone_output(),
+        vec!["\u{1b}[200~cached-text\u{1b}[201~"]
+    );
+}
+
+#[test]
+fn test_right_click_without_cache_falls_back_to_terminal_when_enabled() {
+    let size = Size {
+        cols: 121,
+        rows: 20,
+    };
+    let client_id = 1;
+    let mut pty_instruction_bus = MockPtyInstructionBus::new();
+    let mut tab = create_new_tab_with_mock_pty_writer(
+        size,
+        ModeInfo::default(),
+        pty_instruction_bus.pty_write_sender(),
+    );
+    pty_instruction_bus.start();
+    tab.update_mouse_right_click_paste(true);
+
+    tab.handle_pty_bytes(1, Vec::from("\u{1b}[?1000;1006h".as_bytes()))
+        .unwrap();
+    tab.handle_mouse_event(
+        &MouseEvent::new_right_press_event(Position::new(5, 71)),
+        client_id,
+    )
+    .unwrap();
+
+    pty_instruction_bus.exit();
+    assert_eq!(
+        pty_instruction_bus.clone_output(),
+        vec!["\u{1b}[<2;71;5M".to_string()]
+    );
 }
 
 #[test]
@@ -11587,6 +11711,40 @@ fn test_hover_over_inactive_pane_sets_hover_state() {
 
     let hover_panes = tab.query_mouse_hover_pane_id();
     assert_snapshot!(format!("{:?}", hover_panes));
+    assert!(effect.state_changed);
+}
+
+#[test]
+fn test_hover_over_inactive_pane_focuses_when_enabled() {
+    let size = Size {
+        cols: 121,
+        rows: 20,
+    };
+    let client_id = 1;
+    let mut tab = create_new_tab(size, ModeInfo::default());
+    let new_pane_id = PaneId::Terminal(2);
+    let mut output = Output::default();
+
+    tab.vertical_split(new_pane_id, None, client_id, None, None)
+        .unwrap();
+    tab.update_mouse_hover_focus(true);
+
+    tab.handle_pty_bytes(1, Vec::from("Left".as_bytes()))
+        .unwrap();
+    tab.handle_pty_bytes(2, Vec::from("Right".as_bytes()))
+        .unwrap();
+
+    assert_eq!(tab.get_active_pane_id(client_id), Some(PaneId::Terminal(2)));
+
+    let effect = tab
+        .handle_mouse_event(
+            &MouseEvent::new_buttonless_motion(Position::new(10, 30)),
+            client_id,
+        )
+        .unwrap();
+
+    assert_eq!(tab.get_active_pane_id(client_id), Some(PaneId::Terminal(1)));
+    assert!(tab.query_mouse_hover_pane_id().is_empty());
     assert!(effect.state_changed);
 }
 
