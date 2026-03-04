@@ -376,11 +376,16 @@ fn swap_layout_status(
 ) -> Option<LinePart> {
     match swap_layout_name {
         Some(swap_layout_name) => {
-            let mut swap_layout_name = format!(" {} ", swap_layout_name);
-            swap_layout_name.make_ascii_uppercase();
+            let localized_name = match swap_layout_name.to_ascii_lowercase().as_str() {
+                "base" => "基础".to_owned(),
+                "vertical" => "垂直".to_owned(),
+                "horizontal" => "水平".to_owned(),
+                other => other.to_ascii_uppercase(),
+            };
+            let swap_layout_name = format!(" {} ", localized_name);
             let keycode = swap_layout_keycode(mode_info);
             let swap_layout_name_len = display_width(&swap_layout_name) + 3; // 2 for the arrow separators, one for the screen end buffer
-                                                                   //
+                                                                             //
             macro_rules! style_swap_layout_indicator {
                 ($style_name:ident) => {{
                     (

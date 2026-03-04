@@ -310,9 +310,11 @@ fn swap_layout_status(
     mode_info: &ModeInfo,
     supports_arrow_fonts: bool,
 ) -> Option<LinePart> {
-    let localized_swap_layout_name = |name: &str| match name {
-        "BASE" => "基础".to_owned(),
-        _ => name.to_owned(),
+    let localized_swap_layout_name = |name: &str| match name.to_ascii_lowercase().as_str() {
+        "base" => "基础".to_owned(),
+        "vertical" => "垂直".to_owned(),
+        "horizontal" => "水平".to_owned(),
+        other => other.to_ascii_uppercase(),
     };
     match swap_layout_name {
         Some(swap_layout_name) => {
@@ -324,7 +326,7 @@ fn swap_layout_status(
             let mut text = style_key_with_modifier(&prev_next_keys, Some(0));
             let display_name = localized_swap_layout_name(swap_layout_name);
             text.append(&ribbon_as_line_part(
-                &display_name.to_uppercase(),
+                &display_name,
                 !is_swap_layout_dirty,
                 supports_arrow_fonts,
             ));

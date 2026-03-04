@@ -2377,6 +2377,7 @@ name = "multiple-select"
 version = "0.1.0"
 dependencies = [
  "fuzzy-matcher",
+ "unicode-width 0.1.10",
  "zellij-tile",
 ]
 
