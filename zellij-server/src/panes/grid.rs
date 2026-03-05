@@ -401,6 +401,7 @@ pub struct Grid {
     osc8_hyperlinks: bool,
     pub supports_kitty_keyboard_protocol: bool, // has the app requested kitty keyboard support?
     explicitly_disable_kitty_keyboard_protocol: bool, // has kitty keyboard support been explicitly
+    ignore_alternate_screen: bool,
     // disabled by user config?
     click: Click,
     hyperlink_tracker: HyperlinkTracker,
@@ -592,6 +593,7 @@ impl Grid {
             lock_renders: false,
             supports_kitty_keyboard_protocol: false,
             explicitly_disable_kitty_keyboard_protocol,
+            ignore_alternate_screen: false,
             click: Click::default(),
             hyperlink_tracker: HyperlinkTracker::new(),
         }
@@ -1834,6 +1836,54 @@ impl Grid {
             self.sixel_grid.reap_images(images_to_reap);
         }
     }
+    pub fn update_ignore_alternate_screen(&mut self, ignore_alternate_screen: bool) {
+        self.ignore_alternate_screen = ignore_alternate_screen;
+        if self.ignore_alternate_screen {
+            self.exit_alternate_screen();
+        }
+    }
+    fn enter_alternate_screen(&mut self) {
+        let current_lines_above = std::mem::replace(&mut self.lines_above, VecDeque::new());
+        let current_viewport = std::mem::replace(&mut self.viewport, vec![Row::new().canonical()]);
+        let current_cursor =
+            std::mem::replace(&mut self.cursor, Cursor::new(0, 0, self.styled_underlines));
+        let current_supports_kitty_keyboard_protocol =
+            std::mem::replace(&mut self.supports_kitty_keyboard_protocol, false);
+        let sixel_image_store = self.sixel_grid.sixel_image_store.clone();
+        let alternate_sixelgrid = std::mem::replace(
+            &mut self.sixel_grid,
+            SixelGrid::new(self.character_cell_size.clone(), sixel_image_store),
+        );
+        self.alternate_screen_state = Some(AlternateScreenState::new(
+            current_lines_above,
+            current_viewport,
+            current_cursor,
+            alternate_sixelgrid,
+            current_supports_kitty_keyboard_protocol,
+        ));
+        self.clear_viewport_before_rendering = true;
+        self.scrollback_buffer_lines = self.recalculate_scrollback_buffer_count();
+        self.output_buffer.update_all_lines();
+    }
+    fn exit_alternate_screen(&mut self) {
+        if let Some(mut alternate_screen_state) = self.alternate_screen_state.take() {
+            if let Some(image_ids_to_reap) = self.sixel_grid.clear() {
+                // Reap images before dropping alternate buffer contents.
+                self.sixel_grid.reap_images(image_ids_to_reap);
+            }
+            alternate_screen_state.apply_contents_to(
+                &mut self.lines_above,
+                &mut self.viewport,
+                &mut self.cursor,
+                &mut self.sixel_grid,
+                &mut self.supports_kitty_keyboard_protocol,
+            );
+        }
+        self.alternate_screen_state = None;
+        self.clear_viewport_before_rendering = true;
+        self.force_change_size(self.height, self.width); // alternate viewport might have a different size
+        self.mark_for_rerender();
+    }
     fn set_preceding_character(&mut self, terminal_character: TerminalCharacter) {
         self.preceding_char = Some(terminal_character);
     }
@@ -2945,28 +2995,10 @@ impl Perform for Grid {
                         2004 => {
                             self.bracketed_paste_mode = false;
                         },
-                        1049 => {
-                            if let Some(mut alternate_screen_state) =
-                                self.alternate_screen_state.take()
-                            {
-                                if let Some(image_ids_to_reap) = self.sixel_grid.clear() {
-                                    // reap images before dropping the alternate_screen_state contents
-                                    // - we can't implement a drop method for this because the store is
-                                    // outside of the alternate_screen_state struct
-                                    self.sixel_grid.reap_images(image_ids_to_reap);
-                                }
-                                alternate_screen_state.apply_contents_to(
-                                    &mut self.lines_above,
-                                    &mut self.viewport,
-                                    &mut self.cursor,
-                                    &mut self.sixel_grid,
-                                    &mut self.supports_kitty_keyboard_protocol,
-                                );
+                        47 | 1047 | 1049 => {
+                            if !self.ignore_alternate_screen {
+                                self.exit_alternate_screen();
                             }
-                            self.alternate_screen_state = None;
-                            self.clear_viewport_before_rendering = true;
-                            self.force_change_size(self.height, self.width); // the alternative_viewport might have been of a different size...
-                            self.mark_for_rerender();
                         },
                         25 => {
                             self.hide_cursor();
@@ -3044,36 +3076,10 @@ impl Perform for Grid {
                         2004 => {
                             self.bracketed_paste_mode = true;
                         },
-                        1049 => {
-                            // enter alternate buffer
-                            let current_lines_above =
-                                std::mem::replace(&mut self.lines_above, VecDeque::new());
-                            let current_viewport =
-                                std::mem::replace(&mut self.viewport, vec![Row::new().canonical()]);
-                            let current_cursor = std::mem::replace(
-                                &mut self.cursor,
-                                Cursor::new(0, 0, self.styled_underlines),
-                            );
-                            let current_supports_kitty_keyboard_protocol = std::mem::replace(
-                                &mut self.supports_kitty_keyboard_protocol,
-                                false,
-                            );
-                            let sixel_image_store = self.sixel_grid.sixel_image_store.clone();
-                            let alternate_sixelgrid = std::mem::replace(
-                                &mut self.sixel_grid,
-                                SixelGrid::new(self.character_cell_size.clone(), sixel_image_store),
-                            );
-                            self.alternate_screen_state = Some(AlternateScreenState::new(
-                                current_lines_above,
-                                current_viewport,
-                                current_cursor,
-                                alternate_sixelgrid,
-                                current_supports_kitty_keyboard_protocol,
-                            ));
-                            self.clear_viewport_before_rendering = true;
-                            self.scrollback_buffer_lines =
-                                self.recalculate_scrollback_buffer_count();
-                            self.output_buffer.update_all_lines(); // make sure the screen gets cleared in the next render
+                        47 | 1047 | 1049 => {
+                            if !self.ignore_alternate_screen {
+                                self.enter_alternate_screen();
+                            }
                         },
                         1 => {
                             self.cursor_key_mode = true;

@@ -59,6 +59,7 @@ pub fn scrolling_inside_a_pane() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     ); // 0 is the pane index
     let mut text_to_fill_pane = String::new();
@@ -112,6 +113,7 @@ pub fn sixel_image_inside_terminal_pane() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     ); // 0 is the pane index
     let sixel_image_bytes = "\u{1b}Pq
@@ -165,6 +167,7 @@ pub fn partial_sixel_image_inside_terminal_pane() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     ); // 0 is the pane index
     let pane_content = read_fixture("sixel-image-500px.six");
@@ -212,6 +215,7 @@ pub fn overflowing_sixel_image_inside_terminal_pane() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     ); // 0 is the pane index
     let pane_content = read_fixture("sixel-image-500px.six");
@@ -258,6 +262,7 @@ pub fn scrolling_through_a_sixel_image() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     ); // 0 is the pane index
     let mut text_to_fill_pane = String::new();
@@ -315,6 +320,7 @@ pub fn multiple_sixel_images_in_pane() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     ); // 0 is the pane index
     let mut text_to_fill_pane = String::new();
@@ -370,6 +376,7 @@ pub fn resizing_pane_with_sixel_images() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     ); // 0 is the pane index
     let mut text_to_fill_pane = String::new();
@@ -428,6 +435,7 @@ pub fn changing_character_cell_size_with_sixel_images() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     ); // 0 is the pane index
     let mut text_to_fill_pane = String::new();
@@ -491,6 +499,7 @@ pub fn keep_working_after_corrupted_sixel_image() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     ); // 0 is the pane index
 
@@ -552,6 +561,7 @@ pub fn pane_with_frame_position_is_on_frame() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     ); // 0 is the pane index
 
@@ -649,6 +659,7 @@ pub fn pane_with_bottom_and_right_borders_position_is_on_frame() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     ); // 0 is the pane index
 
@@ -746,6 +757,7 @@ pub fn frameless_pane_position_is_on_frame() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     ); // 0 is the pane index
 

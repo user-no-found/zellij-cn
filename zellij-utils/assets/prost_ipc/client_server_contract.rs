@@ -1754,6 +1754,8 @@ pub struct Options {
     pub mouse_hover_focus: ::core::option::Option<bool>,
     #[prost(bool, optional, tag = "44")]
     pub mouse_right_click_paste: ::core::option::Option<bool>,
+    #[prost(bool, optional, tag = "45")]
+    pub ignore_alternate_screen: ::core::option::Option<bool>,
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]

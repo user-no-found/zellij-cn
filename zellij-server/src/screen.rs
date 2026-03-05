@@ -585,6 +585,7 @@ pub enum ScreenInstruction {
         mouse_hover_effects: bool,
         mouse_hover_focus: bool,
         mouse_right_click_paste: bool,
+        ignore_alternate_screen: bool,
     },
     RerunCommandPane(u32, Option<NotificationEnd>), // u32 - terminal pane id
     ResizePaneWithId(ResizeStrategy, PaneId),
@@ -1089,6 +1090,7 @@ pub(crate) struct Screen {
     mouse_hover_effects: bool,
     mouse_hover_focus: bool,
     mouse_right_click_paste: bool,
+    ignore_alternate_screen: bool,
     currently_marking_pane_group: Rc<RefCell<HashMap<ClientId, bool>>>,
     // the below are the configured values - the ones that will be set if and when the web server
     // is brought online
@@ -1132,6 +1134,7 @@ impl Screen {
         mouse_hover_effects: bool,
         mouse_hover_focus: bool,
         mouse_right_click_paste: bool,
+        ignore_alternate_screen: bool,
         web_server_ip: IpAddr,
         web_server_port: u16,
     ) -> Self {
@@ -1188,6 +1191,7 @@ impl Screen {
             mouse_hover_effects,
             mouse_hover_focus,
             mouse_right_click_paste,
+            ignore_alternate_screen,
             web_server_ip,
             web_server_port,
             render_blocker: RenderBlocker::new(100),
@@ -1969,6 +1973,7 @@ impl Screen {
             self.advanced_mouse_actions,
             self.mouse_hover_effects,
             self.mouse_hover_focus,
+            self.ignore_alternate_screen,
             self.web_server_ip,
             self.web_server_port,
         );
@@ -3405,6 +3410,7 @@ impl Screen {
         mouse_hover_effects: bool,
         mouse_hover_focus: bool,
         mouse_right_click_paste: bool,
+        ignore_alternate_screen: bool,
         client_id: ClientId,
     ) -> Result<()> {
         let should_support_arrow_fonts = !simplified_ui;
@@ -3423,6 +3429,7 @@ impl Screen {
         self.mouse_hover_effects = mouse_hover_effects;
         self.mouse_hover_focus = mouse_hover_focus;
         self.mouse_right_click_paste = mouse_right_click_paste;
+        self.ignore_alternate_screen = ignore_alternate_screen;
         self.default_mode_info
             .update_arrow_fonts(should_support_arrow_fonts);
         self.default_mode_info
@@ -3446,6 +3453,7 @@ impl Screen {
             tab.update_mouse_hover_effects(mouse_hover_effects);
             tab.update_mouse_hover_focus(mouse_hover_focus);
             tab.update_mouse_right_click_paste(mouse_right_click_paste);
+            tab.update_ignore_alternate_screen(ignore_alternate_screen);
         }
 
         // Clear hover state when disabled
@@ -4139,6 +4147,7 @@ pub(crate) fn screen_thread_main(
     let mouse_hover_effects = config_options.mouse_hover_effects.unwrap_or(true);
     let mouse_hover_focus = config_options.mouse_hover_focus.unwrap_or(false);
     let mouse_right_click_paste = config_options.mouse_right_click_paste.unwrap_or(false);
+    let ignore_alternate_screen = config_options.ignore_alternate_screen.unwrap_or(true);
 
     let thread_senders = bus.senders.clone();
     let mut screen = Screen::new(
@@ -4179,6 +4188,7 @@ pub(crate) fn screen_thread_main(
         mouse_hover_effects,
         mouse_hover_focus,
         mouse_right_click_paste,
+        ignore_alternate_screen,
         web_server_ip,
         web_server_port,
     );
@@ -6852,6 +6862,7 @@ pub(crate) fn screen_thread_main(
                 mouse_hover_effects,
                 mouse_hover_focus,
                 mouse_right_click_paste,
+                ignore_alternate_screen,
             } => {
                 screen
                     .reconfigure(
@@ -6873,6 +6884,7 @@ pub(crate) fn screen_thread_main(
                         mouse_hover_effects,
                         mouse_hover_focus,
                         mouse_right_click_paste,
+                        ignore_alternate_screen,
                         client_id,
                     )
                     .non_fatal();

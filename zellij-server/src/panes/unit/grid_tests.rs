@@ -4245,6 +4245,68 @@ fn create_grid_with_content(content: &str) -> Grid {
     grid
 }
 
+fn advance_vte(grid: &mut Grid, parser: &mut vte::Parser, input: &str) {
+    for byte in input.as_bytes() {
+        parser.advance(grid, *byte);
+    }
+}
+
+#[test]
+fn ignore_alternate_screen_true_keeps_scrollback() {
+    let mut grid = create_grid_with_content("");
+    let mut vte_parser = vte::Parser::new();
+    grid.update_ignore_alternate_screen(true);
+
+    advance_vte(&mut grid, &mut vte_parser, "main-before\r\n");
+
+    advance_vte(&mut grid, &mut vte_parser, "\u{1b}[?1049h");
+    advance_vte(&mut grid, &mut vte_parser, "kept-1049\r\n");
+    advance_vte(&mut grid, &mut vte_parser, "\u{1b}[?1049l");
+
+    advance_vte(&mut grid, &mut vte_parser, "\u{1b}[?1047h");
+    advance_vte(&mut grid, &mut vte_parser, "kept-1047\r\n");
+    advance_vte(&mut grid, &mut vte_parser, "\u{1b}[?1047l");
+
+    advance_vte(&mut grid, &mut vte_parser, "\u{1b}[?47h");
+    advance_vte(&mut grid, &mut vte_parser, "kept-47\r\n");
+    advance_vte(&mut grid, &mut vte_parser, "\u{1b}[?47l");
+
+    let screen_dump = grid.dump_screen(true);
+    assert!(screen_dump.contains("main-before"));
+    assert!(screen_dump.contains("kept-1049"));
+    assert!(screen_dump.contains("kept-1047"));
+    assert!(screen_dump.contains("kept-47"));
+}
+
+#[test]
+fn ignore_alternate_screen_false_preserves_alternate_semantics() {
+    let mut grid = create_grid_with_content("");
+    let mut vte_parser = vte::Parser::new();
+
+    advance_vte(&mut grid, &mut vte_parser, "main-before\r\n");
+
+    advance_vte(&mut grid, &mut vte_parser, "\u{1b}[?1049h");
+    advance_vte(&mut grid, &mut vte_parser, "hidden-1049\r\n");
+    advance_vte(&mut grid, &mut vte_parser, "\u{1b}[?1049l");
+
+    advance_vte(&mut grid, &mut vte_parser, "\u{1b}[?1047h");
+    advance_vte(&mut grid, &mut vte_parser, "hidden-1047\r\n");
+    advance_vte(&mut grid, &mut vte_parser, "\u{1b}[?1047l");
+
+    advance_vte(&mut grid, &mut vte_parser, "\u{1b}[?47h");
+    advance_vte(&mut grid, &mut vte_parser, "hidden-47\r\n");
+    advance_vte(&mut grid, &mut vte_parser, "\u{1b}[?47l");
+
+    advance_vte(&mut grid, &mut vte_parser, "main-after\r\n");
+
+    let screen_dump = grid.dump_screen(true);
+    assert!(screen_dump.contains("main-before"));
+    assert!(screen_dump.contains("main-after"));
+    assert!(!screen_dump.contains("hidden-1049"));
+    assert!(!screen_dump.contains("hidden-1047"));
+    assert!(!screen_dump.contains("hidden-47"));
+}
+
 #[test]
 fn double_click_selection_preserved_after_scroll() {
     let content = "line 0\nline 1\nline 2\nline 3\nline 4\nthis is a word test\nline 6\nline 7\nline 8\nline 9\nline 10\nline 11\nline 12\nline 13\nline 14\nline 15\nline 16\nline 17\nline 18\nline 19\n";

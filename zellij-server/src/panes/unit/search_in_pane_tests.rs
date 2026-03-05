@@ -51,6 +51,7 @@ fn create_pane() -> TerminalPane {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     ); // 0 is the pane index
     let content = read_fixture();

@@ -2717,6 +2717,9 @@ impl Options {
         let mouse_right_click_paste =
             kdl_property_first_arg_as_bool_or_error!(kdl_options, "mouse_right_click_paste")
                 .map(|(v, _)| v);
+        let ignore_alternate_screen =
+            kdl_property_first_arg_as_bool_or_error!(kdl_options, "ignore_alternate_screen")
+                .map(|(v, _)| v);
         let web_server_ip =
             match kdl_property_first_arg_as_string_or_error!(kdl_options, "web_server_ip") {
                 Some((string, entry)) => Some(IpAddr::from_str(string).map_err(|_| {
@@ -2796,6 +2799,7 @@ impl Options {
             mouse_hover_effects,
             mouse_hover_focus,
             mouse_right_click_paste,
+            ignore_alternate_screen,
             web_server_ip,
             web_server_port,
             web_server_cert,
@@ -3981,6 +3985,34 @@ impl Options {
             None
         }
     }
+    fn ignore_alternate_screen_to_kdl(&self, add_comments: bool) -> Option<KdlNode> {
+        let comment_text = format!(
+            "{}\n{}\n{}\n{}",
+            " ",
+            "// Whether to ignore terminal alternate screen mode switches (eg. CSI ? 1049 h/l)",
+            "// and keep output in the main scrollback buffer",
+            "// default is true",
+        );
+
+        let create_node = |node_value: bool| -> KdlNode {
+            let mut node = KdlNode::new("ignore_alternate_screen");
+            node.push(KdlValue::Bool(node_value));
+            node
+        };
+        if let Some(ignore_alternate_screen) = self.ignore_alternate_screen {
+            let mut node = create_node(ignore_alternate_screen);
+            if add_comments {
+                node.set_leading(format!("{}\n", comment_text));
+            }
+            Some(node)
+        } else if add_comments {
+            let mut node = create_node(false);
+            node.set_leading(format!("{}\n// ", comment_text));
+            Some(node)
+        } else {
+            None
+        }
+    }
     fn web_server_ip_to_kdl(&self, add_comments: bool) -> Option<KdlNode> {
         let comment_text = format!(
             "{}\n{}\n{}\n{}",
@@ -4220,6 +4252,9 @@ impl Options {
         }
         if let Some(mouse_right_click_paste) = self.mouse_right_click_paste_to_kdl(add_comments) {
             nodes.push(mouse_right_click_paste);
+        }
+        if let Some(ignore_alternate_screen) = self.ignore_alternate_screen_to_kdl(add_comments) {
+            nodes.push(ignore_alternate_screen);
         }
         if let Some(web_server_ip) = self.web_server_ip_to_kdl(add_comments) {
             nodes.push(web_server_ip);

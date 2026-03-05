@@ -267,6 +267,7 @@ fn create_new_tab(size: Size, default_mode: ModeInfo) -> Tab {
         advanced_mouse_actions,
         true,  // mouse_hover_effects
         false, // mouse_hover_focus
+        false, // ignore_alternate_screen
         web_server_ip,
         web_server_port,
     );
@@ -353,6 +354,7 @@ fn create_new_tab_without_pane_frames(size: Size, default_mode: ModeInfo) -> Tab
         advanced_mouse_actions,
         true,  // mouse_hover_effects
         false, // mouse_hover_focus
+        false, // ignore_alternate_screen
         web_server_ip,
         web_server_port,
     );
@@ -454,6 +456,7 @@ fn create_new_tab_with_swap_layouts(
         advanced_mouse_actions,
         true,  // mouse_hover_effects
         false, // mouse_hover_focus
+        false, // ignore_alternate_screen
         web_server_ip,
         web_server_port,
     );
@@ -556,6 +559,7 @@ fn create_new_tab_with_os_api(
         advanced_mouse_actions,
         true,  // mouse_hover_effects
         false, // mouse_hover_focus
+        false, // ignore_alternate_screen
         web_server_ip,
         web_server_port,
     );
@@ -644,6 +648,7 @@ fn create_new_tab_with_layout(size: Size, default_mode: ModeInfo, layout: &str) 
         advanced_mouse_actions,
         true,  // mouse_hover_effects
         false, // mouse_hover_focus
+        false, // ignore_alternate_screen
         web_server_ip,
         web_server_port,
     );
@@ -746,6 +751,7 @@ fn create_new_tab_with_mock_pty_writer(
         advanced_mouse_actions,
         true,  // mouse_hover_effects
         false, // mouse_hover_focus
+        false, // ignore_alternate_screen
         web_server_ip,
         web_server_port,
     );
@@ -839,6 +845,7 @@ fn create_new_tab_with_sixel_support(
         advanced_mouse_actions,
         true,  // mouse_hover_effects
         false, // mouse_hover_focus
+        false, // ignore_alternate_screen
         web_server_ip,
         web_server_port,
     );

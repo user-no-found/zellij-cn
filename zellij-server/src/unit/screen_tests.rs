@@ -312,6 +312,7 @@ fn create_new_screen(
         mouse_hover_effects,
         false, // mouse_hover_focus
         false, // mouse_right_click_paste
+        false, // ignore_alternate_screen
         web_server_ip,
         web_server_port,
     );

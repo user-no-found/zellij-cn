@@ -596,6 +596,7 @@ fn test_apply_empty_layout() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None, // blocking_terminal
     );
 
@@ -681,6 +682,7 @@ fn test_apply_simple_two_pane_layout() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -767,6 +769,7 @@ fn test_apply_three_pane_layout() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -852,6 +855,7 @@ fn test_apply_horizontal_split_with_sizes() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -937,6 +941,7 @@ fn test_apply_vertical_split_with_sizes() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -1025,6 +1030,7 @@ fn test_apply_nested_layout() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -1109,6 +1115,7 @@ fn test_apply_layout_with_focus() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -1196,6 +1203,7 @@ fn test_apply_layout_with_commands() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -1280,6 +1288,7 @@ fn test_apply_layout_with_named_panes() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -1364,6 +1373,7 @@ fn test_apply_layout_with_borderless_panes() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -1457,6 +1467,7 @@ fn test_apply_layout_with_floating_panes() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -1551,6 +1562,7 @@ fn test_apply_layout_with_floating_pane_with_command() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -1659,6 +1671,7 @@ fn test_apply_layout_with_mixed_tiled_and_floating_panes() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -1750,6 +1763,7 @@ fn test_reapply_layout_exact_match() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -1853,6 +1867,7 @@ fn test_reapply_layout_logical_position_match() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -1957,6 +1972,7 @@ fn test_reapply_layout_with_more_positions() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -2066,6 +2082,7 @@ fn test_reapply_floating_pane_layout() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -2179,6 +2196,7 @@ fn test_apply_complex_nested_layout() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -2268,6 +2286,7 @@ fn test_apply_layout_with_stacked_panes() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -2363,6 +2382,7 @@ fn test_apply_layout_with_multiple_stacks() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -2465,6 +2485,7 @@ fn test_apply_layout_with_plugin_panes() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -2573,6 +2594,7 @@ fn test_apply_layout_with_mixed_plugin_and_terminal_panes() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -2664,6 +2686,7 @@ fn test_apply_layout_with_missing_plugin_ids() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -2741,6 +2764,7 @@ fn test_apply_layout_with_excess_terminal_ids() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -2840,6 +2864,7 @@ fn test_override_layout_basic_with_both_tiled_and_floating() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -2984,6 +3009,7 @@ fn test_override_layout_hide_floating_panes_true() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -3116,6 +3142,7 @@ fn test_override_layout_show_floating_panes() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -3254,6 +3281,7 @@ fn test_override_tiled_exact_match_preservation_commands() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -3381,6 +3409,7 @@ fn test_override_tiled_exact_match_preservation_plugins() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -3506,6 +3535,7 @@ fn test_override_tiled_all_panes_closed_no_matches() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -3636,6 +3666,7 @@ fn test_override_tiled_mixed_some_matches_some_new() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -3755,6 +3786,7 @@ fn test_override_tiled_new_panes_for_unmatched_positions() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -3866,6 +3898,7 @@ fn test_override_tiled_focus_on_new_pane() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -3979,6 +4012,7 @@ fn test_override_tiled_focus_when_focused_pane_closed() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -4105,6 +4139,7 @@ fn test_override_tiled_empty_layout_closes_all() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -4244,6 +4279,7 @@ fn test_override_floating_exact_match_preservation() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -4387,6 +4423,7 @@ fn test_override_floating_all_closed_no_matches() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -4530,6 +4567,7 @@ fn test_override_floating_new_panes_created() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -4676,6 +4714,7 @@ fn test_override_floating_focus_handling() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -4809,6 +4848,7 @@ fn test_override_floating_position_and_size_update() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -4922,6 +4962,7 @@ fn test_override_floating_return_value_has_panes() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -5047,6 +5088,7 @@ fn test_override_floating_return_value_no_panes() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -5188,6 +5230,7 @@ fn test_override_full_tiled_and_floating_together() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -5334,6 +5377,7 @@ fn test_override_viewport_adjustment_with_borderless() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -5458,6 +5502,7 @@ fn test_override_tiled_retain_terminal_panes_partial_match() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -5591,6 +5636,7 @@ fn test_override_tiled_retain_terminal_panes_no_matches() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -5739,6 +5785,7 @@ fn test_override_floating_retain_terminal_panes_partial_match() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -5897,6 +5944,7 @@ fn test_override_floating_retain_terminal_panes_no_matches() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -6061,6 +6109,7 @@ fn test_override_mixed_retain_terminal_panes_both_tiled_and_floating() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -6222,6 +6271,7 @@ fn test_override_retain_terminal_but_close_plugin_panes() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -6380,6 +6430,7 @@ fn test_override_tiled_retain_plugin_panes_partial_match() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -6519,6 +6570,7 @@ fn test_override_tiled_retain_plugin_panes_no_matches() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -6673,6 +6725,7 @@ fn test_override_floating_retain_plugin_panes_partial_match() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -6822,6 +6875,7 @@ fn test_override_floating_retain_plugin_panes_no_matches() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -6979,6 +7033,7 @@ fn test_override_mixed_retain_plugin_panes_both_tiled_and_floating() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 
@@ -7136,6 +7191,7 @@ fn test_override_retain_plugin_but_close_terminal_panes() {
         styled_underlines,
         osc8_hyperlinks,
         explicitly_disable_kitty_keyboard_protocol,
+        false,
         None,
     );
 

@@ -43,6 +43,7 @@ pub struct LayoutApplier<'a> {
     styled_underlines: bool,
     osc8_hyperlinks: bool,
     explicitly_disable_kitty_keyboard_protocol: bool,
+    ignore_alternate_screen: bool,
     blocking_terminal: Option<(u32, NotificationEnd)>,
 }
 
@@ -68,6 +69,7 @@ impl<'a> LayoutApplier<'a> {
         styled_underlines: bool,
         osc8_hyperlinks: bool,
         explicitly_disable_kitty_keyboard_protocol: bool,
+        ignore_alternate_screen: bool,
         blocking_terminal: Option<(u32, NotificationEnd)>,
     ) -> Self {
         let viewport = viewport.clone();
@@ -102,6 +104,7 @@ impl<'a> LayoutApplier<'a> {
             styled_underlines,
             osc8_hyperlinks,
             explicitly_disable_kitty_keyboard_protocol,
+            ignore_alternate_screen,
             blocking_terminal,
         }
     }
@@ -642,6 +645,7 @@ impl<'a> LayoutApplier<'a> {
             self.styled_underlines,
             self.osc8_hyperlinks,
             self.explicitly_disable_kitty_keyboard_protocol,
+            self.ignore_alternate_screen,
             None,
         );
         if let Some(pane_initial_contents) = &floating_pane_layout.pane_initial_contents {
@@ -712,6 +716,7 @@ impl<'a> LayoutApplier<'a> {
             self.styled_underlines,
             self.osc8_hyperlinks,
             self.explicitly_disable_kitty_keyboard_protocol,
+            self.ignore_alternate_screen,
             notification_end,
         );
         if let Some(pane_initial_contents) = &layout.pane_initial_contents {

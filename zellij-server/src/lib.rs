@@ -410,6 +410,10 @@ impl SessionMetaData {
                         .options
                         .mouse_right_click_paste
                         .unwrap_or(false),
+                    ignore_alternate_screen: new_config
+                        .options
+                        .ignore_alternate_screen
+                        .unwrap_or(true),
                 })
                 .unwrap();
             self.senders

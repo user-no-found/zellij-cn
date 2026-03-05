@@ -1092,6 +1092,7 @@ message Options {
   optional uint64 client_async_worker_tasks = 42;
   optional bool mouse_hover_focus = 43;
   optional bool mouse_right_click_paste = 44;
+  optional bool ignore_alternate_screen = 45;
 }
 
 enum OnForceClose {

@@ -530,6 +530,10 @@ impl Pane for TerminalPane {
         self.geom.x -= count;
         self.reflow_lines();
     }
+    fn update_ignore_alternate_screen(&mut self, ignore_alternate_screen: bool) {
+        self.grid
+            .update_ignore_alternate_screen(ignore_alternate_screen);
+    }
     fn pull_up(&mut self, count: usize) {
         self.geom.y -= count;
         self.reflow_lines();
@@ -955,11 +959,12 @@ impl TerminalPane {
         styled_underlines: bool,
         osc8_hyperlinks: bool,
         explicitly_disable_keyboard_protocol: bool,
+        ignore_alternate_screen: bool,
         mut notification_end: Option<NotificationEnd>,
     ) -> TerminalPane {
         let initial_pane_title =
             initial_pane_title.unwrap_or_else(|| format!("Pane #{}", pane_index));
-        let grid = Grid::new(
+        let mut grid = Grid::new(
             position_and_size.rows.as_usize(),
             position_and_size.cols.as_usize(),
             terminal_emulator_colors,
@@ -974,6 +979,7 @@ impl TerminalPane {
             osc8_hyperlinks,
             explicitly_disable_keyboard_protocol,
         );
+        grid.update_ignore_alternate_screen(ignore_alternate_screen);
         if let Some(notification_end) = notification_end.as_mut() {
             notification_end.set_affected_pane_id(PaneId::Terminal(pid));
         }

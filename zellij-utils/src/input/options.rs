@@ -243,6 +243,12 @@ pub struct Options {
     #[serde(default)]
     pub mouse_right_click_paste: Option<bool>,
 
+    /// Whether to ignore alternate screen switches and keep output in the main scrollback
+    /// default is true
+    #[clap(long, value_parser)]
+    #[serde(default)]
+    pub ignore_alternate_screen: Option<bool>,
+
     // these are intentionally excluded from the CLI options as they must be specified in the
     // configuration file
     pub web_server_ip: Option<IpAddr>,
@@ -352,6 +358,9 @@ impl Options {
         let mouse_right_click_paste = other
             .mouse_right_click_paste
             .or(self.mouse_right_click_paste);
+        let ignore_alternate_screen = other
+            .ignore_alternate_screen
+            .or(self.ignore_alternate_screen);
         let web_server_ip = other.web_server_ip.or(self.web_server_ip);
         let web_server_port = other.web_server_port.or(self.web_server_port);
         let web_server_cert = other
@@ -406,6 +415,7 @@ impl Options {
             mouse_hover_effects,
             mouse_hover_focus,
             mouse_right_click_paste,
+            ignore_alternate_screen,
             web_server_ip,
             web_server_port,
             web_server_cert,
@@ -483,6 +493,9 @@ impl Options {
         let mouse_right_click_paste = other
             .mouse_right_click_paste
             .or(self.mouse_right_click_paste);
+        let ignore_alternate_screen = other
+            .ignore_alternate_screen
+            .or(self.ignore_alternate_screen);
         let web_server_ip = other.web_server_ip.or(self.web_server_ip);
         let web_server_port = other.web_server_port.or(self.web_server_port);
         let web_server_cert = other
@@ -537,6 +550,7 @@ impl Options {
             mouse_hover_effects,
             mouse_hover_focus,
             mouse_right_click_paste,
+            ignore_alternate_screen,
             web_server_ip,
             web_server_port,
             web_server_cert,

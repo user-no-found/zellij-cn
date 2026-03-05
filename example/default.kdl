@@ -529,6 +529,11 @@ load_plugins {
 //
 // mouse_right_click_paste true
 
+// Whether to ignore terminal alternate screen mode switches and keep output in scrollback
+// Default: true
+//
+// ignore_alternate_screen false
+
 // A command to run (will be wrapped with sh -c and provided the RESURRECT_COMMAND env variable)
 // after Zellij attempts to discover a command inside a pane when resurrecting sessions, the STDOUT
 // of this command will be used instead of the discovered RESURRECT_COMMAND

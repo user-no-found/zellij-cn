@@ -606,6 +606,7 @@ impl From<crate::input::options::Options>
             mouse_hover_effects: options.mouse_hover_effects,
             mouse_hover_focus: options.mouse_hover_focus,
             mouse_right_click_paste: options.mouse_right_click_paste,
+            ignore_alternate_screen: options.ignore_alternate_screen,
             web_server_ip: options.web_server_ip.map(|ip| ip.to_string()),
             web_server_port: options.web_server_port.map(|p| p as u32),
             web_server_cert: options
@@ -700,6 +701,7 @@ impl TryFrom<crate::client_server_contract::client_server_contract::Options>
             mouse_hover_effects: options.mouse_hover_effects,
             mouse_hover_focus: options.mouse_hover_focus,
             mouse_right_click_paste: options.mouse_right_click_paste,
+            ignore_alternate_screen: options.ignore_alternate_screen,
             web_server_ip: options
                 .web_server_ip
                 .map(|ip| ip.parse())

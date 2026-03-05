@@ -206,6 +206,7 @@ fn create_new_tab(size: Size, stacked_resize: bool) -> Tab {
         advanced_mouse_actions,
         true,  // mouse_hover_effects
         false, // mouse_hover_focus
+        false, // ignore_alternate_screen
         web_server_ip,
         web_server_port,
     );
@@ -291,6 +292,7 @@ fn create_new_tab_with_layout(size: Size, layout: TiledPaneLayout) -> Tab {
         advanced_mouse_actions,
         true,  // mouse_hover_effects
         false, // mouse_hover_focus
+        false, // ignore_alternate_screen
         web_server_ip,
         web_server_port,
     );
@@ -382,6 +384,7 @@ fn create_new_tab_with_cell_size(
         advanced_mouse_actions,
         true,  // mouse_hover_effects
         false, // mouse_hover_focus
+        false, // ignore_alternate_screen
         web_server_ip,
         web_server_port,
     );

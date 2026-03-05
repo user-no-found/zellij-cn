@@ -213,6 +213,7 @@ pub(crate) struct Tab {
     mouse_hover_effects: bool,
     mouse_hover_focus: bool,
     mouse_right_click_paste: bool,
+    ignore_alternate_screen: bool,
     currently_marking_pane_group: Rc<RefCell<HashMap<ClientId, bool>>>,
     connected_clients_in_app: Rc<RefCell<HashMap<ClientId, bool>>>, // bool -> is_web_client
     // the below are the configured values - the ones that will be set if and when the web server
@@ -285,6 +286,7 @@ pub trait Pane {
     fn push_right(&mut self, count: usize);
     fn pull_left(&mut self, count: usize);
     fn pull_up(&mut self, count: usize);
+    fn update_ignore_alternate_screen(&mut self, _ignore_alternate_screen: bool) {}
     fn clear_screen(&mut self);
     fn dump_screen(&self, _full: bool, _client_id: Option<ClientId>) -> String {
         "".to_owned()
@@ -666,6 +668,7 @@ impl Tab {
         advanced_mouse_actions: bool,
         mouse_hover_effects: bool,
         mouse_hover_focus: bool,
+        ignore_alternate_screen: bool,
         web_server_ip: IpAddr,
         web_server_port: u16,
     ) -> Self {
@@ -776,6 +779,7 @@ impl Tab {
             mouse_hover_effects,
             mouse_hover_focus,
             mouse_right_click_paste: false,
+            ignore_alternate_screen,
             connected_clients_in_app,
             web_server_ip,
             web_server_port,
@@ -815,6 +819,7 @@ impl Tab {
             self.styled_underlines,
             self.osc8_hyperlinks,
             self.explicitly_disable_kitty_keyboard_protocol,
+            self.ignore_alternate_screen,
             blocking_terminal,
         )
         .apply_layout(
@@ -893,6 +898,7 @@ impl Tab {
             self.styled_underlines,
             self.osc8_hyperlinks,
             self.explicitly_disable_kitty_keyboard_protocol,
+            self.ignore_alternate_screen,
             blocking_terminal,
         )
         .override_layout(
@@ -986,6 +992,7 @@ impl Tab {
                 self.styled_underlines,
                 self.osc8_hyperlinks,
                 self.explicitly_disable_kitty_keyboard_protocol,
+                self.ignore_alternate_screen,
                 None,
             )
             .apply_floating_panes_layout_to_existing_panes(&layout_candidate)
@@ -1026,6 +1033,7 @@ impl Tab {
                 self.styled_underlines,
                 self.osc8_hyperlinks,
                 self.explicitly_disable_kitty_keyboard_protocol,
+                self.ignore_alternate_screen,
                 None,
             )
             .apply_tiled_panes_layout_to_existing_panes(&layout_candidate);
@@ -1504,6 +1512,7 @@ impl Tab {
                     self.styled_underlines,
                     self.osc8_hyperlinks,
                     self.explicitly_disable_kitty_keyboard_protocol,
+                    self.ignore_alternate_screen,
                     blocking_notification,
                 )) as Box<dyn Pane>
             },
@@ -1617,6 +1626,7 @@ impl Tab {
                     self.styled_underlines,
                     self.osc8_hyperlinks,
                     self.explicitly_disable_kitty_keyboard_protocol,
+                    self.ignore_alternate_screen,
                     blocking_notification,
                 )) as Box<dyn Pane>
             },
@@ -1719,6 +1729,7 @@ impl Tab {
                     self.styled_underlines,
                     self.osc8_hyperlinks,
                     self.explicitly_disable_kitty_keyboard_protocol,
+                    self.ignore_alternate_screen,
                     blocking_notification,
                 )) as Box<dyn Pane>
             },
@@ -1865,6 +1876,7 @@ impl Tab {
                     self.styled_underlines,
                     self.osc8_hyperlinks,
                     self.explicitly_disable_kitty_keyboard_protocol,
+                    self.ignore_alternate_screen,
                     blocking_notification,
                 )) as Box<dyn Pane>
             },
@@ -2080,6 +2092,7 @@ impl Tab {
                     self.styled_underlines,
                     self.osc8_hyperlinks,
                     self.explicitly_disable_kitty_keyboard_protocol,
+                    self.ignore_alternate_screen,
                     completion_tx,
                 );
                 if let Some(borderless) = borderless {
@@ -2279,6 +2292,7 @@ impl Tab {
                     self.styled_underlines,
                     self.osc8_hyperlinks,
                     self.explicitly_disable_kitty_keyboard_protocol,
+                    self.ignore_alternate_screen,
                     completion_tx,
                 );
                 if let Some(borderless) = borderless {
@@ -2346,6 +2360,7 @@ impl Tab {
                     self.styled_underlines,
                     self.osc8_hyperlinks,
                     self.explicitly_disable_kitty_keyboard_protocol,
+                    self.ignore_alternate_screen,
                     completion_tx,
                 );
                 if let Some(borderless) = borderless {
@@ -5203,6 +5218,28 @@ impl Tab {
     pub fn update_mouse_right_click_paste(&mut self, mouse_right_click_paste: bool) {
         self.mouse_right_click_paste = mouse_right_click_paste;
     }
+    pub fn update_ignore_alternate_screen(&mut self, ignore_alternate_screen: bool) {
+        self.ignore_alternate_screen = ignore_alternate_screen;
+
+        let tiled_pane_ids: Vec<PaneId> = self.tiled_panes.get_panes().map(|(id, _)| *id).collect();
+        for pane_id in tiled_pane_ids {
+            if let Some(pane) = self.tiled_panes.get_pane_mut(pane_id) {
+                pane.update_ignore_alternate_screen(ignore_alternate_screen);
+            }
+        }
+
+        let floating_pane_ids: Vec<PaneId> =
+            self.floating_panes.get_panes().map(|(id, _)| *id).collect();
+        for pane_id in floating_pane_ids {
+            if let Some(pane) = self.floating_panes.get_pane_mut(pane_id) {
+                pane.update_ignore_alternate_screen(ignore_alternate_screen);
+            }
+        }
+
+        for (_, pane) in self.suppressed_panes.values_mut() {
+            pane.update_ignore_alternate_screen(ignore_alternate_screen);
+        }
+    }
     pub fn clear_mouse_hover_state(&mut self) {
         self.mouse_hover_pane_id.clear();
         self.mouse_help_text_visible.clear();
@@ -5430,6 +5467,7 @@ impl Tab {
             self.styled_underlines,
             self.osc8_hyperlinks,
             self.explicitly_disable_kitty_keyboard_protocol,
+            self.ignore_alternate_screen,
             None,
         );
         new_pane.update_name("EDITING SCROLLBACK"); // we do this here and not in the
